@@ -1,0 +1,84 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# Project: data-leverage-blogs
+# Data leverage blog content collection
+# ═══════════════════════════════════════════════════════════════════════════════
+
+project: data-leverage-blogs
+
+# ─── Visibility Settings ───────────────────────────────────────────────────────
+defaultVisibility: public
+visibilityField: visibility
+
+# ─── Content Sources ───────────────────────────────────────────────────────────
+sources:
+  - id: blogs-notes
+    type: local
+    root: ${EXTENOTE_CONTENT_ROOT:-../extenote-pub/content}/data-leverage-blogs
+    include:
+      - "**/*.md"
+      - "**/*.qmd"
+
+# ─── Project Includes ─────────────────────────────────────────────────────────
+includes:
+  - shared-references
+  - discussions
+
+# ─── Linting Rules ─────────────────────────────────────────────────────────────
+lint:
+  rules:
+    required-visibility: warn
+    "compatibility:quarto": warn
+  autofix: true
+
+# ─── Compatibility Requirements ────────────────────────────────────────────────
+compatibility:
+  quarto:
+    requiredFields:
+      - title
+      - date
+
+# ─── Build Configuration ──────────────────────────────────────────────────────
+# How to build the website for this project
+build:
+  websiteDir: data-leverage-blogs-quarto
+  type: quarto
+  preRender:
+    - type: rsync
+      src: ${EXTENOTE_CONTENT_ROOT}/data-leverage-blogs
+      dst: posts
+      include: ["*.md", "*.qmd"]
+    - type: cli
+      command: export-project data-leverage-blogs -f bibtex --source shared-refs --detect-citations
+      outputDir: .
+    - type: network
+      outputFormat: quarto
+      addToNavbar: true
+      includeProjectLinks: false
+      relatedProjects:
+        - data-licenses
+        - data-counterfactuals
+        - data-napkin-math
+        - shared-references
+
+# ─── Deployment Configuration ─────────────────────────────────────────────────
+# Where and how to deploy the built website
+deploy:
+  platform: cloudflare-pages
+  configFile: wrangler.toml
+  outputDir: docs
+  url: https://data-leverage-blogs-quarto.pages.dev
+
+# ─── Discussion Configuration ─────────────────────────────────────────────────
+# Where to create public discussion threads for content
+discussion:
+  createObjects: true
+  outputDir: ${EXTENOTE_CONTENT_ROOT:-../extenote-pub/content}/discussions
+  frontmatterKey: discussions
+  providers:
+    github:
+      enabled: true
+      repo: nickmvincent/extenote-pub
+      category: General
+    whitewind:
+      enabled: true
+      identifier: nickmvincent.bsky.social

@@ -1,0 +1,84 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# Data Leverage Blogs Schemas
+# Content types for blog posts and discussion links
+# ═══════════════════════════════════════════════════════════════════════════════
+
+schemas:
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Archived Blog - Imported blog post from external source
+  # ─────────────────────────────────────────────────────────────────────────────
+  - name: archived_blog
+    description: Archived blog posts from external sources.
+    projects:
+      - data-leverage-blogs
+    identityField: original_url
+
+    required:
+      - type
+      - title
+      - date
+      - original_url
+
+    fields:
+      title:
+        type: string
+        description: The blog post title.
+      subtitle:
+        type: string
+        description: A longer description or subtitle for the post.
+      date:
+        type: date
+        description: Publication date.
+      original_url:
+        type: string
+        description: URL to the original post.
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Discussion - Links to discussion platforms for content
+  # ─────────────────────────────────────────────────────────────────────────────
+  - name: discussion
+    description: Discussion links for a content object.
+    projects:
+      - data-leverage-blogs
+    subdirectory: discussions
+    identityField: source_id
+
+    required:
+      - type
+      - source_id
+      - source_type
+
+    fields:
+      source_id:
+        type: string
+        description: ID of the source content object.
+      source_type:
+        type: string
+        description: Schema type of source (e.g., archived_blog).
+      source_title:
+        type: string
+        description: Title of source content.
+      source_url:
+        type: string
+        description: Canonical URL of published content.
+      github_url:
+        type: string
+        description: GitHub Discussions URL.
+      leaflet_url:
+        type: string
+        description: Leaflet (leaflet.pub) web URL.
+      leaflet_uri:
+        type: string
+        description: AT-URI for the Leaflet ATProto record.
+      whitewind_url:
+        type: string
+        description: WhiteWind (whtwnd.com) web URL.
+      whitewind_uri:
+        type: string
+        description: AT-URI for the WhiteWind ATProto record.
+      googledocs_url:
+        type: string
+        description: Google Docs URL.
+      created_at:
+        type: date
+        description: When discussions were created.

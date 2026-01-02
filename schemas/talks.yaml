@@ -1,0 +1,138 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# Talks Schemas
+# Additional content types for workshops and seminars
+# (talk, panel, podcast are defined in personal-website.yaml)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+schemas:
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Workshop - Workshop or tutorial session
+  # ─────────────────────────────────────────────────────────────────────────────
+  - name: workshop
+    description: Workshop, tutorial, or hands-on session.
+    projects:
+      - talks
+      - personal-website
+    subdirectory: workshops
+    identityField: slug
+
+    required:
+      - type
+      - title
+      - slug
+      - date
+
+    fields:
+      title:
+        type: string
+        description: Workshop title.
+      slug:
+        type: string
+        description: URL-friendly identifier.
+      date:
+        type: date
+        description: Date of the workshop.
+      location:
+        type: string
+        description: City/venue.
+      event:
+        type: string
+        description: Parent event or conference name.
+      event_url:
+        type: string
+        description: URL for the event page.
+      duration_minutes:
+        type: number
+        description: Duration in minutes.
+      role:
+        type: string
+        description: Your role (organizer, instructor, co-instructor).
+      co_organizers:
+        type: array
+        items: string
+        description: Names of co-organizers or co-instructors.
+      participants:
+        type: number
+        description: Number of participants.
+      materials_url:
+        type: string
+        description: URL to workshop materials.
+      slides_url:
+        type: string
+        description: URL to slides.
+      video_url:
+        type: string
+        description: URL to recording.
+      abstract:
+        type: string
+        description: Workshop description.
+      learning_objectives:
+        type: array
+        items: string
+        description: What participants learned.
+      prerequisites:
+        type: array
+        items: string
+        description: Prerequisites for participants.
+      tags:
+        type: array
+        items: string
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Seminar - Academic seminar or colloquium
+  # ─────────────────────────────────────────────────────────────────────────────
+  - name: seminar
+    description: Academic seminar, colloquium, or department talk.
+    projects:
+      - talks
+      - personal-website
+    subdirectory: seminars
+    identityField: slug
+
+    required:
+      - type
+      - title
+      - slug
+      - date
+
+    fields:
+      title:
+        type: string
+        description: Seminar title.
+      slug:
+        type: string
+        description: URL-friendly identifier.
+      date:
+        type: date
+        description: Date of the seminar.
+      institution:
+        type: string
+        description: Host institution.
+      department:
+        type: string
+        description: Host department or group.
+      series_name:
+        type: string
+        description: Name of the seminar series if applicable.
+      location:
+        type: string
+        description: Room/building or virtual.
+      slides_url:
+        type: string
+        description: URL to slides.
+      video_url:
+        type: string
+        description: URL to recording.
+      abstract:
+        type: string
+        description: Talk abstract.
+      related_papers:
+        type: array
+        items: string
+        description: Citation keys of related papers.
+      host:
+        type: string
+        description: Name of faculty host.
+      tags:
+        type: array
+        items: string

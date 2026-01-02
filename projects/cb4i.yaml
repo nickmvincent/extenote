@@ -1,0 +1,63 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# Project: cb4i
+# Collective Bargaining for Information - NeurIPS 2025 position paper website
+# ═══════════════════════════════════════════════════════════════════════════════
+
+project: cb4i
+
+# ─── Visibility Settings ───────────────────────────────────────────────────────
+defaultVisibility: public
+visibilityField: visibility
+
+# ─── Content Sources ───────────────────────────────────────────────────────────
+sources:
+  - id: cb4i-content
+    type: local
+    root: ${EXTENOTE_CONTENT_ROOT:-../extenote-pub/content}/cb4i
+    include:
+      - "**/*.md"
+
+# ─── Project Includes ─────────────────────────────────────────────────────────
+includes:
+  - discussions
+
+# ─── Linting Rules ─────────────────────────────────────────────────────────────
+lint:
+  rules:
+    required-visibility: warn
+    "compatibility:astro": warn
+  autofix: true
+
+# ─── Compatibility Requirements ────────────────────────────────────────────────
+compatibility:
+  astro:
+    requiredFields:
+      - title
+      - type
+    requirePublicVisibility: true
+
+# ─── Build Configuration ──────────────────────────────────────────────────────
+build:
+  websiteDir: cb4i
+  type: astro
+
+# ─── Deployment Configuration ─────────────────────────────────────────────────
+deploy:
+  platform: cloudflare-pages
+  configFile: wrangler.toml
+  outputDir: dist
+  url: https://cb4i.org
+
+# ─── Discussion Configuration ─────────────────────────────────────────────────
+# Where to create public discussion threads for content
+discussion:
+  createObjects: true
+  outputDir: ${EXTENOTE_CONTENT_ROOT:-../extenote-pub/content}/discussions
+  providers:
+    github:
+      enabled: true
+      repo: nickmvincent/extenote-pub
+      category: General
+    whitewind:
+      enabled: true
+      identifier: nickmvincent.bsky.social

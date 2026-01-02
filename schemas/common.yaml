@@ -1,0 +1,114 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# Common Schemas
+# Generic schema definitions used across multiple projects
+# ═══════════════════════════════════════════════════════════════════════════════
+
+schemas:
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Readme - Placeholder for project-level README files
+  # ─────────────────────────────────────────────────────────────────────────────
+  - name: readme
+    description: Placeholder object for project-level README files.
+    fields: {}
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Doc - Documentation pages
+  # ─────────────────────────────────────────────────────────────────────────────
+  - name: doc
+    description: Documentation page with title and optional ordering.
+    subdirectory: .
+    required:
+      - type
+      - title
+    fields:
+      title:
+        type: string
+        description: Document title.
+      order:
+        type: number
+        description: Sort order for navigation (lower = earlier).
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Scratchpad - Temporary working documents
+  # ─────────────────────────────────────────────────────────────────────────────
+  - name: scratchpad
+    description: Temporary working document, TODO list, or coordination file.
+    fields:
+      title:
+        type: string
+        description: Document title.
+      created:
+        type: date
+        description: When the scratchpad was created.
+      updated:
+        type: date
+        description: When last updated.
+      purpose:
+        type: string
+        description: Purpose of the scratchpad.
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Memo - Short internal notes
+  # ─────────────────────────────────────────────────────────────────────────────
+  - name: memo
+    description: Short internal memo or process documentation.
+    fields:
+      title:
+        type: string
+        description: Memo title.
+      date:
+        type: date
+        description: Date of the memo.
+      category:
+        type: string
+        description: Category or topic area.
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Project Discussion - Cross-project discussion hub
+  # ─────────────────────────────────────────────────────────────────────────────
+  - name: project_discussion
+    description: Project-level discussion hub linking to various discussion platforms.
+    projects:
+      - discussions
+    subdirectory: .
+    identityField: project
+
+    required:
+      - type
+      - project
+      - title
+
+    fields:
+      project:
+        type: string
+        description: Name of the project this discussion is for.
+      title:
+        type: string
+        description: Display title for the discussion hub.
+      description:
+        type: string
+        description: Brief description of the project discussion.
+      created_at:
+        type: date
+        description: When the discussion hub was created.
+      github_url:
+        type: string
+        description: GitHub Discussions URL.
+      github_uri:
+        type: string
+        description: GitHub Discussion ID.
+      leaflet_url:
+        type: string
+        description: Leaflet (leaflet.pub) web URL.
+      leaflet_uri:
+        type: string
+        description: AT-URI for the Leaflet ATProto record.
+      whitewind_url:
+        type: string
+        description: WhiteWind (whtwnd.com) web URL.
+      whitewind_uri:
+        type: string
+        description: AT-URI for the WhiteWind ATProto record.
+      googledocs_url:
+        type: string
+        description: Google Docs URL.

@@ -1,0 +1,34 @@
+{
+  "name": "@extenote/web",
+  "version": "0.1.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "server": "cd ../.. && bun run packages/web/server.ts",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "bun test tests/",
+    "test:integration": "bun test tests/integration.test.ts",
+    "test:run": "bun run tests/run-tests.ts"
+  },
+  "dependencies": {
+    "@extenote/core": "workspace:*",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/typography": "^0.5.19",
+    "@types/node": "^25.0.3",
+    "@types/react": "^18.3.5",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.45",
+    "puppeteer": "^24.34.0",
+    "tailwindcss": "^3.4.10",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.3"
+  }
+}

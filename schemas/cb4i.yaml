@@ -1,0 +1,96 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# Schemas: cb4i
+# Content schemas for the Collective Bargaining for Information project
+# ═══════════════════════════════════════════════════════════════════════════════
+
+schemas:
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Paper Landing - Academic paper companion website
+  # ─────────────────────────────────────────────────────────────────────────────
+  - name: paper_landing
+    description: Landing page for an academic paper with structured sections.
+    projects:
+      - cb4i
+    subdirectory: .
+    identityField: slug
+
+    required:
+      - type
+      - title
+      - slug
+      - conference
+      - authors
+      - affiliations
+
+    fields:
+      title:
+        type: string
+        description: Paper title.
+      subtitle:
+        type: string
+        description: Paper subtitle or tagline.
+      slug:
+        type: string
+        description: URL slug for the paper.
+      conference:
+        type: string
+        description: Conference or venue name.
+      date:
+        type: date
+        description: Publication or presentation date.
+      paper_links:
+        type: array
+        description: Links to paper (conference site, arXiv, etc.).
+        items:
+          type: object
+          fields:
+            label:
+              type: string
+            url:
+              type: string
+      authors:
+        type: array
+        description: List of paper authors.
+        items:
+          type: object
+          fields:
+            name:
+              type: string
+            affiliation:
+              type: number
+            email:
+              type: string
+      affiliations:
+        type: array
+        description: List of author affiliations.
+        items:
+          type: object
+          fields:
+            id:
+              type: number
+            name:
+              type: string
+      hero:
+        type: object
+        description: Hero section content.
+      problem:
+        type: object
+        description: Problem statement section.
+      solution:
+        type: object
+        description: Solution section.
+      stakes:
+        type: object
+        description: Stakes/implications section.
+      actions:
+        type: object
+        description: Call to action section.
+      technical:
+        type: object
+        description: Technical foundations section.
+      emerging:
+        type: object
+        description: Current state/emerging examples section.
+      takeaway:
+        type: object
+        description: Summary takeaway section.

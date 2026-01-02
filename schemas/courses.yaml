@@ -1,0 +1,370 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# Courses Schemas
+# Content types for course materials: syllabi, lectures, assignments, readings
+# ═══════════════════════════════════════════════════════════════════════════════
+
+schemas:
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Course - Main course record (container for all course content)
+  # ─────────────────────────────────────────────────────────────────────────────
+  - name: course
+    description: A complete course offering with syllabus, lectures, assignments, and readings.
+    projects:
+      - courses
+      - personal-website
+    subdirectory: .
+    identityField: slug
+
+    required:
+      - type
+      - course_number
+      - course_title
+      - slug
+
+    fields:
+      course_number:
+        type: string
+        description: Course code (e.g., CMPT 120, CMPT 419).
+      course_title:
+        type: string
+        description: Full course title.
+      slug:
+        type: string
+        description: URL-friendly identifier (e.g., cmpt120-fall2024).
+      term:
+        type: string
+        description: Academic term (Fall, Spring, Summer).
+      year:
+        type: string
+        description: Academic year.
+      institution:
+        type: string
+        description: University or institution name.
+      department:
+        type: string
+        description: Academic department.
+      description:
+        type: string
+        description: Course description or overview.
+      topics:
+        type: array
+        items: string
+        description: Key topics covered in the course.
+      website_url:
+        type: string
+        description: URL to the course website.
+      repo_url:
+        type: string
+        description: URL to course GitHub repository.
+      level:
+        type: string
+        description: Course level (undergraduate, graduate, informal).
+      credits:
+        type: number
+        description: Number of credit hours.
+      enrollment:
+        type: number
+        description: Number of students enrolled.
+      learning_objectives:
+        type: array
+        items: string
+        description: Course learning objectives.
+      prerequisites:
+        type: array
+        items: string
+        description: Course prerequisites.
+      textbooks:
+        type: array
+        items: string
+        description: Required or recommended textbooks.
+      grading:
+        type: object
+        description: "Grading breakdown (e.g., assignments: 40, exams: 30, project: 30)."
+      tags:
+        type: array
+        items: string
+        description: Topical tags for discovery.
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Syllabus - Detailed course plan with weekly schedule
+  # ─────────────────────────────────────────────────────────────────────────────
+  - name: syllabus
+    description: Detailed syllabus with weekly schedule and policies.
+    projects:
+      - courses
+    subdirectory: syllabi
+    identityField: slug
+
+    required:
+      - type
+      - title
+      - slug
+      - course_slug
+
+    fields:
+      title:
+        type: string
+        description: Syllabus title (usually "Course Number - Term Year Syllabus").
+      slug:
+        type: string
+        description: URL-friendly identifier.
+      course_slug:
+        type: string
+        description: Reference to parent course slug.
+      term:
+        type: string
+        description: Academic term.
+      year:
+        type: string
+        description: Academic year.
+      start_date:
+        type: date
+        description: First day of class.
+      end_date:
+        type: date
+        description: Last day of class.
+      class_times:
+        type: string
+        description: When class meets (e.g., "MWF 10-11am").
+      location:
+        type: string
+        description: Classroom location.
+      office_hours:
+        type: string
+        description: Office hours schedule.
+      policies:
+        type: object
+        description: Course policies (attendance, late work, academic integrity, etc.).
+      weekly_schedule:
+        type: array
+        items: object
+        description: Week-by-week schedule with topics and readings.
+      grading_breakdown:
+        type: object
+        description: How grades are calculated.
+      learning_objectives:
+        type: array
+        items: string
+        description: What students will learn.
+      tags:
+        type: array
+        items: string
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Lecture - Individual lecture or class session
+  # ─────────────────────────────────────────────────────────────────────────────
+  - name: lecture
+    description: Individual lecture with slides, notes, and recordings.
+    projects:
+      - courses
+    subdirectory: lectures
+    identityField: slug
+
+    required:
+      - type
+      - title
+      - slug
+      - course_slug
+
+    fields:
+      title:
+        type: string
+        description: Lecture title.
+      slug:
+        type: string
+        description: URL-friendly identifier (e.g., cmpt120-week03-functions).
+      course_slug:
+        type: string
+        description: Reference to parent course slug.
+      week_number:
+        type: number
+        description: Week number in the course.
+      lecture_number:
+        type: number
+        description: Lecture number within the course.
+      date:
+        type: date
+        description: Date the lecture was/will be given.
+      duration_minutes:
+        type: number
+        description: Lecture duration in minutes.
+      topics:
+        type: array
+        items: string
+        description: Topics covered in this lecture.
+      slides_url:
+        type: string
+        description: URL to slides (Google Slides, PDF, etc.).
+      video_url:
+        type: string
+        description: URL to lecture recording.
+      notes_url:
+        type: string
+        description: URL to lecture notes.
+      code_url:
+        type: string
+        description: URL to code examples or demos.
+      reading_list:
+        type: array
+        items: string
+        description: Citation keys for readings associated with this lecture.
+      learning_objectives:
+        type: array
+        items: string
+        description: What students should learn from this lecture.
+      tags:
+        type: array
+        items: string
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Assignment - Homework, projects, labs, exams
+  # ─────────────────────────────────────────────────────────────────────────────
+  - name: assignment
+    description: Course assignment (homework, project, lab, exam).
+    projects:
+      - courses
+    subdirectory: assignments
+    identityField: slug
+
+    required:
+      - type
+      - title
+      - slug
+      - course_slug
+
+    fields:
+      title:
+        type: string
+        description: Assignment title.
+      slug:
+        type: string
+        description: URL-friendly identifier (e.g., cmpt120-hw1-variables).
+      course_slug:
+        type: string
+        description: Reference to parent course slug.
+      assignment_number:
+        type: number
+        description: Assignment number for ordering.
+      assignment_type:
+        type: string
+        description: Type of assignment (homework, project, lab, exam, quiz).
+      description:
+        type: string
+        description: Brief description of the assignment.
+      due_date:
+        type: date
+        description: When the assignment is due.
+      release_date:
+        type: date
+        description: When the assignment becomes available.
+      points_possible:
+        type: number
+        description: Maximum points for this assignment.
+      weight:
+        type: number
+        description: Percentage weight in final grade.
+      files_url:
+        type: string
+        description: URL to assignment files or starter code.
+      submission_url:
+        type: string
+        description: URL where students submit (e.g., Gradescope).
+      rubric:
+        type: object
+        description: Grading rubric breakdown.
+      learning_objectives:
+        type: array
+        items: string
+        description: What skills/concepts this assignment tests.
+      related_lectures:
+        type: array
+        items: string
+        description: Lecture slugs related to this assignment.
+      tags:
+        type: array
+        items: string
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Reading List - Organized collection of readings
+  # ─────────────────────────────────────────────────────────────────────────────
+  - name: reading_list
+    description: Curated list of readings for a course or topic.
+    projects:
+      - courses
+    subdirectory: reading_lists
+    identityField: slug
+
+    required:
+      - type
+      - title
+      - slug
+
+    fields:
+      title:
+        type: string
+        description: Reading list title (e.g., "CMPT 419 - Week 3 Readings").
+      slug:
+        type: string
+        description: URL-friendly identifier.
+      course_slug:
+        type: string
+        description: Reference to parent course slug (optional for standalone lists).
+      week_number:
+        type: number
+        description: Week number if organized by week.
+      topic:
+        type: string
+        description: Topic if organized by topic.
+      description:
+        type: string
+        description: Overview of the reading list.
+      readings:
+        type: array
+        items: object
+        description: Ordered list of readings with citation_key, required flag, and notes.
+      citation_keys:
+        type: array
+        items: string
+        description: Simple list of citation keys from shared-references.
+      tags:
+        type: array
+        items: string
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Course Resource - General resources (FAQ, glossary, tools, etc.)
+  # ─────────────────────────────────────────────────────────────────────────────
+  - name: course_resource
+    description: General course resource (glossary, FAQ, tool guide, etc.).
+    projects:
+      - courses
+    subdirectory: resources
+    identityField: slug
+
+    required:
+      - type
+      - title
+      - slug
+
+    fields:
+      title:
+        type: string
+        description: Resource title.
+      slug:
+        type: string
+        description: URL-friendly identifier.
+      course_slug:
+        type: string
+        description: Reference to parent course (optional for shared resources).
+      resource_type:
+        type: string
+        description: Type of resource (glossary, faq, tools, guide, template).
+      description:
+        type: string
+        description: Brief description of the resource.
+      related_courses:
+        type: array
+        items: string
+        description: Course slugs this resource applies to.
+      tags:
+        type: array
+        items: string

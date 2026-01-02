@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Extenote Clipper</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Extenote Clipper</h1>
+      <div id="api-status" class="api-status hidden">
+        <span class="status-dot"></span>
+        <span class="status-text">API</span>
+      </div>
+    </header>
+
+    <!-- Mode Tabs -->
+    <div class="mode-tabs">
+      <button id="tab-reference" class="mode-tab active">Reference</button>
+      <button id="tab-bookmark" class="mode-tab">Bookmark</button>
+    </div>
+
+    <main id="main-content">
+      <!-- Bookmark Section (simple quick save) -->
+      <div id="bookmark-section" class="hidden">
+        <div class="bookmark-preview">
+          <div class="bookmark-url" id="bookmark-url"></div>
+          <div class="bookmark-title-row">
+            <input type="text" id="bookmark-title" placeholder="Title...">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="bookmark-tags">Tags (comma-separated)</label>
+          <input type="text" id="bookmark-tags" placeholder="read-later, interesting">
+        </div>
+
+        <div class="field">
+          <label for="bookmark-notes">Notes (optional)</label>
+          <textarea id="bookmark-notes" rows="2" placeholder="Why you're saving this..."></textarea>
+        </div>
+
+        <!-- Bookmark Duplicate Warning -->
+        <div id="bookmark-duplicate-warning" class="warning hidden">
+          <strong>Already bookmarked:</strong> <span id="bookmark-duplicate-path"></span>
+        </div>
+
+        <div class="actions">
+          <button id="bookmark-save-btn" class="primary">Save Bookmark</button>
+        </div>
+      </div>
+      <!-- Search Section -->
+      <div id="search-section">
+        <div class="search-box">
+          <input type="text" id="search-query" placeholder="DOI, arXiv ID, or title...">
+          <button id="search-btn" class="primary">Search</button>
+        </div>
+        <div id="search-hint" class="search-hint"></div>
+        <div class="extra-sources">
+          <span class="extra-label">Also search:</span>
+          <label class="source-checkbox">
+            <input type="checkbox" id="include-openalex"> OpenAlex
+          </label>
+          <label class="source-checkbox">
+            <input type="checkbox" id="include-crossref"> Crossref
+          </label>
+        </div>
+        <div id="attempts-section" class="attempts hidden">
+          <div class="attempts-header">Lookup trail</div>
+          <div id="attempts-list" class="attempts-list"></div>
+        </div>
+      </div>
+
+      <!-- Source Results -->
+      <div id="sources-section" class="hidden">
+        <div class="sources-grid">
+          <div id="source-page" class="source-card">
+            <div class="source-header">
+              <input type="radio" name="source" value="page" id="radio-page">
+              <label for="radio-page" class="source-name">Page</label>
+              <span class="source-status"></span>
+            </div>
+            <div class="source-content">
+              <div class="source-title"></div>
+              <div class="source-authors"></div>
+              <div class="source-meta"></div>
+            </div>
+          </div>
+
+          <div id="source-dblp" class="source-card">
+            <div class="source-header">
+              <input type="radio" name="source" value="dblp" id="radio-dblp">
+              <label for="radio-dblp" class="source-name">DBLP</label>
+              <span class="source-status"></span>
+            </div>
+            <div class="source-content">
+              <div class="source-title"></div>
+              <div class="source-authors"></div>
+              <div class="source-meta"></div>
+            </div>
+          </div>
+
+          <div id="source-s2" class="source-card">
+            <div class="source-header">
+              <input type="radio" name="source" value="s2" id="radio-s2">
+              <label for="radio-s2" class="source-name">Semantic Scholar</label>
+              <span class="source-status"></span>
+            </div>
+            <div class="source-content">
+              <div class="source-title"></div>
+              <div class="source-authors"></div>
+              <div class="source-meta"></div>
+            </div>
+          </div>
+
+          <div id="source-openalex" class="source-card hidden">
+            <div class="source-header">
+              <input type="radio" name="source" value="openalex" id="radio-openalex">
+              <label for="radio-openalex" class="source-name">OpenAlex</label>
+              <span class="source-status"></span>
+            </div>
+            <div class="source-content">
+              <div class="source-title"></div>
+              <div class="source-authors"></div>
+              <div class="source-meta"></div>
+            </div>
+          </div>
+
+          <div id="source-crossref" class="source-card hidden">
+            <div class="source-header">
+              <input type="radio" name="source" value="crossref" id="radio-crossref">
+              <label for="radio-crossref" class="source-name">Crossref</label>
+              <span class="source-status"></span>
+            </div>
+            <div class="source-content">
+              <div class="source-title"></div>
+              <div class="source-authors"></div>
+              <div class="source-meta"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Metadata Editor -->
+      <div id="editor-section" class="hidden">
+        <div class="section-header">
+          <span>Selected Result</span>
+          <button id="edit-toggle" class="text-btn">Edit</button>
+        </div>
+
+        <div class="field">
+          <label for="title">Title</label>
+          <input type="text" id="title">
+        </div>
+
+        <div class="field">
+          <label for="citation-key">Citation Key</label>
+          <input type="text" id="citation-key" placeholder="author2024title">
+        </div>
+
+        <div class="field">
+          <label for="authors">Authors</label>
+          <input type="text" id="authors" placeholder="Author One, Author Two">
+        </div>
+
+        <div class="field-row">
+          <div class="field">
+            <label for="year">Year</label>
+            <input type="text" id="year">
+          </div>
+          <div class="field">
+            <label for="venue">Venue</label>
+            <input type="text" id="venue">
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="doi">DOI</label>
+          <input type="text" id="doi" placeholder="10.xxxx/...">
+        </div>
+
+        <div class="field">
+          <label for="tags">Tags (comma-separated)</label>
+          <input type="text" id="tags" placeholder="clipped, ml, nlp">
+          <div id="tag-suggestions" class="tag-suggestions hidden">
+            <span class="suggestions-label">Suggestions:</span>
+            <div id="tag-chips" class="tag-chips"></div>
+          </div>
+        </div>
+
+        <div class="field" id="project-field">
+          <label for="project">Project</label>
+          <select id="project">
+            <option value="">Select project...</option>
+          </select>
+        </div>
+
+        <div class="field collapsible" id="abstract-field">
+          <label for="abstract">
+            Abstract
+            <button class="collapse-btn" data-target="abstract">Show</button>
+          </label>
+          <textarea id="abstract" rows="3" class="hidden"></textarea>
+        </div>
+
+        <!-- Duplicate Warning -->
+        <div id="duplicate-warning" class="warning hidden">
+          <strong>Warning:</strong> An object with this citation key already exists.
+        </div>
+
+        <!-- Related Papers -->
+        <div id="related-panel" class="related-panel hidden">
+          <div class="panel-header">
+            <span class="panel-title">Related in Vault</span>
+            <span id="related-count" class="count-badge">0</span>
+          </div>
+          <div id="related-list" class="related-list"></div>
+        </div>
+
+        <div class="actions">
+          <button id="clip-btn" class="primary" disabled>Save to Vault</button>
+        </div>
+      </div>
+
+      <!-- Validation Section -->
+      <div id="validation-section" class="hidden">
+        <div class="validation-header">
+          <span class="validation-title">Validate Entry</span>
+          <span id="validation-status-badge" class="validation-badge"></span>
+        </div>
+
+        <div class="validation-entry-info">
+          <strong id="validation-entry-title"></strong>
+          <span id="validation-entry-path" class="entry-path"></span>
+        </div>
+
+        <div class="comparison-table">
+          <div class="comparison-header">
+            <span class="col-label">Field</span>
+            <span class="col-label">Vault</span>
+            <span class="col-label">API</span>
+            <span class="col-label"></span>
+          </div>
+          <div id="comparison-fields" class="comparison-fields">
+            <!-- Field rows will be inserted here -->
+          </div>
+        </div>
+
+        <div class="validation-actions">
+          <button id="update-checklog-btn" class="primary">Update check_log</button>
+          <button id="fix-mismatches-btn" class="secondary hidden">Fix Mismatches</button>
+          <button id="open-in-editor-btn" class="secondary">Open in Editor</button>
+          <button id="clip-as-new-btn" class="text-btn">Clip as New</button>
+        </div>
+      </div>
+
+      <!-- Already in Vault -->
+      <div id="already-in-vault" class="already-in-vault hidden">
+        <div class="vault-icon">✓</div>
+        <p>Already in vault</p>
+        <p class="vault-key" id="vault-citation-key"></p>
+        <button id="clip-anyway-btn" class="secondary">Clip Anyway</button>
+        <button id="close-vault-btn">Close</button>
+      </div>
+
+      <!-- Validation Queue Section -->
+      <div id="queue-section" class="hidden">
+        <div class="queue-header">
+          <span class="queue-title">Validation Queue</span>
+          <button id="close-queue-btn" class="text-btn">Close</button>
+        </div>
+        <div class="queue-stats">
+          <span id="queue-pending" class="stat">0 pending</span>
+          <span class="stat-sep">|</span>
+          <span id="queue-validated" class="stat">0 validated</span>
+        </div>
+        <div id="queue-list" class="queue-list">
+          <!-- Queue items will be inserted here -->
+        </div>
+        <div class="queue-actions">
+          <button id="refresh-queue-btn" class="secondary">Refresh</button>
+        </div>
+      </div>
+
+      <!-- Error State -->
+      <div id="error" class="error hidden">
+        <p id="error-message"></p>
+        <button id="retry-btn">Retry</button>
+      </div>
+
+      <!-- Success State -->
+      <div id="success" class="success hidden">
+        <p>Saved as <strong id="saved-filename"></strong></p>
+        <button id="close-btn">Close</button>
+      </div>
+    </main>
+
+    <footer>
+      <a href="#" id="options-link">Options</a>
+      <span class="separator">|</span>
+      <a href="#" id="queue-link" class="hidden">Queue</a>
+      <span class="separator hidden" id="queue-separator">|</span>
+      <span id="mode-indicator" class="mode-indicator">Download mode</span>
+    </footer>
+  </div>
+
+  <script src="popup.js" type="module"></script>
+</body>
+</html>

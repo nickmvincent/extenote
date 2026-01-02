@@ -1,0 +1,76 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# Project: shared-references
+# Shared citation references and memos used across multiple projects
+# ═══════════════════════════════════════════════════════════════════════════════
+
+project: shared-references
+
+# ─── Visibility Settings ───────────────────────────────────────────────────────
+defaultVisibility: public
+visibilityField: visibility
+
+# ─── Semble Sync Configuration ─────────────────────────────────────────────────
+# Sync references to Semble (ATProto-based card sharing)
+semble:
+  enabled: true
+  identifier: nickmvincent.bsky.social
+  syncTag: semble           # Only sync objects where frontmatter has `semble: true`
+  types: [bibtex_entry]     # Only sync bibtex entries
+  publicOnly: true          # Only sync public visibility objects
+
+# ─── Content Sources ───────────────────────────────────────────────────────────
+sources:
+  - id: shared-refs
+    type: local
+    root: ${EXTENOTE_CONTENT_ROOT:-../extenote-pub/content}/shared-references
+    include:
+      - "**/*.md"
+
+# ─── Project Includes ─────────────────────────────────────────────────────────
+includes:
+  - discussions
+
+# ─── Build Configuration ──────────────────────────────────────────────────────
+# How to build the website for this project
+build:
+  websiteDir: shared-references-astro
+  type: astro
+  preRender:
+    - type: network
+      outputFormat: astro
+      relatedProjects:
+        - personal-website
+        - data-leverage-blogs
+        - data-counterfactuals
+        - data-napkin-math
+        - data-licenses
+        - paidf-mini-book
+        - ranking-book
+
+# ─── Deployment Configuration ─────────────────────────────────────────────────
+# Where and how to deploy the built website
+deploy:
+  platform: cloudflare-pages
+  configFile: wrangler.toml
+  outputDir: dist
+  url: https://shared-references.pages.dev
+
+# ─── Linting Rules ─────────────────────────────────────────────────────────────
+lint:
+  rules:
+    required-visibility: warn
+  autofix: true
+
+# ─── Discussion Configuration ─────────────────────────────────────────────────
+# Where to create public discussion threads for content
+discussion:
+  createObjects: true
+  outputDir: ${EXTENOTE_CONTENT_ROOT:-../extenote-pub/content}/discussions
+  providers:
+    github:
+      enabled: true
+      repo: nickmvincent/extenote-pub
+      category: General
+    whitewind:
+      enabled: true
+      identifier: nickmvincent.bsky.social

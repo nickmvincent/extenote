@@ -1,0 +1,63 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# Data Licenses Schemas
+# Content types for AI data licensing initiatives and briefings
+# ═══════════════════════════════════════════════════════════════════════════════
+
+schemas:
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Data License Initiative - Catalog entry for a licensing initiative
+  # ─────────────────────────────────────────────────────────────────────────────
+  - name: data_license_initiative
+    description: Catalog entry for an AI data licensing or preference initiative.
+    projects:
+      - data-licenses
+    subdirectory: initiatives
+    identityField: title
+
+    required:
+      - type
+      - title
+
+    fields:
+      title:
+        type: string
+      summary:
+        type: string
+      status:
+        type: string
+      website:
+        type: string
+      actionsSupported:
+        type: array
+        items: string
+      pipelineStages:
+        type: array
+        items: string
+      tags:
+        type: array
+        items: string
+      dependsOn:
+        type: array
+        items: string
+      references:
+        type: array
+        items: string
+        description: Citation keys for related papers in shared-references.
+      recentActivity:
+        type: date
+      recentActivityNote:
+        type: string
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Data License Memo - Long-form briefing note
+  # ─────────────────────────────────────────────────────────────────────────────
+  - name: data_license_memo
+    description: Long-form memo or briefing note.
+    projects:
+      - data-licenses
+    subdirectory: memos
+
+    required:
+      - type
+
+    fields: {}

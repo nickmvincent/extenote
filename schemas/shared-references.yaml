@@ -1,0 +1,177 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# Shared References Schemas
+# Schema definitions for the shared-references project
+# ═══════════════════════════════════════════════════════════════════════════════
+
+schemas:
+  # ─────────────────────────────────────────────────────────────────────────────
+  # BibTeX Entry - Standard citation reference
+  # ─────────────────────────────────────────────────────────────────────────────
+  - name: bibtex_entry
+    description: Standard BibTeX-style reference used for citations across projects.
+    projects:
+      - shared-references
+    subdirectory: bibtex-entries
+    identityField: citation_key
+
+    required:
+      - type
+      - title
+      - citation_key
+
+    fields:
+      title:
+        type: string
+        description: Canonical work title.
+      citation_key:
+        type: string
+        description: Unique BibTeX citation key.
+      entry_type:
+        type: string
+        description: BibTeX type (article, inproceedings, misc, etc.).
+      authors:
+        type: array
+        items: string
+        description: Ordered list of author names.
+      year:
+        type: string
+        description: Publication year.
+      venue:
+        type: string
+        description: Journal, conference, or publisher.
+      doi:
+        type: string
+        description: DOI identifier.
+      url:
+        type: string
+        description: Canonical URL for the work.
+      abstract:
+        type: string
+        description: Optional abstract or notes.
+      tags:
+        type: array
+        items: string
+        description: >
+          Labels for discovery and collection membership. Use 'collection:name' prefix
+          for paper collection membership (e.g., 'collection:data-leverage').
+      check_log:
+        type: object
+        description: >
+          Automated verification record from refcheck. Auto-populated by `extenote check`.
+          Contains: checked_at, checked_with, status, paper_id, fields, remote, external_bibtex.
+          See CheckLog type in packages/refcheck/src/types.ts for full structure.
+        properties:
+          status:
+            type: string
+            enum: [confirmed, mismatch, not_found, error, skipped]
+          manually_verified:
+            type: object
+            description: Human sign-off that reference is correct
+            properties:
+              verified_at: { type: string }
+              verified_by: { type: string }
+              notes: { type: string }
+          canonical_source:
+            type: object
+            description: Authoritative URL for 100% match verification
+            properties:
+              url: { type: string }
+              title: { type: string }
+              accessed_at: { type: string }
+              match_confidence: { type: number }
+      cited_in:
+        type: array
+        items: string
+        description: >
+          List of projects that cite this reference. Auto-populated by running
+          `extenote export-project --detect-citations` across projects. Each entry
+          is a project name (e.g., 'data-leverage-blogs', 'ranking-book').
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Shared Memo - Cross-project memo/blog entry
+  # ─────────────────────────────────────────────────────────────────────────────
+  - name: shared_memo
+    description: Cross-project memo/blog entry for embedded write-ups.
+    projects:
+      - shared-references
+      - data-counterfactuals
+    subdirectory: memos
+    identityField: slug
+
+    required:
+      - type
+      - title
+      - slug
+      - date
+
+    fields:
+      title:
+        type: string
+        description: Display title for the memo.
+      slug:
+        type: string
+        description: URL/file-friendly slug.
+      date:
+        type: date
+        description: Publication date.
+      summary:
+        type: string
+        description: Short abstract or deck for previews.
+      tags:
+        type: array
+        items: string
+        description: Optional topical tags.
+      canonical_url:
+        type: string
+        description: External URL if mirrored elsewhere.
+      body_source:
+        type: string
+        description: Optional pointer if the markdown body is generated.
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Paper Collection - Tag-based collection of citations
+  # ─────────────────────────────────────────────────────────────────────────────
+  - name: paper_collection
+    description: >
+      Curated collection of papers defined by tags. Papers are included automatically
+      when they have matching tags (e.g., 'collection:data-leverage'). Explicit
+      citation_keys can be used to add papers or control ordering.
+    projects:
+      - shared-references
+    subdirectory: paper-collections
+    identityField: slug
+
+    required:
+      - type
+      - title
+      - slug
+
+    fields:
+      title:
+        type: string
+        description: Display title for the collection.
+      slug:
+        type: string
+        description: URL-friendly identifier for the collection (matches tag suffix).
+      include_tags:
+        type: array
+        items: string
+        description: >
+          Tags to include in collection. Papers matching ANY of these tags are included.
+          Typically uses 'collection:slug' format (e.g., ['collection:data-leverage']).
+      exclude_tags:
+        type: array
+        items: string
+        description: Tags to exclude from collection (overrides include_tags).
+      citation_keys:
+        type: array
+        items: string
+        description: >
+          Explicit citation keys to include. Use for manual additions or to define
+          a specific ordering. If provided with include_tags, these appear first.
+      description:
+        type: string
+        description: Overview of the collection and its theme.
+      sort_by:
+        type: string
+        description: How to sort papers (year, title, citation_key). Default is year descending.

@@ -1,0 +1,93 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# Project: data-licenses
+# AI data licensing initiatives catalog and briefings
+# ═══════════════════════════════════════════════════════════════════════════════
+
+project: data-licenses
+
+# ─── Visibility Settings ───────────────────────────────────────────────────────
+defaultVisibility: private
+visibilityField: visibility
+
+# ─── Content Sources ───────────────────────────────────────────────────────────
+# Each project owns only its own content directory. Use 'includes' for cross-project references.
+sources:
+  - id: data-licenses-content
+    type: local
+    root: ${EXTENOTE_CONTENT_ROOT:-../extenote-pub/content}/data-licenses
+    include:
+      - "**/*.md"
+
+# ─── Project Includes ─────────────────────────────────────────────────────────
+includes:
+  - discussions
+  - shared-references
+
+# ─── Linting Rules ─────────────────────────────────────────────────────────────
+lint:
+  rules:
+    required-visibility: warn
+    "compatibility:astro": warn
+    "compatibility:quarto": warn
+  autofix: true
+
+# ─── Compatibility Requirements ────────────────────────────────────────────────
+# Required fields for publishing to different platforms
+compatibility:
+  astro:
+    requiredFields:
+      - title
+      - type
+    requirePublicVisibility: true
+  quarto:
+    requiredFields:
+      - title
+      - type
+
+# ─── Export Recipes ────────────────────────────────────────────────────────────
+recipes:
+  - name: public-json
+    description: JSON bundle ready for downstream publishing
+    sourceIds:
+      - data-licenses-content
+    steps:
+      - format: json
+        outputDir: dist/export/recipes/public/json
+
+# ─── Build Configuration ──────────────────────────────────────────────────────
+# How to build the website for this project
+build:
+  websiteDir: data-licenses-astro
+  type: astro
+  preRender:
+    - type: network
+      outputFormat: astro
+
+# ─── Deployment Configuration ─────────────────────────────────────────────────
+# Where and how to deploy the built website
+deploy:
+  platform: cloudflare-pages
+  configFile: wrangler.toml
+  outputDir: dist
+  domain: datalicenses.org
+
+semble:
+  enabled: true
+  identifier: nickmvincent.bsky.social
+  types: ["data_license_initiative"]
+  # password: or set SEMBLE_APP_PASSWORD env var
+
+# ─── Discussion Configuration ─────────────────────────────────────────────────
+# Where to create public discussion threads for content
+discussion:
+  createObjects: true
+  outputDir: ${EXTENOTE_CONTENT_ROOT:-../extenote-pub/content}/discussions
+  frontmatterKey: discussions
+  providers:
+    github:
+      enabled: true
+      repo: nickmvincent/extenote-pub
+      category: General
+    whitewind:
+      enabled: true
+      identifier: nickmvincent.bsky.social

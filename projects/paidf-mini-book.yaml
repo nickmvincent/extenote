@@ -1,0 +1,76 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# Project: paidf-mini-book
+# "Data Flywheels and Public AI" mini-book (Quarto sources)
+# ═══════════════════════════════════════════════════════════════════════════════
+
+project: paidf-mini-book
+
+# ─── Visibility Settings ───────────────────────────────────────────────────────
+defaultVisibility: public
+visibilityField: visibility
+
+# ─── Content Sources ───────────────────────────────────────────────────────────
+sources:
+  - id: mini-book
+    type: local
+    root: ${EXTENOTE_CONTENT_ROOT:-../extenote-pub/content}/paidf-mini-book
+    include:
+      - "**/*.qmd"
+      - "**/*.md"
+
+# ─── Project Includes ─────────────────────────────────────────────────────────
+includes:
+  - shared-references
+  - discussions
+
+# ─── Linting Rules ─────────────────────────────────────────────────────────────
+lint:
+  rules:
+    required-visibility: warn
+  autofix: true
+
+# ─── Compatibility Requirements ────────────────────────────────────────────────
+compatibility:
+  quarto:
+    requiredFields:
+      - title
+
+# ─── Build Configuration ──────────────────────────────────────────────────────
+# How to build the website for this project
+build:
+  websiteDir: paidf-mini-book-quarto
+  type: quarto
+  preRender:
+    - type: rsync
+      src: ${EXTENOTE_CONTENT_ROOT}/paidf-mini-book
+      dst: src
+      include: ["*.qmd", "*.md"]
+    - type: cli
+      command: export-project paidf-mini-book -f bibtex --source shared-refs
+      outputDir: src
+    - type: copy
+      src: src/index.qmd
+      dst: index.qmd
+    - type: network
+      outputFormat: quarto
+
+# ─── Deployment Configuration ─────────────────────────────────────────────────
+# Where and how to deploy the built website
+deploy:
+  platform: github-pages
+  outputDir: docs
+  repo: https://github.com/nickmvincent/paidf_consultation.git
+
+# ─── Discussion Configuration ─────────────────────────────────────────────────
+# Where to create public discussion threads for content
+discussion:
+  createObjects: true
+  outputDir: ${EXTENOTE_CONTENT_ROOT:-../extenote-pub/content}/discussions
+  providers:
+    github:
+      enabled: true
+      repo: nickmvincent/extenote-pub
+      category: General
+    whitewind:
+      enabled: true
+      identifier: nickmvincent.bsky.social

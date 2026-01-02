@@ -1,0 +1,60 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# Project: data-napkin-math
+# Numerical calculations and data napkin math scenarios
+# ═══════════════════════════════════════════════════════════════════════════════
+
+project: data-napkin-math
+
+# ─── Visibility Settings ───────────────────────────────────────────────────────
+defaultVisibility: private
+visibilityField: visibility
+
+# ─── Content Sources ───────────────────────────────────────────────────────────
+# Each project owns only its own content directory. Use 'includes' for cross-project references.
+sources:
+  - id: data-napkin-math-content
+    type: local
+    root: ${EXTENOTE_CONTENT_ROOT:-../extenote-pub/content}/data-napkin-math
+    include:
+      - "**/*.md"
+
+# ─── Linting Rules ─────────────────────────────────────────────────────────────
+lint:
+  rules:
+    required-visibility: warn
+  autofix: true
+
+# ─── Project Includes ─────────────────────────────────────────────────────────
+includes:
+  - discussions
+
+# ─── Build Configuration ──────────────────────────────────────────────────────
+# How to build the website for this project
+build:
+  websiteDir: data-napkin-math-astro
+  type: astro
+  preRender:
+    - type: network
+      outputFormat: astro
+
+# ─── Deployment Configuration ─────────────────────────────────────────────────
+# Where and how to deploy the built website
+deploy:
+  platform: github-pages
+  outputDir: dist
+  repo: https://github.com/nickmvincent/data_napkin_math.git
+  domain: exploringai.org
+
+# ─── Discussion Configuration ─────────────────────────────────────────────────
+# Where to create public discussion threads for content
+discussion:
+  createObjects: true
+  outputDir: ${EXTENOTE_CONTENT_ROOT:-../extenote-pub/content}/discussions
+  providers:
+    github:
+      enabled: true
+      repo: nickmvincent/extenote-pub
+      category: General
+    whitewind:
+      enabled: true
+      identifier: nickmvincent.bsky.social

@@ -1,0 +1,24 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# Project: discussions
+# Shared discussion links (GitHub, Leaflet, etc.) for projects and content objects
+# ═══════════════════════════════════════════════════════════════════════════════
+
+project: discussions
+
+# ─── Visibility Settings ───────────────────────────────────────────────────────
+defaultVisibility: public
+visibilityField: visibility
+
+# ─── Content Sources ───────────────────────────────────────────────────────────
+sources:
+  - id: discussions
+    type: local
+    root: ${EXTENOTE_CONTENT_ROOT:-../extenote-pub/content}/discussions
+    include:
+      - "**/*.md"
+
+# ─── Linting Rules ─────────────────────────────────────────────────────────────
+lint:
+  rules:
+    required-visibility: warn
+  autofix: true

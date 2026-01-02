@@ -1,0 +1,62 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# PAIDF Mini-Book Schemas
+# Content types for "Data Flywheels and Public AI" book chapters
+# ═══════════════════════════════════════════════════════════════════════════════
+
+schemas:
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Chapter - Book chapter (Quarto source)
+  # ─────────────────────────────────────────────────────────────────────────────
+  - name: paidf_chapter
+    description: Chapters for the "Data Flywheels and Public AI" mini-book (Quarto sources).
+    projects:
+      - paidf-mini-book
+    subdirectory: .
+    identityField: slug
+
+    required:
+      - type
+      - title
+
+    fields:
+      title:
+        type: string
+        description: Chapter title.
+      slug:
+        type: string
+        description: URL or filename slug.
+      part:
+        type: string
+        description: Book part label (e.g., Concepts & Rationale).
+      order:
+        type: string
+        description: Ordering key matching the filename prefix.
+      summary:
+        type: string
+        description: Optional short abstract for navigation or exports.
+      tags:
+        type: array
+        items: string
+        description: Optional topical tags.
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # TODO - Scratchpad TODO list
+  # ─────────────────────────────────────────────────────────────────────────────
+  - name: paidf_todo
+    description: Scratchpad TODO lists for the book.
+    projects:
+      - paidf-mini-book
+    subdirectory: .
+    identityField: title
+
+    required:
+      - type
+
+    fields:
+      title:
+        type: string
+        description: Label for the todo collection.
+      tags:
+        type: array
+        items: string
+        description: Optional grouping labels.

@@ -1,0 +1,19 @@
+{
+  "name": "@extenote/clipper",
+  "version": "0.2.0",
+  "description": "Extenote Web Clipper browser extension",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build": "bun run build.ts",
+    "watch": "bun run build.ts --watch",
+    "clean": "rm -rf dist/*",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "@extenote/refcheck": "workspace:*"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.4"
+  }
+}

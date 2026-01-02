@@ -1,0 +1,45 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# Project: talks
+# Public talks, presentations, panels, podcasts, and workshops
+# ═══════════════════════════════════════════════════════════════════════════════
+
+project: talks
+
+# ─── Visibility Settings ───────────────────────────────────────────────────────
+defaultVisibility: public
+visibilityField: visibility
+
+# ─── Content Sources ───────────────────────────────────────────────────────────
+sources:
+  - id: talks-content
+    type: local
+    root: ${EXTENOTE_CONTENT_ROOT:-../extenote-pub/content}/talks
+    include:
+      - "**/*.md"
+
+# ─── Project Includes ─────────────────────────────────────────────────────────
+includes:
+  - shared-references
+  - discussions
+
+# ─── Linting Rules ─────────────────────────────────────────────────────────────
+lint:
+  rules:
+    required-visibility: warn
+  autofix: true
+
+# ─── Compatibility Requirements ────────────────────────────────────────────────
+compatibility:
+  astro:
+    requiredFields:
+      - title
+
+# ─── Discussion Configuration ─────────────────────────────────────────────────
+discussion:
+  createObjects: true
+  outputDir: ${EXTENOTE_CONTENT_ROOT:-../extenote-pub/content}/discussions
+  providers:
+    github:
+      enabled: true
+      repo: nickmvincent/extenote-pub
+      category: General

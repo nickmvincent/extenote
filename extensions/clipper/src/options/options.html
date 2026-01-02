@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Extenote Clipper Options</title>
+  <link rel="stylesheet" href="options.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Extenote Clipper Options</h1>
+    </header>
+
+    <main>
+      <section>
+        <h2>Mode</h2>
+        <div class="field">
+          <label>Clip Mode</label>
+          <div class="radio-group">
+            <label class="radio-label">
+              <input type="radio" name="mode" value="download" checked>
+              <span>Download mode (V1)</span>
+              <small>Save markdown files via browser downloads</small>
+            </label>
+            <label class="radio-label">
+              <input type="radio" name="mode" value="api">
+              <span>API mode (V2)</span>
+              <small>Connect to running extenote instance for validation</small>
+            </label>
+          </div>
+        </div>
+      </section>
+
+      <section id="download-settings">
+        <h2>Download Settings</h2>
+
+        <div class="field">
+          <label for="filename-pattern">Filename Pattern</label>
+          <input type="text" id="filename-pattern" value="{citation_key}.md">
+          <p class="hint">Pattern for generated filenames. Use {citation_key} as placeholder.</p>
+        </div>
+
+        <div class="field">
+          <label for="download-subdir">Download Subdirectory</label>
+          <input type="text" id="download-subdir" value="shared-references/">
+          <p class="hint">Subdirectory within your downloads folder. Leave empty for root.</p>
+        </div>
+      </section>
+
+      <section id="api-settings" class="hidden">
+        <h2>API Settings</h2>
+
+        <div class="field">
+          <label for="api-url">Extenote API URL</label>
+          <input type="text" id="api-url" value="http://localhost:3001">
+          <p class="hint">URL of your running extenote web instance</p>
+        </div>
+
+        <div class="field">
+          <label for="default-project">Default Project</label>
+          <input type="text" id="default-project" placeholder="Leave empty to always choose">
+          <p class="hint">Auto-select this project when clipping</p>
+        </div>
+
+        <div class="field">
+          <button id="test-api" class="secondary">Test Connection</button>
+          <span id="api-test-result" class="test-result"></span>
+        </div>
+      </section>
+
+      <section>
+        <h2>Default Values</h2>
+
+        <div class="field">
+          <label for="default-schema">Default Schema</label>
+          <input type="text" id="default-schema" value="bibtex_entry">
+          <p class="hint">The schema type to use for clipped pages</p>
+        </div>
+
+        <div class="field">
+          <label for="default-tags">Default Tags</label>
+          <input type="text" id="default-tags" value="clipped">
+          <p class="hint">Comma-separated tags to add to all clipped pages</p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Usage Instructions</h2>
+        <div id="download-instructions">
+          <h3>Download Mode</h3>
+          <ol>
+            <li>Configure your browser's default download location to point to your Extenote vault directory</li>
+            <li>Set the subdirectory above to match your content directory (e.g., <code>shared-references/</code>)</li>
+            <li>Navigate to a paper and click the Extenote Clipper icon</li>
+          </ol>
+        </div>
+        <div id="api-instructions" class="hidden">
+          <h3>API Mode</h3>
+          <ol>
+            <li>Start your extenote web server: <code>cd extenote && bun run packages/web/server.ts</code></li>
+            <li>Enter the API URL above (default: <code>http://localhost:3001</code>)</li>
+            <li>Test the connection to verify it's working</li>
+            <li>Navigate to a paper and click the Extenote Clipper icon</li>
+          </ol>
+        </div>
+      </section>
+
+      <div class="actions">
+        <button id="save-btn" class="primary">Save Settings</button>
+        <button id="reset-btn" class="secondary">Reset to Defaults</button>
+      </div>
+
+      <div id="status" class="status hidden"></div>
+    </main>
+  </div>
+
+  <script src="options.js" type="module"></script>
+</body>
+</html>

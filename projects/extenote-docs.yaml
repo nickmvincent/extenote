@@ -1,0 +1,45 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# Project: extenote-docs
+# Extenote documentation
+# ═══════════════════════════════════════════════════════════════════════════════
+
+project: extenote-docs
+
+# ─── Visibility Settings ───────────────────────────────────────────────────────
+defaultVisibility: public
+visibilityField: visibility
+
+# ─── Content Sources ───────────────────────────────────────────────────────────
+sources:
+  - id: docs-content
+    type: local
+    root: ${EXTENOTE_CONTENT_ROOT:-../extenote-pub/content}/extenote-docs
+    include:
+      - "**/*.md"
+
+# ─── Linting Rules ─────────────────────────────────────────────────────────────
+lint:
+  rules:
+    required-visibility: warn
+    "compatibility:astro": warn
+  autofix: true
+
+# ─── Compatibility Requirements ────────────────────────────────────────────────
+compatibility:
+  astro:
+    requiredFields:
+      - title
+      - type
+    requirePublicVisibility: true
+
+# ─── Build Configuration ──────────────────────────────────────────────────────
+build:
+  websiteDir: extenote-docs-astro
+  type: astro
+
+# ─── Deployment Configuration ─────────────────────────────────────────────────
+deploy:
+  platform: github-pages
+  repo: https://github.com/nickmvincent/extenote.git
+  branch: gh-pages
+  outputDir: dist

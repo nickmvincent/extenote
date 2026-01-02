@@ -1,0 +1,87 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# Project: data-counterfactuals
+# Data counterfactual analysis content
+# ═══════════════════════════════════════════════════════════════════════════════
+
+project: data-counterfactuals
+
+# ─── Visibility Settings ───────────────────────────────────────────────────────
+defaultVisibility: public
+visibilityField: visibility
+
+# ─── Content Sources ───────────────────────────────────────────────────────────
+sources:
+  - id: dc-content
+    type: local
+    root: ${EXTENOTE_CONTENT_ROOT:-../extenote-pub/content}/data-counterfactuals
+    include:
+      - "**/*.md"
+
+# ─── Project Includes ─────────────────────────────────────────────────────────
+includes:
+  - shared-references
+  - discussions
+
+# ─── Paper Collections ───────────────────────────────────────────────────────
+# Collections from shared-references to include in this project's website.
+# These are defined in shared-references/paper-collections/ and populated
+# via collection:* tags on bibtex entries.
+collections:
+  - active-learning
+  - causal-inference
+  - data-augmentation
+  - data-leverage
+  - data-poisoning
+  - data-selection
+  - data-valuation
+  - fairness-data
+  - influence-functions
+  - machine-unlearning
+  - privacy-memorization
+  - scaling-laws
+
+# ─── Linting Rules ─────────────────────────────────────────────────────────────
+lint:
+  rules:
+    required-visibility: warn
+    "compatibility:astro": warn
+  autofix: true
+
+# ─── Compatibility Requirements ────────────────────────────────────────────────
+compatibility:
+  astro:
+    requiredFields:
+      - title
+      - type
+    requirePublicVisibility: true
+
+# ─── Build Configuration ──────────────────────────────────────────────────────
+# How to build the website for this project
+build:
+  websiteDir: data-counterfactuals-astro
+  type: astro
+  preRender:
+    - type: network
+      outputFormat: astro
+
+# ─── Deployment Configuration ─────────────────────────────────────────────────
+# Where and how to deploy the built website
+deploy:
+  platform: cloudflare-pages
+  configFile: wrangler.toml
+  outputDir: dist
+  url: https://datacounterfactuals.org
+
+# ─── Discussion Configuration ─────────────────────────────────────────────────
+# Where to create public discussion threads for content
+discussion:
+  createObjects: true
+  outputDir: ${EXTENOTE_CONTENT_ROOT:-../extenote-pub/content}/discussions
+  providers:
+    github:
+      enabled: true
+      repo: nickmvincent/extenote-pub
+      category: General
+    whitewind:
+      enabled: true
+      identifier: nickmvincent.bsky.social

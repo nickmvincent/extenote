@@ -1,0 +1,42 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# Project: private-content
+# Internal notes, todos, and private content not for public sharing
+# ═══════════════════════════════════════════════════════════════════════════════
+
+project: private-content
+
+# ─── Visibility Settings ───────────────────────────────────────────────────────
+# All content in this project is private by default
+defaultVisibility: private
+visibilityField: visibility
+
+# ─── Content Sources ───────────────────────────────────────────────────────────
+# Note: Source ID matches project name to prevent path prefixing when creating files
+sources:
+  - id: private-content
+    type: local
+    root: ${EXTENOTE_PRIVATE_ROOT:-../extenote-priv}
+    include:
+      - "**/*.md"
+    exclude:
+      - "personal-website/**"  # personal-website has its own project
+      - "task-manager-astro/**"  # task manager app code
+
+# ─── Project Profile ───────────────────────────────────────────────────────────
+# Links sourceIds to project so files are created in source root without prefix
+projectProfiles:
+  - name: private-content
+    sourceIds:
+      - private-content
+    defaultVisibility: private
+    visibilityField: visibility
+    skipProjectPrefix: true
+
+# ─── Linting Rules ─────────────────────────────────────────────────────────────
+lint:
+  rules:
+    required-visibility: warn
+  autofix: true
+
+# ─── No Build/Deploy ──────────────────────────────────────────────────────────
+# Private content is not built or deployed to any website

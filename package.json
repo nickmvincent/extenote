@@ -1,0 +1,27 @@
+{
+  "name": "extenote",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "bun@1.1.20",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "bun run --cwd packages/core build && bun run --cwd packages/cli build && bun run --cwd packages/tui build",
+    "test": "bun run --cwd packages/core test",
+    "lint": "bun run --cwd packages/core lint && bun run --cwd packages/cli lint",
+    "cli": "node packages/cli/dist/index.js",
+    "tui": "node packages/tui/dist/index.js",
+    "web": "bun run packages/web/server.ts & sleep 1 && bun run --cwd packages/web dev",
+    "web:server": "bun run packages/web/server.ts",
+    "web:dev": "bun run --cwd packages/web dev",
+    "generate:narratives": "bun run scripts/generate-narrative-docs.ts",
+    "generate:narratives:check": "bun run scripts/generate-narrative-docs.ts --check"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.10",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.5.4"
+  }
+}

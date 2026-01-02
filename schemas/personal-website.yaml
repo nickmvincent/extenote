@@ -1,0 +1,577 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# Personal Website Schemas
+# Content types for personal/academic website: CV entries, publications, blog posts
+# ═══════════════════════════════════════════════════════════════════════════════
+
+schemas:
+  # ═══════════════════════════════════════════════════════════════════════════════
+  # PERSONAL INFO
+  # ═══════════════════════════════════════════════════════════════════════════════
+
+  - name: personal_info
+    description: Primary personal profile used for bios, CVs, and website content.
+    projects:
+      - personal-website
+    subdirectory: personal
+    identityField: title
+
+    required:
+      - type
+      - title
+      - position
+      - email
+      - date_updated
+
+    fields:
+      title:
+        type: string
+        description: Display name.
+      position:
+        type: string
+        description: Primary professional title.
+      department:
+        type: string
+        description: Affiliated department.
+      university:
+        type: string
+        description: Affiliated institution.
+      email:
+        type: string
+        description: Contact email address.
+      date_updated:
+        type: date
+        description: Last update timestamp.
+      quick_bio:
+        type: string
+        description: Short bio blurb.
+      highlights:
+        type: array
+        items: string
+        description: Recent notable updates.
+      research_interests:
+        type: string
+        description: Comma separated topical interests.
+
+  # ═══════════════════════════════════════════════════════════════════════════════
+  # EDITORIAL CONTENT (Blog, Op-eds, News)
+  # ═══════════════════════════════════════════════════════════════════════════════
+
+  - name: blog_post
+    description: Long-form blog or newsletter entry.
+    projects:
+      - personal-website
+    subdirectory: editorial-blog
+    identityField: url
+
+    required:
+      - type
+      - title
+      - date
+
+    fields:
+      title:
+        type: string
+      date:
+        type: date
+      url:
+        type: string
+      venue:
+        type: string
+        description: Blog, newsletter, or host publication.
+      summary:
+        type: string
+        description: Short description for feeds.
+      archive_ref:
+        type: string
+        description: Slug/filename of the full content in data-leverage-blogs project.
+
+  - name: editorial
+    description: Op-ed or editorial style writing.
+    projects:
+      - personal-website
+    subdirectory: editorial-opeds
+    identityField: url
+
+    required:
+      - type
+      - title
+      - date
+
+    fields:
+      title:
+        type: string
+      date:
+        type: date
+      url:
+        type: string
+      venue:
+        type: string
+
+  - name: news_coverage
+    description: News coverage featuring quotes or commentary.
+    projects:
+      - personal-website
+    subdirectory: news_coverage
+    identityField: url
+
+    required:
+      - type
+      - title
+      - date
+      - url
+
+    fields:
+      title:
+        type: string
+      date:
+        type: date
+      url:
+        type: string
+      source:
+        type: string
+      authors:
+        type: array
+        items: string
+      media_type:
+        type: string
+
+  # ═══════════════════════════════════════════════════════════════════════════════
+  # PUBLIC APPEARANCES (Talks, Panels, Podcasts)
+  # ═══════════════════════════════════════════════════════════════════════════════
+
+  - name: talk
+    description: Talk, lecture, or invited presentation.
+    projects:
+      - personal-website
+      - talks
+    subdirectory: talks-events
+    identityField: title
+
+    required:
+      - type
+      - title
+      - date
+
+    fields:
+      title:
+        type: string
+        description: Title of the talk.
+      slug:
+        type: string
+        description: URL-friendly identifier for the talk.
+      date:
+        type: date
+        description: Date of the presentation.
+      location:
+        type: string
+        description: City/venue where talk was given.
+      event:
+        type: string
+        description: Name of the event, conference, or host organization.
+      event_url:
+        type: string
+        description: URL for the event page.
+      slides_url:
+        type: string
+        description: URL to hosted slides (Google Slides, Speakerdeck, etc.).
+      video_url:
+        type: string
+        description: URL to recorded video (YouTube, Vimeo, etc.).
+      abstract:
+        type: string
+        description: Brief description or abstract of the talk.
+      tags:
+        type: array
+        items: string
+        description: Topical tags for discovery.
+      related_papers:
+        type: array
+        items: string
+        description: Citation keys of related papers from shared-references.
+      assets_path:
+        type: string
+        description: Relative path to presentation assets directory (slides, demos).
+
+  - name: panel
+    description: Panel appearance or moderated session.
+    projects:
+      - personal-website
+      - talks
+    subdirectory: talks-events
+    identityField: title
+
+    required:
+      - type
+      - title
+      - date
+
+    fields:
+      title:
+        type: string
+      date:
+        type: date
+      location:
+        type: string
+      event_url:
+        type: string
+
+  - name: podcast
+    description: Podcast interview or recorded discussion.
+    projects:
+      - personal-website
+      - talks
+    subdirectory: talks-podcast
+    identityField: title
+
+    required:
+      - type
+      - title
+      - date
+
+    fields:
+      title:
+        type: string
+      date:
+        type: date
+      location:
+        type: string
+      audio_url:
+        type: string
+      video_url:
+        type: string
+
+  # ═══════════════════════════════════════════════════════════════════════════════
+  # CV ENTRIES
+  # ═══════════════════════════════════════════════════════════════════════════════
+
+  - name: ReviewingSummary
+    description: Aggregate review service summary for CV use.
+    projects:
+      - personal-website
+    subdirectory: cv-reviews
+
+    required:
+      - type
+
+    fields:
+      meta_reviews:
+        type: array
+        items: string
+      hci_conference_individual_reviews:
+        type: array
+        items: string
+      ml_conference_individual_reviews:
+        type: array
+        items: string
+      journals:
+        type: array
+        items: string
+      grants:
+        type: array
+        items: string
+      commendations:
+        type: array
+        items: string
+
+  - name: cv_appointment
+    description: Academic or professional appointment.
+    projects:
+      - personal-website
+    subdirectory: cv/appointments
+    identityField: date
+
+    required:
+      - type
+      - institution
+      - position
+      - date
+
+    fields:
+      institution:
+        type: string
+      department:
+        type: string
+      position:
+        type: string
+      date:
+        type: date
+      end_date:
+        type: date
+      notes:
+        type: string
+
+  - name: cv_award
+    description: Award or honor entry.
+    projects:
+      - personal-website
+    subdirectory: cv/awards
+    identityField: title
+
+    required:
+      - type
+      - title
+      - date
+
+    fields:
+      title:
+        type: string
+      organization:
+        type: string
+      date:
+        type: date
+      notes:
+        type: string
+
+  - name: cv_education
+    description: Education history entry.
+    projects:
+      - personal-website
+    subdirectory: cv/education
+    identityField: institution
+
+    required:
+      - type
+      - institution
+      - degree
+      - date
+
+    fields:
+      institution:
+        type: string
+      degree:
+        type: string
+      area:
+        type: string
+      date:
+        type: date
+      end_date:
+        type: date
+      highlights:
+        type: array
+        items: string
+
+  - name: cv_grant
+    description: Grant or funded project entry.
+    projects:
+      - personal-website
+    subdirectory: cv/grants
+    identityField: title
+
+    required:
+      - type
+      - title
+      - role
+      - start_date
+
+    fields:
+      title:
+        type: string
+      role:
+        type: string
+      agency:
+        type: string
+      start_date:
+        type: date
+      end_date:
+        type: date
+      amount:
+        type: number
+      currency:
+        type: string
+      co_investigators:
+        type: array
+        items: string
+      status:
+        type: string
+
+  - name: cv_industry_role
+    description: Industry role or internship entry.
+    projects:
+      - personal-website
+    subdirectory: cv/industry
+    identityField: date
+
+    required:
+      - type
+      - institution
+      - position
+      - date
+
+    fields:
+      institution:
+        type: string
+      location:
+        type: string
+      department:
+        type: string
+      position:
+        type: string
+      date:
+        type: date
+      end_date:
+        type: date
+
+  - name: cv_service_role
+    description: Service, committee, or organizing role entry.
+    projects:
+      - personal-website
+    subdirectory: cv/service
+    identityField: name
+
+    required:
+      - type
+      - name
+      - date
+
+    fields:
+      name:
+        type: string
+      role:
+        type: string
+      organization:
+        type: string
+      date:
+        type: date
+      end_date:
+        type: date
+      notes:
+        type: string
+
+  - name: cv_teaching_role
+    description: Teaching assignment entry.
+    projects:
+      - personal-website
+    subdirectory: cv/teaching
+    identityField: date
+
+    required:
+      - type
+      - institution
+      - course_number
+      - date
+
+    fields:
+      term:
+        type: string
+      date:
+        type: date
+      institution:
+        type: string
+      course_number:
+        type: string
+      course_title:
+        type: string
+      role:
+        type: string
+      students:
+        type: number
+      url:
+        type: string
+
+  # ═══════════════════════════════════════════════════════════════════════════════
+  # SCHOLARLY PUBLICATIONS
+  # ═══════════════════════════════════════════════════════════════════════════════
+
+  - name: scholar_publication
+    description: Peer-reviewed publication entry.
+    projects:
+      - personal-website
+    subdirectory: scholarly/publication
+    identityField: title
+
+    required:
+      - type
+      - title
+      - date
+
+    fields:
+      title:
+        type: string
+      publication_type:
+        type: string
+      authors:
+        type: array
+        items: string
+      date:
+        type: date
+      conference:
+        type: string
+      journal:
+        type: string
+      url:
+        type: string
+      code_url:
+        type: string
+      doi:
+        type: string
+      citation_key:
+        type: string
+        description: Optional reference to a bibtex_entry citation_key for cross-project citations.
+      notes:
+        type: string
+
+  - name: scholar_workshop_paper
+    description: Workshop paper or extended abstract entry.
+    projects:
+      - personal-website
+    subdirectory: scholarly/workshop_paper
+    identityField: title
+
+    required:
+      - type
+      - title
+      - date
+
+    fields:
+      title:
+        type: string
+      publication_type:
+        type: string
+      authors:
+        type: array
+        items: string
+      date:
+        type: date
+      conference:
+        type: string
+      url:
+        type: string
+      citation_key:
+        type: string
+        description: Optional reference to a bibtex_entry citation_key for cross-project citations.
+      internal_notes:
+        type: string
+
+  - name: scholar_other_paper
+    description: Preprint, whitepaper, or other scholarly writing.
+    projects:
+      - personal-website
+    subdirectory: scholarly/other_paper
+    identityField: title
+
+    required:
+      - type
+      - title
+      - date
+
+    fields:
+      title:
+        type: string
+      publication_type:
+        type: string
+      authors:
+        type: array
+        items: string
+      date:
+        type: date
+      journal:
+        type: string
+      url:
+        type: string
+      citation_key:
+        type: string
+        description: Optional reference to a bibtex_entry citation_key for cross-project citations.
+      internal_notes:
+        type: string
+      internal_bold:
+        type: string

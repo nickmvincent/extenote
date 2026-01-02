@@ -1,0 +1,253 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# Private Content Schemas
+# Content types for personal/internal use: todos, notes, internal CV entries
+# ═══════════════════════════════════════════════════════════════════════════════
+
+schemas:
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Todo Item - Personal task tracking
+  # ─────────────────────────────────────────────────────────────────────────────
+  - name: todo_item
+    description: Personal task or action item for tracking.
+    projects:
+      - private-content
+    subdirectory: todo-items
+    identityField: title
+
+    required:
+      - type
+      - title
+      - status
+
+    fields:
+      title:
+        type: string
+        description: Short description of the task.
+      status:
+        type: string
+        description: Current status (pending, in_progress, completed, blocked).
+      priority:
+        type: string
+        description: Priority level (high, medium, low).
+      due_date:
+        type: date
+        description: Target completion date.
+      created_date:
+        type: date
+        description: When the task was created.
+      completed_date:
+        type: date
+        description: When the task was completed.
+      project:
+        type: string
+        description: Associated project or area.
+      context:
+        type: string
+        description: GTD-style context (@home, @computer, @errands, @calls).
+      estimated_minutes:
+        type: number
+        description: Rough time estimate in minutes.
+      tags:
+        type: array
+        items: string
+        description: Categorization tags.
+      notes:
+        type: string
+        description: Additional notes or context.
+      blocked_by:
+        type: string
+        description: What's blocking this task if status is blocked.
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Internal Note - Private notes and scratchpads
+  # ─────────────────────────────────────────────────────────────────────────────
+  - name: internal_note
+    description: Private note, draft, or scratchpad.
+    projects:
+      - private-content
+      - personal-website
+    subdirectory: internal-notes
+    identityField: title
+
+    required:
+      - type
+      - title
+
+    fields:
+      title:
+        type: string
+        description: Note title.
+      date:
+        type: date
+        description: Date created or last updated.
+      category:
+        type: string
+        description: Category (meeting, research, draft, reflection).
+      related_to:
+        type: array
+        items: string
+        description: Related projects or content.
+      tags:
+        type: array
+        items: string
+        description: Categorization tags.
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Project - Research/work project tracking
+  # ─────────────────────────────────────────────────────────────────────────────
+  - name: Project
+    description: Research project, paper, grant, or other tracked work item.
+    projects:
+      - private-content
+    subdirectory: projects
+    identityField: title
+
+    required:
+      - type
+      - title
+
+    fields:
+      title:
+        type: string
+        description: Project title or name.
+      tags:
+        type: array
+        items: string
+        description: Categorization tags.
+      category:
+        type: string
+        description: Project category (paper, project, grant, service, other).
+      status:
+        type: string
+        description: Current status (wip, paused, in-review, closed-accept, closed-reject).
+      nextDate:
+        type: date
+        description: Next milestone or deadline date.
+      collaborators:
+        type: string
+        description: Names of collaborators on this project.
+      targetOutput:
+        type: string
+        description: Target venue or output (e.g., CHI 2026, CACM).
+      artifactUrl:
+        type: string
+        description: URL to the main artifact (e.g., Overleaf link).
+      lead:
+        type: string
+        description: Project lead or primary person responsible.
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # ServiceProject - Service/review work tracking
+  # ─────────────────────────────────────────────────────────────────────────────
+  - name: ServiceProject
+    description: Service work like reviewing, committee participation, etc.
+    projects:
+      - private-content
+    subdirectory: projects
+    identityField: title
+
+    required:
+      - type
+      - title
+
+    fields:
+      title:
+        type: string
+        description: Service project title.
+      tags:
+        type: array
+        items: string
+        description: Categorization tags.
+      complete:
+        type: boolean
+        description: Whether the service work is complete.
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Bookmark - Quick link saves from browser clipper
+  # ─────────────────────────────────────────────────────────────────────────────
+  - name: bookmark
+    description: Saved link from browser clipper (social media posts, articles, etc.)
+    projects:
+      - private-content
+    subdirectory: bookmarks
+    identityField: slug
+
+    required:
+      - type
+      - title
+      - url
+
+    fields:
+      title:
+        type: string
+        description: Page title or user-provided description.
+      url:
+        type: string
+        description: The bookmarked URL.
+      platform:
+        type: string
+        description: Detected platform (x, bluesky, mastodon, web).
+      saved_at:
+        type: date
+        description: When the bookmark was saved.
+      tags:
+        type: array
+        items: string
+        description: Categorization tags.
+      notes:
+        type: string
+        description: Optional notes or annotation.
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Household Document - Important personal documents and records
+  # ─────────────────────────────────────────────────────────────────────────────
+  - name: household_document
+    description: Personal document for household management (leases, health records, tax forms, etc.)
+    projects:
+      - private-content
+    subdirectory: household
+    identityField: title
+
+    required:
+      - type
+      - title
+      - category
+
+    fields:
+      title:
+        type: string
+        description: Document title or description.
+      category:
+        type: string
+        description: Document category (lease, health, taxes, vehicle, utilities, identity).
+      checklist_item:
+        type: string
+        description: ID of the checklist item this document fulfills.
+      document_date:
+        type: date
+        description: Date of the document (signed, issued, etc.).
+      expiration_date:
+        type: date
+        description: When the document expires (for leases, insurance, registrations).
+      file_path:
+        type: string
+        description: Path to the actual file (PDF, scan, etc.).
+      provider:
+        type: string
+        description: Organization or entity (landlord, insurer, employer, etc.).
+      account_number:
+        type: string
+        description: Account or policy number.
+      amount:
+        type: number
+        description: Monetary amount (rent, premium, etc.).
+      frequency:
+        type: string
+        description: Payment frequency (monthly, annual, one-time).
+      tags:
+        type: array
+        items: string
+        description: Categorization tags.
+      notes:
+        type: string
+        description: Additional notes or context.

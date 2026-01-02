@@ -1,0 +1,57 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# Project: courses
+# Public course content: syllabi, lectures, assignments, readings
+# ═══════════════════════════════════════════════════════════════════════════════
+
+project: courses
+
+# ─── Visibility Settings ───────────────────────────────────────────────────────
+defaultVisibility: public
+visibilityField: visibility
+
+# ─── Content Sources ───────────────────────────────────────────────────────────
+sources:
+  - id: courses-content
+    type: local
+    root: ${EXTENOTE_CONTENT_ROOT:-../extenote-pub/content}/courses
+    include:
+      - "**/*.md"
+      - "**/*.qmd"
+
+# ─── Project Includes ─────────────────────────────────────────────────────────
+includes:
+  - shared-references
+  - discussions
+
+# ─── Linting Rules ─────────────────────────────────────────────────────────────
+lint:
+  rules:
+    required-visibility: warn
+  autofix: true
+
+# ─── Compatibility Requirements ────────────────────────────────────────────────
+compatibility:
+  astro:
+    requiredFields:
+      - title
+
+# ─── Build Configuration ──────────────────────────────────────────────────────
+build:
+  websiteDir: courses-astro
+  type: astro
+
+# ─── Deployment Configuration ─────────────────────────────────────────────────
+deploy:
+  platform: github-pages
+  outputDir: dist
+  repo: https://github.com/nickmvincent/courses.git
+
+# ─── Discussion Configuration ─────────────────────────────────────────────────
+discussion:
+  createObjects: true
+  outputDir: ${EXTENOTE_CONTENT_ROOT:-../extenote-pub/content}/discussions
+  providers:
+    github:
+      enabled: true
+      repo: nickmvincent/extenote-pub
+      category: General

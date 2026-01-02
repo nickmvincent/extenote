@@ -1,0 +1,81 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# Project: personal-website
+# Personal/academic website content including CV, publications, and blog posts
+# ═══════════════════════════════════════════════════════════════════════════════
+
+project: personal-website
+
+# ─── Visibility Settings ───────────────────────────────────────────────────────
+# Controls default visibility for new content and which field stores visibility
+defaultVisibility: private
+visibilityField: visibility
+
+# ─── Content Sources ───────────────────────────────────────────────────────────
+# Each project owns only its own content directory. Use 'includes' for cross-project references.
+sources:
+  - id: personal-website-content
+    type: local
+    root: ${EXTENOTE_CONTENT_ROOT:-../extenote-pub/content}/personal-website
+    include:
+      - "**/*.md"
+
+  - id: personal-website-private
+    type: local
+    root: ${EXTENOTE_PRIVATE_ROOT:-../extenote-priv}/personal-website
+    include:
+      - "**/*.md"
+
+# ─── Linting Rules ─────────────────────────────────────────────────────────────
+# Validation rules and auto-fix settings
+lint:
+  rules:
+    required-visibility: warn
+  autofix: true
+
+# ─── Project Includes ─────────────────────────────────────────────────────────
+# shared-references provides bibliographic metadata for publications
+# data-leverage-blogs provides full content for blog posts
+includes:
+  - discussions
+  - shared-references
+  - data-leverage-blogs
+
+# ─── Build Configuration ──────────────────────────────────────────────────────
+# How to build the website for this project
+build:
+  websiteDir: personal-website-astro
+  type: astro
+  preRender:
+    - type: network
+      outputFormat: astro
+  postBuild:
+    - type: weasyprint
+      src: cv/index.html
+      dst: cv/nicholas-vincent-cv.pdf
+    - type: shell
+      command: mkdir -p static && cp cv/nicholas-vincent-cv.pdf static/cv.pdf && cp cv/index.html static/cv.html
+
+# ─── Deployment Configuration ─────────────────────────────────────────────────
+# Where and how to deploy the built website
+# Set FTP_HOST, FTP_USER, and FTP_PASSWORD environment variables before deploying
+deploy:
+  platform: ftp
+  host: ${FTP_HOST}
+  user: ${FTP_USER}
+  port: 21
+  remotePath: /
+  url: https://nickmvincent.com
+
+# ─── Discussion Configuration ─────────────────────────────────────────────────
+# Where to create public discussion threads for content
+discussion:
+  createObjects: true
+  outputDir: ${EXTENOTE_CONTENT_ROOT:-../extenote-pub/content}/discussions
+  providers:
+    github:
+      enabled: true
+      repo: nickmvincent/extenote-pub
+      category: General
+    whitewind:
+      enabled: true
+      identifier: nickmvincent.bsky.social

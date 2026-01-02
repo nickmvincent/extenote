@@ -1,0 +1,99 @@
+# ═══════════════════════════════════════════════════════════════════════════════
+# Ranking Book Schemas
+# Content types for "Ranking All the Way Down" book chapters
+# ═══════════════════════════════════════════════════════════════════════════════
+
+schemas:
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Chapter - Main book chapter (Quarto source)
+  # ─────────────────────────────────────────────────────────────────────────────
+  - name: book_chapter
+    description: Main chapters for the book (Quarto sources).
+    projects:
+      - ranking-book
+    subdirectory: chapters
+    identityField: title
+
+    required:
+      - type
+      - title
+
+    fields:
+      title:
+        type: string
+        description: Chapter title.
+      part:
+        type: string
+        description: Book part label (e.g., Part I, Part II).
+      order:
+        type: number
+        description: Ordering key matching the filename prefix.
+      summary:
+        type: string
+        description: Optional short abstract.
+      tags:
+        type: array
+        items: string
+        description: Optional topical tags.
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Appendix - Supplementary material
+  # ─────────────────────────────────────────────────────────────────────────────
+  - name: book_appendix
+    description: Appendix chapters with technical details or extended arguments.
+    projects:
+      - ranking-book
+    subdirectory: appendices
+    identityField: title
+
+    required:
+      - type
+      - title
+
+    fields:
+      title:
+        type: string
+        description: Appendix title.
+      order:
+        type: string
+        description: Ordering key (a, b, c...).
+      summary:
+        type: string
+        description: Optional short abstract.
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # Index - Book preface/index page
+  # ─────────────────────────────────────────────────────────────────────────────
+  - name: book_index
+    description: Book index/preface page.
+    projects:
+      - ranking-book
+    subdirectory: .
+    identityField: title
+
+    required:
+      - type
+      - title
+
+    fields:
+      title:
+        type: string
+        description: Page title.
+
+  # ─────────────────────────────────────────────────────────────────────────────
+  # References - Bibliography page
+  # ─────────────────────────────────────────────────────────────────────────────
+  - name: book_references
+    description: Bibliography/references page.
+    projects:
+      - ranking-book
+    subdirectory: .
+    identityField: title
+
+    required:
+      - type
+
+    fields:
+      title:
+        type: string
+        description: Page title.
