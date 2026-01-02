@@ -16,8 +16,8 @@
     "README.md"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.build.json",
-    "dev": "tsc -p tsconfig.build.json --watch",
+    "build": "npx tsc -p tsconfig.build.json",
+    "dev": "npx tsc -p tsconfig.build.json --watch",
     "clean": "rm -rf dist",
     "typecheck": "tsc --noEmit",
     "test": "bun test"
