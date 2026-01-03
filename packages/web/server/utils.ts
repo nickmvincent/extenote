@@ -38,11 +38,38 @@ export function buildHeaders(origin?: string | null) {
   return headers
 }
 
+/**
+ * Split a shell command string into an array of arguments.
+ * Handles single and double quoted strings, preserving spaces within quotes.
+ */
 export function splitCommand(command: string): string[] {
-  return command
-    .split(' ')
-    .map((part) => part.trim())
-    .filter(Boolean)
+  const args: string[] = []
+  let current = ''
+  let inSingleQuote = false
+  let inDoubleQuote = false
+
+  for (let i = 0; i < command.length; i++) {
+    const char = command[i]
+
+    if (char === "'" && !inDoubleQuote) {
+      inSingleQuote = !inSingleQuote
+    } else if (char === '"' && !inSingleQuote) {
+      inDoubleQuote = !inDoubleQuote
+    } else if (char === ' ' && !inSingleQuote && !inDoubleQuote) {
+      if (current) {
+        args.push(current)
+        current = ''
+      }
+    } else {
+      current += char
+    }
+  }
+
+  if (current) {
+    args.push(current)
+  }
+
+  return args
 }
 
 export function resolveProjectRoot() {

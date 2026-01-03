@@ -1,6 +1,7 @@
 import fs from "fs/promises";
 import path from "path";
 import type { VaultObject, DiscussionConfig } from "../../types.js";
+import { parseMarkdown, stringifyMarkdown } from "../../markdown.js";
 import type {
   DiscussionPlugin,
   DiscussionLink,
@@ -311,20 +312,9 @@ ${links.map((l) => `- [Discuss on ${l.provider}](${l.url})`).join("\n")}
 
 ---
 
-*Have feedback on a specific post? Let us know and we can create a dedicated discussion thread.*
-`;
+*Have feedback on a specific post? Let us know and we can create a dedicated discussion thread.*`;
 
-  // Format as markdown with YAML frontmatter
-  const yaml = Object.entries(frontmatter)
-    .map(([key, value]) => {
-      if (typeof value === "string" && (value.includes(":") || value.includes('"'))) {
-        return `${key}: "${value.replace(/"/g, '\\"')}"`;
-      }
-      return `${key}: ${value}`;
-    })
-    .join("\n");
-
-  return `---\n${yaml}\n---\n\n${body}`;
+  return stringifyMarkdown(frontmatter, body);
 }
 
 /**
@@ -398,17 +388,7 @@ export function generateDiscussionObject(
     body += links.map((l) => `- [${l.provider}](${l.url})`).join("\n");
   }
 
-  // Format as markdown with YAML frontmatter
-  const yaml = Object.entries(frontmatter)
-    .map(([key, value]) => {
-      if (typeof value === "string" && (value.includes(":") || value.includes('"'))) {
-        return `${key}: "${value.replace(/"/g, '\\"')}"`;
-      }
-      return `${key}: ${value}`;
-    })
-    .join("\n");
-
-  return `---\n${yaml}\n---\n\n${body}\n`;
+  return stringifyMarkdown(frontmatter, body);
 }
 
 /**
@@ -450,12 +430,7 @@ export async function updateSourceFrontmatter(
 
   for (const entry of entries) {
     const content = await fs.readFile(entry.object.filePath, "utf8");
-
-    // Parse frontmatter
-    const match = content.match(/^---\n([\s\S]*?)\n---\n([\s\S]*)$/);
-    if (!match) continue;
-
-    const [, frontmatterRaw, body] = match;
+    const parsed = parseMarkdown(content);
 
     // Build new discussion links
     const links: Record<string, string> = {};
@@ -463,17 +438,19 @@ export async function updateSourceFrontmatter(
       links[link.provider] = link.url;
     }
 
-    // Simple YAML update - append to frontmatter
-    // In production, use a proper YAML library
-    let updatedFrontmatter = frontmatterRaw;
-    if (!frontmatterRaw.includes(`${frontmatterKey}:`)) {
-      const linksYaml = Object.entries(links)
-        .map(([k, v]) => `  ${k}: "${v}"`)
-        .join("\n");
-      updatedFrontmatter = `${frontmatterRaw}\n${frontmatterKey}:\n${linksYaml}`;
-    }
+    // Merge with existing discussions if present
+    const existingDiscussions = parsed.frontmatter[frontmatterKey];
+    const mergedLinks = typeof existingDiscussions === "object" && existingDiscussions !== null
+      ? { ...existingDiscussions as Record<string, string>, ...links }
+      : links;
 
-    const updatedContent = `---\n${updatedFrontmatter}\n---\n${body}`;
+    // Update frontmatter with merged links
+    const updatedFrontmatter = {
+      ...parsed.frontmatter,
+      [frontmatterKey]: mergedLinks,
+    };
+
+    const updatedContent = stringifyMarkdown(updatedFrontmatter, parsed.body);
     await fs.writeFile(entry.object.filePath, updatedContent, "utf8");
   }
 }

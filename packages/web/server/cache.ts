@@ -103,7 +103,8 @@ export async function loadVaultBundle(cwd: string, forceReload = false): Promise
         })
 
         // Filter issues to only include those for remaining objects
-        const remainingPaths = new Set(filteredObjects.map(o => o.relativePath))
+        // Note: issue.filePath is absolute, so compare against object.filePath (also absolute)
+        const remainingPaths = new Set(filteredObjects.map(o => o.filePath))
         filteredIssues = fullVault.issues.filter(issue =>
           remainingPaths.has(issue.filePath)
         )

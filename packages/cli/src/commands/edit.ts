@@ -1,7 +1,7 @@
 import path from "path";
 import { Command } from "commander";
 import pc from "picocolors";
-import { loadVault, DEFAULT_EDITOR } from "@extenote/core";
+import { loadVault, loadSettings, DEFAULT_EDITOR } from "@extenote/core";
 import { cliContext, withAction } from "./utils.js";
 
 export function registerEditCommand(program: Command) {
@@ -28,7 +28,10 @@ export function registerEditCommand(program: Command) {
         throw new Error(`Object not found: ${pathArg}`);
       }
 
-      const editor = process.env.EDITOR || process.env.VISUAL || DEFAULT_EDITOR;
+      // Priority: settings.editor.command > $EDITOR > $VISUAL > DEFAULT_EDITOR
+      const settings = loadSettings(cwd);
+      const editorFromSettings = settings.editor.command !== DEFAULT_EDITOR ? settings.editor.command : null;
+      const editor = editorFromSettings || process.env.EDITOR || process.env.VISUAL || DEFAULT_EDITOR;
       console.log(pc.dim(`Opening ${object.relativePath} in ${editor}...`));
 
       const { spawn } = await import("child_process");

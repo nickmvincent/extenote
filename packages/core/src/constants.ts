@@ -118,7 +118,7 @@ export const DEFAULT_SHORT_PREVIEW_LENGTH = 50
 // Network / Deployment
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** Git HTTP post buffer size (500MB) to prevent push errors */
+/** Git HTTP post buffer size (500 MiB) to prevent push errors */
 export const GIT_POST_BUFFER_SIZE = "524288000"
 
 /** Default FTP connection timeout in seconds */

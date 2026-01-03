@@ -216,8 +216,8 @@ describe("generateDiscussionObject", () => {
     const config = buildConfig();
     const result = generateDiscussionObject(object, mockLinks, config);
 
-    // Should have a date in YYYY-MM-DD format
-    expect(result).toMatch(/created_at: \d{4}-\d{2}-\d{2}/);
+    // Should have a date in YYYY-MM-DD format (may be quoted by gray-matter)
+    expect(result).toMatch(/created_at: '?\d{4}-\d{2}-\d{2}'?/);
   });
 
   it("uses custom body template when provided", () => {
@@ -403,7 +403,9 @@ describe("Discussion Generation Edge Cases", () => {
     });
     const result = generateDiscussionObject(object, mockLinks, buildConfig());
 
-    expect(result).toContain(`source_title: ${longTitle}`);
+    // Gray-matter may use YAML block scalar for long lines, so just check the title is present
+    expect(result).toContain("source_title:");
+    expect(result).toContain(longTitle);
   });
 
   it("handles object with unicode title", () => {

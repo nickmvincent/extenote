@@ -1,7 +1,7 @@
 import path from 'path'
 import { existsSync } from 'fs'
 import { readFile, writeFile } from 'fs/promises'
-import { getProjectWebsites, parseMarkdown, stringifyMarkdown, DEFAULT_EDITOR, createMarkdownObject, selectSchemaProject } from '@extenote/core'
+import { getProjectWebsites, parseMarkdown, stringifyMarkdown, DEFAULT_EDITOR, loadSettings, createMarkdownObject, selectSchemaProject } from '@extenote/core'
 import { json, splitCommand } from '../utils.js'
 import { invalidateVaultCache, loadConfigAndSchemas, loadVaultBundle } from '../cache.js'
 
@@ -107,7 +107,12 @@ export async function handleWrite(cwd: string, body: WriteRequest, headers: Head
     fullPath = object.filePath
   } else {
     // Fallback: try resolving from cwd (for newly created files not yet in vault cache)
-    fullPath = path.resolve(cwd, body.filePath)
+    // Security: validate path is within allowed directories to prevent path traversal
+    const resolved = path.resolve(cwd, body.filePath)
+    if (!resolved.startsWith(cwd)) {
+      return json({ error: 'Invalid filePath: path traversal not allowed' }, 400, headers)
+    }
+    fullPath = resolved
   }
 
   // Read existing file
@@ -164,7 +169,10 @@ export async function handleOpenInEditor(cwd: string, filePath: string, headers:
     return json({ error: `File not found: ${filePath}` }, 404, headers)
   }
 
-  const editorCommand = process.env.EDITOR || DEFAULT_EDITOR
+  // Priority: settings.editor.command > $EDITOR > DEFAULT_EDITOR
+  const settings = loadSettings(cwd)
+  const editorFromSettings = settings.editor.command !== DEFAULT_EDITOR ? settings.editor.command : null
+  const editorCommand = editorFromSettings || process.env.EDITOR || DEFAULT_EDITOR
   const [command, ...args] = splitCommand(editorCommand)
   if (!command) {
     return json({ error: 'Editor command not configured' }, 500, headers)
