@@ -7,6 +7,17 @@
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
 import { dirname, join } from "path";
+import {
+  DEFAULT_API_MAX_RESULTS,
+  DEFAULT_CACHE_TTL,
+  DEFAULT_EDITOR,
+  DEFAULT_FTP_PARALLEL,
+  DEFAULT_FTP_TIMEOUT,
+  DEFAULT_ISSUES_LIMIT,
+  DEFAULT_LIST_LIMIT,
+  DEFAULT_RATE_LIMIT_DELAY,
+  DEFAULT_VALIDATION_QUEUE_LIMIT,
+} from "./constants.js";
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Types
@@ -137,9 +148,9 @@ export const DEFAULT_SETTINGS: ExtenoteSettings = {
     nodeSizeGrowth: 0.3,
   },
   display: {
-    listLimit: 20,
-    issuesLimit: 20,
-    validationQueueLimit: 50,
+    listLimit: DEFAULT_LIST_LIMIT,
+    issuesLimit: DEFAULT_ISSUES_LIMIT,
+    validationQueueLimit: DEFAULT_VALIDATION_QUEUE_LIMIT,
     maxRecentItems: 10,
     pageSize: 12,
     searchResultsLimit: 50,
@@ -150,19 +161,19 @@ export const DEFAULT_SETTINGS: ExtenoteSettings = {
     backupDir: ".extenote-backup",
   },
   cache: {
-    ttl: 30000,
+    ttl: DEFAULT_CACHE_TTL,
     enabled: true,
   },
   ftp: {
-    timeout: 30,
-    parallelThreads: 4,
+    timeout: DEFAULT_FTP_TIMEOUT,
+    parallelThreads: DEFAULT_FTP_PARALLEL,
   },
   editor: {
-    command: "code",
+    command: DEFAULT_EDITOR,
   },
   api: {
-    rateLimitDelay: 250,
-    maxResults: 5,
+    rateLimitDelay: DEFAULT_RATE_LIMIT_DELAY,
+    maxResults: DEFAULT_API_MAX_RESULTS,
   },
 };
 

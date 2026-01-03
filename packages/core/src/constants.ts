@@ -100,3 +100,29 @@ export const DEFAULT_TEST_TIMEOUT = 30000
 
 /** Default editor command when EDITOR env var is not set */
 export const DEFAULT_EDITOR = 'code'
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Content Processing
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Context window size for cross-reference extraction (characters before/after) */
+export const CROSSREF_CONTEXT_LENGTH = 30
+
+/** Default maximum length for URL slugs */
+export const DEFAULT_SLUG_LENGTH = 50
+
+/** Default length for short content previews (e.g. logs) */
+export const DEFAULT_SHORT_PREVIEW_LENGTH = 50
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Network / Deployment
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Git HTTP post buffer size (500MB) to prevent push errors */
+export const GIT_POST_BUFFER_SIZE = "524288000"
+
+/** Default FTP connection timeout in seconds */
+export const DEFAULT_FTP_TIMEOUT = 30
+
+/** Default number of parallel FTP upload threads */
+export const DEFAULT_FTP_PARALLEL = 4

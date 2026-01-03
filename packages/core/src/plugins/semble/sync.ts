@@ -2,6 +2,7 @@ import fs from "fs/promises";
 import path from "path";
 import crypto from "crypto";
 import type { VaultObject, ExtenoteConfig } from "../../types.js";
+import { DEFAULT_SLUG_LENGTH, DEFAULT_SHORT_PREVIEW_LENGTH } from "../../constants.js";
 import { stringifyMarkdown } from "../../markdown.js";
 import { SembleClient } from "./client.js";
 import type {
@@ -288,7 +289,7 @@ function cardToFilename(card: SembleCard): string {
         .toLowerCase()
         .replace(/[^a-z0-9]+/g, "-")
         .replace(/^-+|-+$/g, "")
-        .slice(0, 50);
+        .slice(0, DEFAULT_SLUG_LENGTH);
     } else {
       try {
         const url = new URL(content.url);
@@ -313,7 +314,7 @@ function cardToFilename(card: SembleCard): string {
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-+|-+$/g, "")
-      .slice(0, 50);
+      .slice(0, DEFAULT_SLUG_LENGTH);
   }
 
   // Add timestamp to ensure uniqueness
@@ -934,7 +935,7 @@ async function pullCards(
     // Get display title for logging
     const displayTitle = card.type === "URL"
       ? ((card.content as SembleUrlContent).metadata?.title ?? (card.content as SembleUrlContent).url)
-      : ((card.content as { text: string }).text?.slice(0, 50) ?? "note");
+      : ((card.content as { text: string }).text?.slice(0, DEFAULT_SHORT_PREVIEW_LENGTH) ?? "note");
 
     if (options.dryRun) {
       log(`  [dry-run] Would pull ${card.type}: ${displayTitle}`);

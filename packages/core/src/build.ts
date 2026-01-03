@@ -11,6 +11,7 @@ import type {
   ShellStep
 } from "./types.js";
 import { executeNetworkStep } from "./plugins/network/executor.js";
+import { GIT_POST_BUFFER_SIZE, DEFAULT_FTP_TIMEOUT, DEFAULT_FTP_PARALLEL } from "./constants.js";
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -436,7 +437,7 @@ export async function deployProject(
         }
 
         // Increase git http buffer to handle large pushes (prevents HTTP 400 errors)
-        await runCommand("git", ["config", "--global", "http.postBuffer", "524288000"], projectDir, false);
+        await runCommand("git", ["config", "--global", "http.postBuffer", GIT_POST_BUFFER_SIZE], projectDir, false);
 
         // Build gh-pages args
         const ghPagesArgs = ["-d", deployDir, "-b", branch];
@@ -528,14 +529,16 @@ export async function deployProject(
           // mirror -R: reverse mirror (upload local to remote)
           // --delete: delete remote files not in local (only if deleteRemote is true)
           // --verbose: show progress
-          // --parallel=4: upload 4 files in parallel
+          // --parallel=N: upload N files in parallel
+          const parallel = deploy.parallel ?? DEFAULT_FTP_PARALLEL;
+          const timeout = deploy.timeout ?? DEFAULT_FTP_TIMEOUT;
           const mirrorArgs = deleteRemote
-            ? `mirror -R --delete --verbose --parallel=4 ${deployDir} ${remoteDir}`
-            : `mirror -R --verbose --parallel=4 ${deployDir} ${remoteDir}`;
+            ? `mirror -R --delete --verbose --parallel=${parallel} ${deployDir} ${remoteDir}`
+            : `mirror -R --verbose --parallel=${parallel} ${deployDir} ${remoteDir}`;
 
           const lftpScript = [
             `set ftp:ssl-allow no`,  // Some hosts don't support SSL
-            `set net:timeout 30`,
+            `set net:timeout ${timeout}`,
             `open -u ${user},${password} ftp://${host}:${ftpPort}`,
             mirrorArgs,
             `quit`

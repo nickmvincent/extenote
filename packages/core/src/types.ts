@@ -256,6 +256,10 @@ export interface DeployConfig {
   remotePath?: string;
   /** FTP/SFTP port (default: 21 for FTP) */
   port?: number;
+  /** FTP connection timeout in seconds (default: 30) */
+  timeout?: number;
+  /** Parallel upload threads (default: 4) */
+  parallel?: number;
   /** Delete remote files not in local (default: false for safety) */
   deleteRemote?: boolean;
   // URL configuration

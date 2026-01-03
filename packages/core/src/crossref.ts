@@ -1,4 +1,5 @@
 import type { VaultObject, ExtenoteConfig } from "./types.js";
+import { CROSSREF_CONTEXT_LENGTH } from "./constants.js";
 
 /**
  * Type of link between objects
@@ -108,8 +109,8 @@ export function parseWikiLinks(text: string): ObjectLink[] {
     const displayText = match[2]?.trim();
 
     // Get context (30 chars before and after)
-    const start = Math.max(0, match.index! - 30);
-    const end = Math.min(text.length, match.index! + match[0].length + 30);
+    const start = Math.max(0, match.index! - CROSSREF_CONTEXT_LENGTH);
+    const end = Math.min(text.length, match.index! + match[0].length + CROSSREF_CONTEXT_LENGTH);
     const context = text.slice(start, end).replace(/\n/g, ' ').trim();
 
     links.push({
@@ -156,8 +157,8 @@ export function parseCitations(text: string): ObjectLink[] {
     }
 
     // Get context for this citation bracket
-    const start = Math.max(0, bracketMatch.index! - 30);
-    const end = Math.min(text.length, matchEnd + 30);
+    const start = Math.max(0, bracketMatch.index! - CROSSREF_CONTEXT_LENGTH);
+    const end = Math.min(text.length, matchEnd + CROSSREF_CONTEXT_LENGTH);
     const context = text.slice(start, end).replace(/\n/g, ' ').trim();
     const contextStr = start > 0 ? `...${context}...` : `${context}...`;
 
