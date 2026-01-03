@@ -1,0 +1,325 @@
+<!DOCTYPE html><html lang="en" data-mode="dark" data-aesthetic="classic"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Architecture Overview | Extenote</title><meta name="description" content="Extenote documentation: Architecture Overview"><meta property="og:type" content="website"><meta property="og:url" content="https://extenote.dev"><meta property="og:title" content="Architecture Overview | Extenote"><meta property="og:description" content="Extenote documentation: Architecture Overview"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Architecture Overview | Extenote"><meta name="twitter:description" content="Extenote documentation: Architecture Overview"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet"><script>
+      // Load theme preferences before render to prevent flash
+      (function() {
+        const mode = localStorage.getItem('theme-mode') || 'dark';
+        const aesthetic = localStorage.getItem('theme-aesthetic') || 'classic';
+        document.documentElement.setAttribute('data-mode', mode);
+        document.documentElement.setAttribute('data-aesthetic', aesthetic);
+      })();
+    </script><link rel="stylesheet" href="/extenote/_astro/_slug_.Cf4BF75M.css">
+<link rel="stylesheet" href="/extenote/_astro/_slug_.COSOcpGJ.css"><script type="module" src="/extenote/_astro/hoisted.BEvs-6yx.js"></script></head> <body>   <header class="top-nav"> <div class="brand"> <a href="/extenote">Extenote</a> </div> <div class="nav-ornament"></div> <nav class="nav-links"> <a href="/extenote">home</a> <span class="nav-dot"></span> <a href="/extenote/docs" aria-current="page">docs</a> <span class="nav-dot"></span> <a href="https://github.com/nickmvincent/extenote" target="_blank">github</a> </nav> </header> <div class="docs-layout" data-astro-cid-uadgga6g> <aside class="sidebar" data-astro-cid-uadgga6g> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Getting Started</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/index" class="sidebar-link " data-astro-cid-uadgga6g> Extenote Documentation </a><a href="/extenote/docs/quickstart" class="sidebar-link " data-astro-cid-uadgga6g> Quick Start </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Reference</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/cli" class="sidebar-link " data-astro-cid-uadgga6g> CLI Reference </a><a href="/extenote/docs/configuration" class="sidebar-link " data-astro-cid-uadgga6g> Configuration Reference </a><a href="/extenote/docs/architecture" class="sidebar-link active" data-astro-cid-uadgga6g> Architecture Overview </a><a href="/extenote/docs/interfaces" class="sidebar-link " data-astro-cid-uadgga6g> Interface Comparison </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Features</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/web-ui" class="sidebar-link " data-astro-cid-uadgga6g> Web UI Gallery </a><a href="/extenote/docs/tags" class="sidebar-link " data-astro-cid-uadgga6g> Tags </a><a href="/extenote/docs/reference-check" class="sidebar-link " data-astro-cid-uadgga6g> Refcheck </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Other</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/testing" class="sidebar-link " data-astro-cid-uadgga6g> Manual Testing Guide </a><a href="/extenote/docs/cross-project-linking" class="sidebar-link " data-astro-cid-uadgga6g> Cross-Project Linking </a><a href="/extenote/docs/known-issues" class="sidebar-link " data-astro-cid-uadgga6g> Known Issues </a> </nav> </div> </aside> <main class="content" data-astro-cid-uadgga6g> <a href="/extenote/docs" class="back-link" data-astro-cid-uadgga6g>← All Docs</a> <h1 id="architecture-overview">Architecture Overview</h1>
+<p>Extenote is a content management system for structured Markdown documents with YAML frontmatter. The name comes from <strong>Exte</strong>rnalized <strong>Note</strong>s — content that lives outside any particular institution, laptop, or software.</p>
+<h2 id="key-concepts">Key Concepts</h2>
+<p>Understanding these three terms will help you navigate Extenote:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Term</th><th>What it is</th><th>Example</th></tr></thead><tbody><tr><td><strong>Object</strong></td><td>A single markdown file with YAML frontmatter</td><td><code>shared-references/smith2024.md</code></td></tr><tr><td><strong>Vault</strong></td><td>A directory containing objects</td><td><code>extenote-pub/content/shared-references/</code></td></tr><tr><td><strong>Project</strong></td><td>A configuration defining sources, schemas, and outputs</td><td><code>projects/shared-references.yaml</code></td></tr></tbody></table>
+<p><strong>How they relate:</strong></p>
+<ul>
+<li>A <strong>project</strong> reads from one or more <strong>vaults</strong> (via <code>sources</code> config)</li>
+<li>Each <strong>vault</strong> contains <strong>objects</strong> (markdown files)</li>
+<li>Multiple <strong>projects</strong> can share the same <strong>vault</strong> (e.g., several blogs include <code>shared-references</code>)</li>
+<li>Each <strong>object</strong> belongs to exactly one <strong>project</strong> (determined by which project’s source loaded it)</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>projects/my-blog.yaml          # Project config</span></span>
+<span class="line"><span>  └── sources:</span></span>
+<span class="line"><span>        └── content/my-blog/   # Vault (directory)</span></span>
+<span class="line"><span>              ├── post1.md     # Object</span></span>
+<span class="line"><span>              ├── post2.md     # Object</span></span>
+<span class="line"><span>              └── ...</span></span>
+<span class="line"><span>  └── includes: [shared-references]  # Include another project's objects</span></span>
+<span class="line"><span></span></span></code></pre>
+<h2 id="system-architecture">System Architecture</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>┌─────────────────────────────────────────────────────────────────┐</span></span>
+<span class="line"><span>│                        User Interfaces                          │</span></span>
+<span class="line"><span>├─────────────────┬─────────────────────┬─────────────────────────┤</span></span>
+<span class="line"><span>│      CLI        │        TUI          │          Web            │</span></span>
+<span class="line"><span>│   (Commander)   │    (Ink/React)      │   (React + Bun API)     │</span></span>
+<span class="line"><span>└────────┬────────┴──────────┬──────────┴────────────┬────────────┘</span></span>
+<span class="line"><span>         │                   │                       │</span></span>
+<span class="line"><span>         └───────────────────┼───────────────────────┘</span></span>
+<span class="line"><span>                             │</span></span>
+<span class="line"><span>                    ┌────────▼────────┐</span></span>
+<span class="line"><span>                    │  @extenote/core │</span></span>
+<span class="line"><span>                    │                 │</span></span>
+<span class="line"><span>                    │  - Config       │</span></span>
+<span class="line"><span>                    │  - Schemas      │</span></span>
+<span class="line"><span>                    │  - Validation   │</span></span>
+<span class="line"><span>                    │  - Lint         │</span></span>
+<span class="line"><span>                    │  - Export       │</span></span>
+<span class="line"><span>                    └────────┬────────┘</span></span>
+<span class="line"><span>                             │</span></span>
+<span class="line"><span>              ┌──────────────┼──────────────┐</span></span>
+<span class="line"><span>              │              │              │</span></span>
+<span class="line"><span>        ┌─────▼─────┐  ┌─────▼─────┐  ┌─────▼─────┐</span></span>
+<span class="line"><span>        │ projects/ │  │  Content  │  │   dist/   │</span></span>
+<span class="line"><span>        │ schemas/  │  │   Vaults  │  │  export   │</span></span>
+<span class="line"><span>        │  (YAML)   │  │    (MD)   │  │  (output) │</span></span>
+<span class="line"><span>        └───────────┘  └───────────┘  └───────────┘</span></span>
+<span class="line"><span></span></span></code></pre>
+<h2 id="data-model">Data Model</h2>
+<h3 id="vaultobject">VaultObject</h3>
+<p>A vault object is a Markdown file with YAML frontmatter. See <code>packages/core/src/types.ts</code> for the full interface.</p>
+<p>Key fields:</p>
+<ul>
+<li><code>id</code> - Identity field value or filename</li>
+<li><code>type</code> - Schema name (from frontmatter.type)</li>
+<li><code>title</code> - Display title</li>
+<li><code>sourceId</code> - Source configuration ID</li>
+<li><code>project</code> - Owning project name</li>
+<li><code>filePath</code> - Absolute file path</li>
+<li><code>relativePath</code> - Path relative to source root</li>
+<li><code>frontmatter</code> - All YAML frontmatter fields</li>
+<li><code>body</code> - Markdown content after frontmatter</li>
+<li><code>mtime</code> - File modification timestamp (ms)</li>
+<li><code>schema</code> - Resolved schema definition</li>
+<li><code>visibility</code> - <code>public</code> | <code>private</code> | <code>unlisted</code></li>
+</ul>
+<p><strong>File format:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="markdown"><code><span class="line"><span style="color:#E1E4E8">---</span></span>
+<span class="line"><span style="color:#85E89D">type</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">blog_post</span></span>
+<span class="line"><span style="color:#85E89D">title</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">My Article</span></span>
+<span class="line"><span style="color:#85E89D">visibility</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">public</span></span>
+<span class="line"><span style="color:#85E89D">date</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">2024-12-17</span></span>
+<span class="line"><span style="color:#85E89D">tags</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">  - </span><span style="color:#9ECBFF">tech</span></span>
+<span class="line"><span style="color:#E1E4E8">---</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF;font-weight:bold"># My Article</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">Content goes here...</span></span>
+<span class="line"></span></code></pre>
+<h3 id="schema-definition">Schema Definition</h3>
+<p>Schemas define structure and validation rules. See <code>packages/core/src/types.ts</code> for the full interfaces (<code>SchemaDefinition</code>, <code>SchemaFieldDefinition</code>).</p>
+<p>Key fields:</p>
+<ul>
+<li><code>name</code> - Unique identifier</li>
+<li><code>description</code> - Human-readable description</li>
+<li><code>subdirectory</code> - Default subdirectory for new objects</li>
+<li><code>identityField</code> - Field used as ID (default: “slug”)</li>
+<li><code>required</code> - Required frontmatter fields</li>
+<li><code>fields</code> - Field definitions with types (<code>string</code>, <code>number</code>, <code>date</code>, <code>array</code>, <code>boolean</code>)</li>
+</ul>
+<h3 id="visibility">Visibility</h3>
+<p>Objects have three visibility levels:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Level</th><th>Description</th></tr></thead><tbody><tr><td><code>public</code></td><td>Visible to all, included in public exports</td></tr><tr><td><code>private</code></td><td>Hidden from public exports</td></tr><tr><td><code>unlisted</code></td><td>Not listed but accessible if URL known</td></tr></tbody></table>
+<h3 id="issues">Issues</h3>
+<p>Validation and lint issues. See <code>VaultIssue</code> in <code>packages/core/src/types.ts</code>.</p>
+<p>Key fields: <code>sourceId</code>, <code>filePath</code>, <code>field</code>, <code>message</code>, <code>severity</code> (<code>error</code> | <code>warn</code> | <code>info</code>), <code>rule</code>.</p>
+<h2 id="directory-structure">Directory Structure</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>extenote/</span></span>
+<span class="line"><span>├── packages/</span></span>
+<span class="line"><span>│   ├── core/                   # Business logic</span></span>
+<span class="line"><span>│   │   └── src/</span></span>
+<span class="line"><span>│   │       ├── index.ts        # Public API</span></span>
+<span class="line"><span>│   │       ├── types.ts        # Type definitions</span></span>
+<span class="line"><span>│   │       ├── constants.ts    # Shared configuration defaults</span></span>
+<span class="line"><span>│   │       ├── config.ts       # Config loading</span></span>
+<span class="line"><span>│   │       ├── schemas.ts      # Schema loading</span></span>
+<span class="line"><span>│   │       ├── validation.ts   # Object validation</span></span>
+<span class="line"><span>│   │       ├── lint.ts         # Lint rules</span></span>
+<span class="line"><span>│   │       ├── exporters/      # Export formats</span></span>
+<span class="line"><span>│   │       └── plugins/        # Discussion, network, semble plugins</span></span>
+<span class="line"><span>│   │</span></span>
+<span class="line"><span>│   ├── cli/                    # Command-line interface</span></span>
+<span class="line"><span>│   │   └── src/</span></span>
+<span class="line"><span>│   │       ├── index.ts        # Entry point (registers commands)</span></span>
+<span class="line"><span>│   │       └── commands/       # One file per command</span></span>
+<span class="line"><span>│   │           ├── utils.ts    # Shared CLI utilities</span></span>
+<span class="line"><span>│   │           ├── build.ts</span></span>
+<span class="line"><span>│   │           ├── deploy.ts</span></span>
+<span class="line"><span>│   │           ├── validate.ts</span></span>
+<span class="line"><span>│   │           └── ...</span></span>
+<span class="line"><span>│   │</span></span>
+<span class="line"><span>│   ├── web/                    # Web interface (React + Bun)</span></span>
+<span class="line"><span>│   │   └── src/</span></span>
+<span class="line"><span>│   │       ├── server.ts       # API server entry point</span></span>
+<span class="line"><span>│   │       └── server/         # Server modules</span></span>
+<span class="line"><span>│   │           ├── utils.ts    # Shared utilities</span></span>
+<span class="line"><span>│   │           ├── cache.ts    # Vault caching logic</span></span>
+<span class="line"><span>│   │           └── handlers/   # API route handlers</span></span>
+<span class="line"><span>│   │</span></span>
+<span class="line"><span>│   ├── tui/                    # Terminal UI (Ink/React)</span></span>
+<span class="line"><span>│   └── refcheck/               # Reference validation library</span></span>
+<span class="line"><span>│</span></span>
+<span class="line"><span>├── projects/                   # Project configurations</span></span>
+<span class="line"><span>│   ├── personal-website.yaml</span></span>
+<span class="line"><span>│   └── ...</span></span>
+<span class="line"><span>│</span></span>
+<span class="line"><span>└── schemas/                    # Schema definitions</span></span>
+<span class="line"><span>    ├── common.yaml</span></span>
+<span class="line"><span>    ├── personal-website.yaml</span></span>
+<span class="line"><span>    └── ...</span></span>
+<span class="line"><span></span></span></code></pre>
+<h2 id="core-api">Core API</h2>
+<p>Key functions exported from <code>@extenote/core</code> (see <code>packages/core/src/index.ts</code>):</p>
+<ul>
+<li><code>loadConfig()</code> - Load configuration from <code>projects/</code> directory</li>
+<li><code>loadSchemas()</code> - Load schema definitions from <code>schemas/</code> directory</li>
+<li><code>loadVault()</code> - Load complete vault state (objects + issues)</li>
+<li><code>exportContent()</code> - Export content to various formats</li>
+<li><code>lintObjects()</code> - Lint objects against rules</li>
+</ul>
+<h2 id="export-formats">Export Formats</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Format</th><th>Output</th><th>Description</th></tr></thead><tbody><tr><td><code>json</code></td><td><code>objects.json</code></td><td>All objects as JSON array</td></tr><tr><td><code>markdown</code></td><td>Mirror of source</td><td>Reconstructed markdown files</td></tr><tr><td><code>html</code></td><td><code>index.html</code></td><td>Single-page HTML summary</td></tr><tr><td><code>atproto</code></td><td><code>records.json</code></td><td>ATProto-compatible records</td></tr><tr><td><code>bibtex</code></td><td><code>references.bib</code></td><td>BibTeX bibliography</td></tr></tbody></table>
+<h2 id="build--deploy">Build &#x26; Deploy</h2>
+<p>Projects can define build and deploy configuration in their YAML files:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>┌─────────────────┐      ┌─────────────────┐      ┌─────────────────┐</span></span>
+<span class="line"><span>│   Content       │      │    Website      │      │    Hosting      │</span></span>
+<span class="line"><span>│   Vaults        │─────▶│    Build        │─────▶│    Platform     │</span></span>
+<span class="line"><span>│   (Markdown)    │      │    (Astro/      │      │  (Cloudflare/   │</span></span>
+<span class="line"><span>│                 │      │     Quarto)     │      │   GitHub Pages) │</span></span>
+<span class="line"><span>└─────────────────┘      └─────────────────┘      └─────────────────┘</span></span>
+<span class="line"><span>        │                        │</span></span>
+<span class="line"><span>        │                        │</span></span>
+<span class="line"><span>        ▼                        ▼</span></span>
+<span class="line"><span>   PreRender Steps:         Build Types:</span></span>
+<span class="line"><span>   - rsync content          - astro (npm run build)</span></span>
+<span class="line"><span>   - export bibtex          - quarto (quarto render)</span></span>
+<span class="line"><span>   - copy files             - custom (preRender only)</span></span>
+<span class="line"><span>   - shell commands</span></span>
+<span class="line"><span></span></span></code></pre>
+<h3 id="build-types">Build Types</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Type</th><th>Command</th><th>Use Case</th></tr></thead><tbody><tr><td><code>astro</code></td><td><code>npm install &#x26;&#x26; npm run build</code></td><td>Astro static sites</td></tr><tr><td><code>quarto</code></td><td><code>quarto render</code></td><td>Quarto documents/books</td></tr><tr><td><code>custom</code></td><td>(none)</td><td>Only preRender steps</td></tr></tbody></table>
+<h3 id="deploy-platforms">Deploy Platforms</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Platform</th><th>Tool</th><th>Config File</th></tr></thead><tbody><tr><td><code>cloudflare-pages</code></td><td>wrangler</td><td><code>wrangler.toml</code></td></tr><tr><td><code>github-pages</code></td><td>gh-pages</td><td>(package.json)</td></tr><tr><td><code>ftp</code></td><td>lftp</td><td>(inline config)</td></tr><tr><td><code>vercel</code></td><td>vercel cli</td><td><code>vercel.json</code></td></tr><tr><td><code>netlify</code></td><td>netlify cli</td><td><code>netlify.toml</code></td></tr></tbody></table>
+<p><strong>Note:</strong> Vercel and Netlify deployment require their respective CLI tools to be installed and authenticated. These platforms are implemented but less tested than Cloudflare Pages and GitHub Pages.</p> </main> </div> <footer class="site-footer" data-astro-cid-sz7xmlte> <div class="footer-content" data-astro-cid-sz7xmlte> <p data-astro-cid-sz7xmlte>Extenote is open source software. Built for researchers, writers, and content creators.</p> </div> <div class="theme-controls" data-astro-cid-sz7xmlte> <div class="theme-toggle" data-astro-cid-sz7xmlte> <span class="toggle-label" data-astro-cid-sz7xmlte>Mode:</span> <button class="toggle-btn" data-mode="light" id="mode-light" data-astro-cid-sz7xmlte>Light</button> <button class="toggle-btn" data-mode="dark" id="mode-dark" data-astro-cid-sz7xmlte>Dark</button> </div> <div class="theme-toggle" data-astro-cid-sz7xmlte> <span class="toggle-label" data-astro-cid-sz7xmlte>Style:</span> <button class="toggle-btn" data-aesthetic="classic" id="aesthetic-classic" data-astro-cid-sz7xmlte>Classic</button> <button class="toggle-btn" data-aesthetic="futuristic" id="aesthetic-futuristic" data-astro-cid-sz7xmlte>Cyber</button> </div> </div> </footer>    <div class="lightbox" id="lightbox" data-astro-cid-uadgga6g> <button class="lightbox-close" aria-label="Close" data-astro-cid-uadgga6g>&times;</button> <img src="" alt="" id="lightbox-img" data-astro-cid-uadgga6g> <div class="lightbox-hint" data-astro-cid-uadgga6g>Click anywhere or press Escape to close</div> </div>   </body></html>

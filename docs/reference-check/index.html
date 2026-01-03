@@ -1,0 +1,469 @@
+<!DOCTYPE html><html lang="en" data-mode="dark" data-aesthetic="classic"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Refcheck | Extenote</title><meta name="description" content="Extenote documentation: Refcheck"><meta property="og:type" content="website"><meta property="og:url" content="https://extenote.dev"><meta property="og:title" content="Refcheck | Extenote"><meta property="og:description" content="Extenote documentation: Refcheck"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Refcheck | Extenote"><meta name="twitter:description" content="Extenote documentation: Refcheck"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet"><script>
+      // Load theme preferences before render to prevent flash
+      (function() {
+        const mode = localStorage.getItem('theme-mode') || 'dark';
+        const aesthetic = localStorage.getItem('theme-aesthetic') || 'classic';
+        document.documentElement.setAttribute('data-mode', mode);
+        document.documentElement.setAttribute('data-aesthetic', aesthetic);
+      })();
+    </script><link rel="stylesheet" href="/extenote/_astro/_slug_.Cf4BF75M.css">
+<link rel="stylesheet" href="/extenote/_astro/_slug_.COSOcpGJ.css"><script type="module" src="/extenote/_astro/hoisted.BEvs-6yx.js"></script></head> <body>   <header class="top-nav"> <div class="brand"> <a href="/extenote">Extenote</a> </div> <div class="nav-ornament"></div> <nav class="nav-links"> <a href="/extenote">home</a> <span class="nav-dot"></span> <a href="/extenote/docs" aria-current="page">docs</a> <span class="nav-dot"></span> <a href="https://github.com/nickmvincent/extenote" target="_blank">github</a> </nav> </header> <div class="docs-layout" data-astro-cid-uadgga6g> <aside class="sidebar" data-astro-cid-uadgga6g> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Getting Started</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/index" class="sidebar-link " data-astro-cid-uadgga6g> Extenote Documentation </a><a href="/extenote/docs/quickstart" class="sidebar-link " data-astro-cid-uadgga6g> Quick Start </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Reference</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/cli" class="sidebar-link " data-astro-cid-uadgga6g> CLI Reference </a><a href="/extenote/docs/configuration" class="sidebar-link " data-astro-cid-uadgga6g> Configuration Reference </a><a href="/extenote/docs/architecture" class="sidebar-link " data-astro-cid-uadgga6g> Architecture Overview </a><a href="/extenote/docs/interfaces" class="sidebar-link " data-astro-cid-uadgga6g> Interface Comparison </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Features</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/web-ui" class="sidebar-link " data-astro-cid-uadgga6g> Web UI Gallery </a><a href="/extenote/docs/tags" class="sidebar-link " data-astro-cid-uadgga6g> Tags </a><a href="/extenote/docs/reference-check" class="sidebar-link active" data-astro-cid-uadgga6g> Refcheck </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Other</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/testing" class="sidebar-link " data-astro-cid-uadgga6g> Manual Testing Guide </a><a href="/extenote/docs/cross-project-linking" class="sidebar-link " data-astro-cid-uadgga6g> Cross-Project Linking </a><a href="/extenote/docs/known-issues" class="sidebar-link " data-astro-cid-uadgga6g> Known Issues </a> </nav> </div> </aside> <main class="content" data-astro-cid-uadgga6g> <a href="/extenote/docs" class="back-link" data-astro-cid-uadgga6g>← All Docs</a> <h1 id="refcheck">Refcheck</h1>
+<p>Refcheck verifies your bibliographic references against external academic databases to catch errors, find missing metadata, and ensure citation accuracy.</p>
+<h2 id="overview">Overview</h2>
+<p>The <code>refcheck</code> command looks up your bibtex entries in external APIs and compares the metadata. For each entry, it:</p>
+<ol>
+<li>Searches the provider’s API using DOI or title</li>
+<li>Compares local metadata against the remote source</li>
+<li>Reports matches and mismatches at the field level</li>
+<li>Stores detailed results in the <code>check_log</code> frontmatter field</li>
+</ol>
+<h2 id="refcheck-workflow-cli--clipper">Refcheck Workflow (CLI + Clipper)</h2>
+<p>Refcheck runs in two places: the CLI and the browser clipper extension. A typical flow is:</p>
+<ol>
+<li><strong>Clip a paper</strong> with the browser extension to create a <code>bibtex_entry</code></li>
+<li><strong>Pick the best source</strong> in the clipper (DBLP/Semantic Scholar by default; OpenAlex and Crossref optional)</li>
+<li><strong>Validate</strong> with <code>refcheck</code> in the CLI or use the clipper’s validation mode</li>
+<li><strong>Fix mismatches</strong> using values stored in <code>check_log</code></li>
+</ol>
+<p>If you’re using the clipper in download mode, move the saved markdown file into your vault before running <code>refcheck</code>. See <code>extensions/clipper/README.md</code> for installation and API mode setup.</p>
+<h2 id="usage">Usage</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Check all bibtex entries (uses 'auto' provider by default)</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> refcheck</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Check entries in a specific project</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> refcheck</span><span style="color:#9ECBFF"> shared-references</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Check a single file</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> refcheck</span><span style="color:#79B8FF"> --file</span><span style="color:#9ECBFF"> references/smith-2024.md</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Preview without updating files</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> refcheck</span><span style="color:#79B8FF"> --dry-run</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Re-check entries that were already checked</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> refcheck</span><span style="color:#79B8FF"> --force</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Use a specific provider</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> refcheck</span><span style="color:#79B8FF"> --provider</span><span style="color:#9ECBFF"> dblp</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> refcheck</span><span style="color:#79B8FF"> --provider</span><span style="color:#9ECBFF"> openalex</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Check only entries matching a path pattern</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> refcheck</span><span style="color:#79B8FF"> --filter</span><span style="color:#9ECBFF"> "references/2024/*"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Limit the number of entries to check</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> refcheck</span><span style="color:#79B8FF"> --limit</span><span style="color:#79B8FF"> 10</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Resume from a specific entry (if interrupted)</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> refcheck</span><span style="color:#79B8FF"> --start-from</span><span style="color:#9ECBFF"> smith2024</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Skip first N entries (alternative resume method)</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> refcheck</span><span style="color:#79B8FF"> --skip</span><span style="color:#79B8FF"> 50</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># List available providers</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> refcheck</span><span style="color:#79B8FF"> --list-providers</span></span>
+<span class="line"></span></code></pre>
+<h2 id="providers">Providers</h2>
+<h3 id="cli-providers">CLI providers</h3>
+<p>The CLI <code>refcheck</code> command supports:</p>
+<ul>
+<li><code>auto</code> (default): DBLP → Crossref → Semantic Scholar → OpenAlex</li>
+<li><code>dblp</code></li>
+<li><code>crossref</code></li>
+<li><code>s2</code> (Semantic Scholar)</li>
+<li><code>openalex</code></li>
+</ul>
+<h3 id="clipper-extension-sources">Clipper extension sources</h3>
+<p>The browser clipper searches DBLP and Semantic Scholar by default, with optional OpenAlex and Crossref toggles. When multiple sources return results, the clipper auto-selects the best match based on completeness rather than a fixed order.</p>
+<h3 id="dblp-cli--clipper">dblp (CLI + clipper)</h3>
+<p><a href="https://dblp.org">DBLP</a> is the computer science bibliography database. Best for:</p>
+<ul>
+<li>Computer science conference papers</li>
+<li>CS journal articles</li>
+<li>Papers with accurate BibTeX entries</li>
+</ul>
+<p>DBLP provides high-quality BibTeX that can be used to correct your entries.</p>
+<h3 id="s2-semantic-scholar-cli--clipper">s2 (Semantic Scholar, CLI + clipper)</h3>
+<p><a href="https://www.semanticscholar.org">Semantic Scholar</a> provides broad academic coverage with good abstracts. Best for:</p>
+<ul>
+<li>Papers across all academic fields</li>
+<li>Works with arXiv IDs or DOIs</li>
+<li>Access to citation data and abstracts</li>
+</ul>
+<h3 id="openalex-cli--clipper">openalex (CLI + clipper)</h3>
+<p><a href="https://openalex.org">OpenAlex</a> is an open catalog of 200M+ scholarly works. Best for:</p>
+<ul>
+<li>Papers across all academic disciplines</li>
+<li>Works with DOIs</li>
+<li>Comprehensive coverage with links to other databases</li>
+</ul>
+<h3 id="crossref-cli--clipper">crossref (CLI + clipper)</h3>
+<p><a href="https://www.crossref.org">Crossref</a> is the official DOI metadata registry. Best for:</p>
+<ul>
+<li>Any DOI-registered work</li>
+<li>Authoritative DOI metadata</li>
+<li>Fallback when other providers don’t have the paper</li>
+</ul>
+<h2 id="refcheck-status">Refcheck Status</h2>
+<p>Each checked entry receives one of these statuses:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Status</th><th>Meaning</th></tr></thead><tbody><tr><td><code>confirmed</code></td><td>All checked fields match the remote source</td></tr><tr><td><code>mismatch</code></td><td>One or more fields differ from the remote source</td></tr><tr><td><code>not_found</code></td><td>Paper was not found in the provider’s database</td></tr><tr><td><code>error</code></td><td>API error or processing error occurred</td></tr><tr><td><code>stale</code></td><td>Refcheck is older than 30 days (re-validate for freshness)</td></tr><tr><td><code>unchecked</code></td><td>Entry has never been validated</td></tr></tbody></table>
+<h2 id="mismatch-severity">Mismatch Severity</h2>
+<p>When a mismatch is detected, refcheck also classifies its <strong>severity</strong> to help you prioritize review:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Severity</th><th>Meaning</th><th>Examples</th></tr></thead><tbody><tr><td><code>minor</code></td><td>Likely a false positive, probably OK</td><td>Venue: “NeurIPS 2023” vs “arXiv”; Author initials differ; Year off by 1</td></tr><tr><td><code>major</code></td><td>Needs human review</td><td>Wrong authors (book review matched); DOI mismatch; Title differs</td></tr></tbody></table>
+<h3 id="minor-mismatches-likely-ok">Minor Mismatches (Likely OK)</h3>
+<p>These patterns are common and usually don’t indicate real errors:</p>
+<ul>
+<li><strong>Venue variations</strong>: Conference name vs arXiv preprint (e.g., “ICML 2023” vs “arXiv (Cornell University)”)</li>
+<li><strong>Author initials</strong>: “John Smith” vs “J. Smith” or “John D. Smith”</li>
+<li><strong>Year ±1</strong>: Preprint date vs publication date</li>
+</ul>
+<h3 id="major-mismatches-need-review">Major Mismatches (Need Review)</h3>
+<p>These patterns often indicate real issues:</p>
+<ul>
+<li><strong>Wrong authors</strong>: Last names don’t match (may have matched a book review instead of the book)</li>
+<li><strong>DOI mismatch</strong>: Different DOIs mean different papers</li>
+<li><strong>Title mismatch</strong>: Likely matched the wrong paper entirely</li>
+<li><strong>Book → journal</strong>: Publisher venue matched to a journal (book review problem)</li>
+</ul>
+<p>The CLI shows severity in its output:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>⚠ [mismatch:minor] smith2023   # Yellow - probably OK</span></span>
+<span class="line"><span>⚠ [mismatch:major] zuboff2019  # Red - needs review</span></span>
+<span class="line"><span></span></span></code></pre>
+<p>The web app Review page has filters for “Mismatches (major)” and “Mismatches (minor)” to help you focus on entries that need attention.</p>
+<h2 id="field-comparison">Field Comparison</h2>
+<p>Refcheck compares these fields when available in both local and remote:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Field</th><th>Comparison Method</th></tr></thead><tbody><tr><td><code>title</code></td><td>Normalized string match (ignores case, punctuation, diacritics)</td></tr><tr><td><code>authors</code></td><td>Count match + first/last name comparison for each author</td></tr><tr><td><code>year</code></td><td>Exact numeric match</td></tr><tr><td><code>venue</code></td><td>Normalized string match (journal/booktitle/conference)</td></tr><tr><td><code>doi</code></td><td>Normalized DOI match (strips <code>https://doi.org/</code> prefix)</td></tr></tbody></table>
+<h3 id="normalization">Normalization</h3>
+<p>String comparisons use normalization to handle minor differences:</p>
+<ul>
+<li>Case insensitive (<code>Deep Learning</code> = <code>deep learning</code>)</li>
+<li>Ignores diacritics (<code>Müller</code> = <code>Muller</code>)</li>
+<li>Ignores punctuation (<code>What's Next?</code> = <code>Whats Next</code>)</li>
+<li>Collapses whitespace</li>
+</ul>
+<p>When strings don’t match, refcheck reports the <strong>edit distance</strong> (Levenshtein distance) so you can gauge how different they are.</p>
+<h2 id="the-check_log-field">The check_log Field</h2>
+<p>After refcheck runs, the entry’s frontmatter is updated with a <code>check_log</code> field containing:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#85E89D">check_log</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">  checked_at</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"2024-01-15T10:30:00.000Z"</span></span>
+<span class="line"><span style="color:#85E89D">  checked_with</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">dblp</span></span>
+<span class="line"><span style="color:#85E89D">  status</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">mismatch</span></span>
+<span class="line"><span style="color:#85E89D">  paper_id</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">conf/neurips/SmithJ23</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#85E89D">  fields</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">    title</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">      local</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Deep Learing for NLP"</span></span>
+<span class="line"><span style="color:#85E89D">      remote</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Deep Learning for NLP"</span></span>
+<span class="line"><span style="color:#85E89D">      match</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">false</span></span>
+<span class="line"><span style="color:#85E89D">      edit_distance</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">2</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#85E89D">    authors</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">      local_count</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">2</span></span>
+<span class="line"><span style="color:#85E89D">      remote_count</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">2</span></span>
+<span class="line"><span style="color:#85E89D">      count_match</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#85E89D">    year</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">      local</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"2023"</span></span>
+<span class="line"><span style="color:#85E89D">      remote</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"2024"</span></span>
+<span class="line"><span style="color:#85E89D">      match</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">false</span></span>
+<span class="line"><span style="color:#85E89D">      year_diff</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">1</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#85E89D">  remote</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">    title</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Deep Learning for NLP"</span></span>
+<span class="line"><span style="color:#85E89D">    authors</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">      - </span><span style="color:#9ECBFF">"John Smith"</span></span>
+<span class="line"><span style="color:#E1E4E8">      - </span><span style="color:#9ECBFF">"Jane A. Doe"</span></span>
+<span class="line"><span style="color:#85E89D">    year</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">2024</span></span>
+<span class="line"><span style="color:#85E89D">    venue</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Advances in Neural Information Processing Systems"</span></span>
+<span class="line"><span style="color:#85E89D">    doi</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"10.1234/example"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#85E89D">  external_bibtex</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">    source</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">dblp</span></span>
+<span class="line"><span style="color:#85E89D">    bibtex</span><span style="color:#E1E4E8">: </span><span style="color:#F97583">|</span></span>
+<span class="line"><span style="color:#9ECBFF">      @inproceedings{DBLP:conf/neurips/SmithJ23,</span></span>
+<span class="line"><span style="color:#9ECBFF">        author    = {John Smith and Jane A. Doe},</span></span>
+<span class="line"><span style="color:#9ECBFF">        title     = {Deep Learning for NLP},</span></span>
+<span class="line"><span style="color:#9ECBFF">        booktitle = {NeurIPS},</span></span>
+<span class="line"><span style="color:#9ECBFF">        year      = {2024}</span></span>
+<span class="line"><span style="color:#9ECBFF">      }</span></span>
+<span class="line"><span style="color:#85E89D">    fetched_at</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"2024-01-15T10:30:00.000Z"</span></span>
+<span class="line"></span></code></pre>
+<h3 id="using-check_log-to-fix-entries">Using check_log to Fix Entries</h3>
+<p>The <code>remote</code> section contains the provider’s values, making it easy to copy the correct data:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#6A737D"># Before (with typo)</span></span>
+<span class="line"><span style="color:#85E89D">title</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Deep Learing for NLP"</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># After (corrected from check_log.remote.title)</span></span>
+<span class="line"><span style="color:#85E89D">title</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Deep Learning for NLP"</span></span>
+<span class="line"></span></code></pre>
+<p>The <code>external_bibtex</code> section (when available from DBLP) provides a complete BibTeX entry you can use as a reference.</p>
+<h2 id="best-practices">Best Practices</h2>
+<ol>
+<li>
+<p><strong>Run with <code>--dry-run</code> first</strong> to see what would be changed without modifying files</p>
+</li>
+<li>
+<p><strong>Refcheck by project</strong> to focus on specific reference sets:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> refcheck</span><span style="color:#9ECBFF"> shared-references</span><span style="color:#79B8FF"> --dry-run</span></span>
+<span class="line"></span></code></pre>
+</li>
+<li>
+<p><strong>Use <code>--force</code> sparingly</strong> - only re-check when you’ve made corrections or want fresh data</p>
+</li>
+<li>
+<p><strong>Review mismatches carefully</strong> - not all differences are errors:</p>
+<ul>
+<li>Venue names vary (abbreviations vs full names)</li>
+<li>Author middle names may differ</li>
+<li>Year might be publication vs online date</li>
+</ul>
+</li>
+<li>
+<p><strong>Trust but verify</strong> - external APIs aren’t perfect:</p>
+<ul>
+<li>DBLP focuses on CS, may not have other disciplines</li>
+<li>OpenAlex has broader coverage but may have less accurate metadata</li>
+</ul>
+</li>
+</ol>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="no-bibtex-entries-found-to-refcheck"><code>No bibtex entries found to refcheck</code></h3>
+<p>Entries must have <code>type: bibtex_entry</code> in their frontmatter to be checked.</p>
+<h3 id="paper-not-found">”Paper not found”</h3>
+<p>Refcheck uses DOI (if available) or title to search. If neither produces a match:</p>
+<ul>
+<li>Verify the DOI is correct</li>
+<li>Try a different provider</li>
+<li>The paper may not be in the database</li>
+</ul>
+<h3 id="rate-limiting">Rate Limiting</h3>
+<p>Refcheck includes automatic rate limiting (250ms between API calls) to avoid overloading providers. For large batches, use <code>--limit</code> to refcheck in smaller groups, or use <code>--skip</code>/<code>--start-from</code> to resume interrupted runs.</p>
+<h2 id="re-checking-and-staleness">Re-checking and Staleness</h2>
+<h3 id="how-re-checking-works">How Re-checking Works</h3>
+<p>By default, the refcheck command <strong>skips entries that already have a <code>check_log</code></strong>. This prevents unnecessary API calls and preserves your verification history.</p>
+<p>To re-check entries:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Re-check all entries, overwriting existing check_log</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> refcheck</span><span style="color:#79B8FF"> --force</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Re-check a specific file</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> refcheck</span><span style="color:#79B8FF"> --file</span><span style="color:#9ECBFF"> references/smith-2024.md</span><span style="color:#79B8FF"> --force</span></span>
+<span class="line"></span></code></pre>
+<h3 id="when-to-re-check">When to Re-check</h3>
+<p>Re-check entries when:</p>
+<ul>
+<li>You’ve corrected metadata (fixed a typo, added DOI)</li>
+<li>The original refcheck failed (<code>error</code> status)</li>
+<li>The refcheck is stale (older than 30 days)</li>
+<li>You want to try a different provider</li>
+</ul>
+<h3 id="stale-checks">Stale Checks</h3>
+<p>Checks older than 30 days are marked as <code>stale</code>. This doesn’t mean they’re wrong - external databases rarely change existing records. Staleness is a soft reminder that you might want fresh data.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#6A737D"># Example stale check_log</span></span>
+<span class="line"><span style="color:#85E89D">check_log</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">  checked_at</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"2024-10-15T10:30:00.000Z"</span><span style="color:#6A737D">  # More than 30 days ago</span></span>
+<span class="line"><span style="color:#85E89D">  status</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">stale</span><span style="color:#6A737D">  # Automatically computed, not stored</span></span>
+<span class="line"></span></code></pre>
+<h2 id="auto-mode-provider-selection">Auto Mode Provider Selection</h2>
+<p>The CLI <code>auto</code> provider (default) tries providers in order until one succeeds:</p>
+<ol>
+<li><strong>DBLP</strong> - Tried first, best for computer science</li>
+<li><strong>Crossref</strong> - DOI-based lookup, good for published works</li>
+<li><strong>Semantic Scholar</strong> - Broad academic coverage</li>
+<li><strong>OpenAlex</strong> - Broader coverage across fields</li>
+</ol>
+<p>The clipper evaluates DBLP and Semantic Scholar (plus optional OpenAlex/Crossref) and picks the most complete result rather than following a fixed order.</p>
+<p>“Succeeds” means the provider found a matching paper - even if fields mismatch. The CLI stops at the first provider that returns a result, so:</p>
+<ul>
+<li>A CS paper will typically be checked against DBLP</li>
+<li>A paper with a DOI might match in Crossref</li>
+<li>Other papers might fall through to Semantic Scholar or OpenAlex</li>
+</ul>
+<p>The <code>checked_with</code> field records which provider was used:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#85E89D">check_log</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">  checked_with</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"auto:dblp"</span><span style="color:#6A737D">      # Auto mode, matched in DBLP</span></span>
+<span class="line"><span style="color:#85E89D">  checked_with</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"auto:crossref"</span><span style="color:#6A737D">  # Auto mode, matched in Crossref</span></span>
+<span class="line"><span style="color:#85E89D">  checked_with</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"auto:s2"</span><span style="color:#6A737D">        # Auto mode, matched in Semantic Scholar</span></span>
+<span class="line"><span style="color:#85E89D">  checked_with</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"auto:openalex"</span><span style="color:#6A737D">  # Auto mode, matched in OpenAlex</span></span>
+<span class="line"><span style="color:#85E89D">  checked_with</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"dblp"</span><span style="color:#6A737D">           # Explicit provider selection</span></span>
+<span class="line"></span></code></pre>
+<h2 id="viewing-refcheck-status">Viewing Refcheck Status</h2>
+<h3 id="in-the-web-app">In the Web App</h3>
+<p>On each reference’s detail page, you’ll see a verification badge showing:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Badge</th><th>Meaning</th></tr></thead><tbody><tr><td>✓ Confirmed</td><td>All checked fields match the external database</td></tr><tr><td>⚠ Needs review - N fields differ</td><td>Some fields differ (see list below)</td></tr><tr><td>? Not found</td><td>Paper wasn’t in the database</td></tr><tr><td>✗ Refcheck failed</td><td>API error occurred</td></tr><tr><td>↻ Stale</td><td>Refcheck is older than 30 days</td></tr><tr><td>○ Not yet checked</td><td>Entry hasn’t been verified</td></tr></tbody></table>
+<p>For mismatches, the badge shows which fields differ (title, authors, year, venue, doi). Scroll down to compare the “Local Entry” and “From [source]” BibTeX side-by-side.</p>
+<h3 id="in-the-markdown-files">In the Markdown Files</h3>
+<p>The full details are stored in the <code>check_log</code> frontmatter field:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#85E89D">check_log</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">  checked_at</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"2024-01-15T10:30:00.000Z"</span></span>
+<span class="line"><span style="color:#85E89D">  checked_with</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"auto:dblp"</span></span>
+<span class="line"><span style="color:#85E89D">  status</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">mismatch</span></span>
+<span class="line"><span style="color:#85E89D">  paper_id</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">conf/neurips/SmithJ23</span></span>
+<span class="line"><span style="color:#85E89D">  fields</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">    title</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">      local</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Deep Learing for NLP"</span></span>
+<span class="line"><span style="color:#85E89D">      remote</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Deep Learning for NLP"</span></span>
+<span class="line"><span style="color:#85E89D">      match</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">false</span></span>
+<span class="line"><span style="color:#85E89D">      edit_distance</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">2</span></span>
+<span class="line"><span style="color:#85E89D">    year</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">      local</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"2023"</span></span>
+<span class="line"><span style="color:#85E89D">      remote</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"2024"</span></span>
+<span class="line"><span style="color:#85E89D">      match</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">false</span></span>
+<span class="line"><span style="color:#85E89D">  remote</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">    title</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Deep Learning for NLP"</span></span>
+<span class="line"><span style="color:#85E89D">    authors</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">"John Smith"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"Jane Doe"</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#85E89D">    year</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">2024</span></span>
+<span class="line"></span></code></pre>
+<h3 id="interpreting-mismatches">Interpreting Mismatches</h3>
+<p>Not all mismatches are errors. Common benign differences:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Field</th><th>Common Reason</th></tr></thead><tbody><tr><td><code>venue</code></td><td>Abbreviation vs full name (“NeurIPS” vs “Advances in Neural Information Processing Systems”)</td></tr><tr><td><code>authors</code></td><td>Middle initials, name order, diacritics (“François” vs “Francois”)</td></tr><tr><td><code>year</code></td><td>Online publication date vs print date</td></tr><tr><td><code>title</code></td><td>Trailing period in database (“Title.” vs “Title”)</td></tr></tbody></table>
+<p>The <code>edit_distance</code> helps gauge severity - distance of 1-2 usually indicates minor formatting differences.</p>
+<h2 id="manual-verification">Manual Verification</h2>
+<p>For entries that can’t be automatically verified (books, technical reports, websites), add a <code>manually_verified</code> field:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#85E89D">manually_verified</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">  verified_at</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"2024-12-28T00:00:00.000Z"</span></span>
+<span class="line"><span style="color:#85E89D">  verified_by</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">human</span></span>
+<span class="line"><span style="color:#85E89D">  notes</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Verified against publisher website"</span></span>
+<span class="line"><span style="color:#85E89D">canonical_source</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">  url</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"https://example.com/book"</span></span>
+<span class="line"><span style="color:#85E89D">  title</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"The Book Title"</span></span>
+<span class="line"><span style="color:#85E89D">  accessed_at</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"2024-12-28"</span></span>
+<span class="line"></span></code></pre>
+<p>This will display a “Manually verified” badge in the web app.</p> </main> </div> <footer class="site-footer" data-astro-cid-sz7xmlte> <div class="footer-content" data-astro-cid-sz7xmlte> <p data-astro-cid-sz7xmlte>Extenote is open source software. Built for researchers, writers, and content creators.</p> </div> <div class="theme-controls" data-astro-cid-sz7xmlte> <div class="theme-toggle" data-astro-cid-sz7xmlte> <span class="toggle-label" data-astro-cid-sz7xmlte>Mode:</span> <button class="toggle-btn" data-mode="light" id="mode-light" data-astro-cid-sz7xmlte>Light</button> <button class="toggle-btn" data-mode="dark" id="mode-dark" data-astro-cid-sz7xmlte>Dark</button> </div> <div class="theme-toggle" data-astro-cid-sz7xmlte> <span class="toggle-label" data-astro-cid-sz7xmlte>Style:</span> <button class="toggle-btn" data-aesthetic="classic" id="aesthetic-classic" data-astro-cid-sz7xmlte>Classic</button> <button class="toggle-btn" data-aesthetic="futuristic" id="aesthetic-futuristic" data-astro-cid-sz7xmlte>Cyber</button> </div> </div> </footer>    <div class="lightbox" id="lightbox" data-astro-cid-uadgga6g> <button class="lightbox-close" aria-label="Close" data-astro-cid-uadgga6g>&times;</button> <img src="" alt="" id="lightbox-img" data-astro-cid-uadgga6g> <div class="lightbox-hint" data-astro-cid-uadgga6g>Click anywhere or press Escape to close</div> </div>   </body></html>

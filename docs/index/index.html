@@ -1,0 +1,110 @@
+<!DOCTYPE html><html lang="en" data-mode="dark" data-aesthetic="classic"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Extenote Documentation | Extenote</title><meta name="description" content="Extenote documentation: Extenote Documentation"><meta property="og:type" content="website"><meta property="og:url" content="https://extenote.dev"><meta property="og:title" content="Extenote Documentation | Extenote"><meta property="og:description" content="Extenote documentation: Extenote Documentation"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Extenote Documentation | Extenote"><meta name="twitter:description" content="Extenote documentation: Extenote Documentation"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet"><script>
+      // Load theme preferences before render to prevent flash
+      (function() {
+        const mode = localStorage.getItem('theme-mode') || 'dark';
+        const aesthetic = localStorage.getItem('theme-aesthetic') || 'classic';
+        document.documentElement.setAttribute('data-mode', mode);
+        document.documentElement.setAttribute('data-aesthetic', aesthetic);
+      })();
+    </script><link rel="stylesheet" href="/extenote/_astro/_slug_.Cf4BF75M.css">
+<link rel="stylesheet" href="/extenote/_astro/_slug_.COSOcpGJ.css"><script type="module" src="/extenote/_astro/hoisted.BEvs-6yx.js"></script></head> <body>   <header class="top-nav"> <div class="brand"> <a href="/extenote">Extenote</a> </div> <div class="nav-ornament"></div> <nav class="nav-links"> <a href="/extenote">home</a> <span class="nav-dot"></span> <a href="/extenote/docs" aria-current="page">docs</a> <span class="nav-dot"></span> <a href="https://github.com/nickmvincent/extenote" target="_blank">github</a> </nav> </header> <div class="docs-layout" data-astro-cid-uadgga6g> <aside class="sidebar" data-astro-cid-uadgga6g> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Getting Started</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/index" class="sidebar-link active" data-astro-cid-uadgga6g> Extenote Documentation </a><a href="/extenote/docs/quickstart" class="sidebar-link " data-astro-cid-uadgga6g> Quick Start </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Reference</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/cli" class="sidebar-link " data-astro-cid-uadgga6g> CLI Reference </a><a href="/extenote/docs/configuration" class="sidebar-link " data-astro-cid-uadgga6g> Configuration Reference </a><a href="/extenote/docs/architecture" class="sidebar-link " data-astro-cid-uadgga6g> Architecture Overview </a><a href="/extenote/docs/interfaces" class="sidebar-link " data-astro-cid-uadgga6g> Interface Comparison </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Features</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/web-ui" class="sidebar-link " data-astro-cid-uadgga6g> Web UI Gallery </a><a href="/extenote/docs/tags" class="sidebar-link " data-astro-cid-uadgga6g> Tags </a><a href="/extenote/docs/reference-check" class="sidebar-link " data-astro-cid-uadgga6g> Refcheck </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Other</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/testing" class="sidebar-link " data-astro-cid-uadgga6g> Manual Testing Guide </a><a href="/extenote/docs/cross-project-linking" class="sidebar-link " data-astro-cid-uadgga6g> Cross-Project Linking </a><a href="/extenote/docs/known-issues" class="sidebar-link " data-astro-cid-uadgga6g> Known Issues </a> </nav> </div> </aside> <main class="content" data-astro-cid-uadgga6g> <a href="/extenote/docs" class="back-link" data-astro-cid-uadgga6g>← All Docs</a> <h1 id="extenote">Extenote</h1>
+<p><strong>Extenote</strong> = <strong>Exte</strong>rnalized <strong>Note</strong>s — notes that live outside any particular institution, laptop, or software.</p>
+<h2 id="why-externalized-notes">Why Externalized Notes?</h2>
+<p>Your content should outlive your current job, your current laptop, and your current software. Academics often find themselves going to their own personal website to find their papers — proof that externalized content is more durable than anything locked in institutional systems.</p>
+<p>Notion workspaces disappear when you leave a company. Local files get lost in laptop transitions. Extenote gives you a structured, schema-validated vault of markdown files that you control, with multiple sync targets (git repos, static sites, ATProto) so your knowledge persists.</p>
+<h2 id="what-extenote-does">What Extenote Does</h2>
+<p><strong>One vault, many outputs.</strong> Write structured markdown once, publish everywhere:</p>
+<ul>
+<li>Personal websites (Astro, Quarto, or any SSG)</li>
+<li>Blogs and mini-books</li>
+<li>Annotated bibliographies with verified references</li>
+<li>Federated platforms (ATProto/Semble)</li>
+</ul>
+<p><strong>Schema validation without lock-in.</strong> Your content stays in plain markdown with YAML frontmatter — readable by any tool, easy to work with programmatically, perfect for AI-assisted workflows. Extenote validates against schemas, catches errors, and exports to multiple formats.</p>
+<p><strong>SSG scaffolding, not another SSG.</strong> Instead of building bespoke static site generators, Extenote wraps established tools (Astro, Quarto) with a consistent build/deploy workflow. When the next great SSG arrives, add it as a build target — your content stays the same.</p>
+<p><strong>Verified bibliographies.</strong> The refcheck system validates citations against DBLP, Semantic Scholar, OpenAlex, and Crossref. Catch hallucinated metadata, fix preprint-vs-published mismatches, and show verification status publicly.</p>
+<h2 id="who-its-for">Who It’s For</h2>
+<ul>
+<li><strong>Academics</strong> managing research bibliographies, CVs, and publications across institutions</li>
+<li><strong>Technical bloggers</strong> who want structured content without bespoke tooling</li>
+<li><strong>Knowledge workers</strong> who like Obsidian-style vaults but want more structure and portability</li>
+<li><strong>Anyone</strong> who wants their notes to outlive their current setup</li>
+</ul>
+<h2 id="getting-started">Getting Started</h2>
+<ul>
+<li><a href="/extenote/docs/quickstart">QUICKSTART.md</a> - Setup, workflow, and command reference</li>
+<li><a href="/extenote/docs/cli">CLI.md</a> - Complete CLI reference
+<ul>
+<li><code>extenote init</code> - Project setup wizard</li>
+<li><code>extenote doctor</code> - Diagnose configuration issues</li>
+<li><code>extenote undo</code> - Undo destructive operations</li>
+<li>Tag management, refcheck, export commands</li>
+</ul>
+</li>
+</ul>
+<h2 id="reference">Reference</h2>
+<ul>
+<li><a href="/extenote/docs/configuration">CONFIGURATION.md</a> - Project and schema configuration</li>
+<li><a href="/extenote/docs/architecture">ARCHITECTURE.md</a> - System architecture, key concepts (vault vs project vs object)</li>
+<li><a href="/extenote/docs/interfaces">INTERFACES.md</a> - CLI vs TUI vs Web comparison</li>
+<li><a href="/extenote/docs/web-ui">WEB-UI.md</a> - Web interface screenshots and guide</li>
+<li><a href="/extenote/docs/faq">FAQ.md</a> - Frequently asked questions</li>
+<li><a href="/extenote/docs/known-issues">KNOWN_ISSUES.md</a> - Limitations and workarounds</li>
+</ul>
+<h2 id="testing">Testing</h2>
+<ul>
+<li><a href="/extenote/docs/testing">TESTING.md</a> - Manual testing guide</li>
+</ul>
+<h2 id="features">Features</h2>
+<ul>
+<li><a href="/extenote/docs/cross-project-linking">CROSS-PROJECT-LINKING.md</a> - Link content across projects
+<ul>
+<li><code>citation_key</code> - Link papers to bibtex entries in shared-references</li>
+<li><code>archive_ref</code> - Link blog stubs to full content in archives</li>
+<li>Single source of truth pattern</li>
+</ul>
+</li>
+<li><a href="/extenote/docs/computed-data">COMPUTED-DATA.md</a> - Dynamically derived data
+<ul>
+<li><code>cited_in</code> - Which projects cite each reference</li>
+<li>Cross-references, tag index, vault summary</li>
+<li>Computed vs persisted tradeoffs</li>
+</ul>
+</li>
+<li><a href="/extenote/docs/discussions">DISCUSSIONS.md</a> - Discussion &#x26; Network systems
+<ul>
+<li><strong>Discussion</strong>: Create discussion threads on GitHub and WhiteWind (ATProto)</li>
+<li><strong>Network</strong>: Generate visible discussions pages for Quarto and Astro static sites</li>
+<li><em>Roadmap: Leaflet, Google Docs</em></li>
+</ul>
+</li>
+<li><a href="/extenote/docs/tags">TAGS.md</a> - Tag management and organization
+<ul>
+<li>Simple and hierarchical tags</li>
+<li>Web UI for rename, merge, delete operations</li>
+<li>CLI tag commands</li>
+<li>Semble collection integration</li>
+</ul>
+</li>
+<li><a href="/extenote/docs/reference-check">REFERENCE-CHECK.md</a> - Refcheck (bibliographic reference verification)
+<ul>
+<li>Refcheck references against DBLP, Crossref, Semantic Scholar, and OpenAlex</li>
+<li>Field-by-field comparison with edit distance</li>
+<li>Detailed check_log in frontmatter</li>
+</ul>
+</li>
+<li><a href="/extenote/docs/clipper">CLIPPER.md</a> - Browser clipper extension
+<ul>
+<li>Capture references from any website</li>
+<li>Validate existing vault entries against live API data</li>
+<li>Multi-source search with auto-selection</li>
+</ul>
+</li>
+<li><strong>Semble Sync</strong> (see <a href="/extenote/docs/configuration#semble-sync-configuration">CONFIGURATION.md#semble-sync-configuration</a>)
+<ul>
+<li>Bidirectional sync with <a href="https://semble.app">Semble</a> (ATProto-based research network, very WIP)</li>
+<li>Push local references as URL/NOTE cards, pull cards as markdown objects</li>
+<li>Change detection, conflict resolution, collection management</li>
+</ul>
+</li>
+</ul> </main> </div> <footer class="site-footer" data-astro-cid-sz7xmlte> <div class="footer-content" data-astro-cid-sz7xmlte> <p data-astro-cid-sz7xmlte>Extenote is open source software. Built for researchers, writers, and content creators.</p> </div> <div class="theme-controls" data-astro-cid-sz7xmlte> <div class="theme-toggle" data-astro-cid-sz7xmlte> <span class="toggle-label" data-astro-cid-sz7xmlte>Mode:</span> <button class="toggle-btn" data-mode="light" id="mode-light" data-astro-cid-sz7xmlte>Light</button> <button class="toggle-btn" data-mode="dark" id="mode-dark" data-astro-cid-sz7xmlte>Dark</button> </div> <div class="theme-toggle" data-astro-cid-sz7xmlte> <span class="toggle-label" data-astro-cid-sz7xmlte>Style:</span> <button class="toggle-btn" data-aesthetic="classic" id="aesthetic-classic" data-astro-cid-sz7xmlte>Classic</button> <button class="toggle-btn" data-aesthetic="futuristic" id="aesthetic-futuristic" data-astro-cid-sz7xmlte>Cyber</button> </div> </div> </footer>    <div class="lightbox" id="lightbox" data-astro-cid-uadgga6g> <button class="lightbox-close" aria-label="Close" data-astro-cid-uadgga6g>&times;</button> <img src="" alt="" id="lightbox-img" data-astro-cid-uadgga6g> <div class="lightbox-hint" data-astro-cid-uadgga6g>Click anywhere or press Escape to close</div> </div>   </body></html>

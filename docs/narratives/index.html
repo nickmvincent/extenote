@@ -1,0 +1,61 @@
+<!DOCTYPE html><html lang="en" data-mode="dark" data-aesthetic="classic"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Narrative Tests | Extenote</title><meta name="description" content="Extenote documentation: Narrative Tests"><meta property="og:type" content="website"><meta property="og:url" content="https://extenote.dev"><meta property="og:title" content="Narrative Tests | Extenote"><meta property="og:description" content="Extenote documentation: Narrative Tests"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Narrative Tests | Extenote"><meta name="twitter:description" content="Extenote documentation: Narrative Tests"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet"><script>
+      // Load theme preferences before render to prevent flash
+      (function() {
+        const mode = localStorage.getItem('theme-mode') || 'dark';
+        const aesthetic = localStorage.getItem('theme-aesthetic') || 'classic';
+        document.documentElement.setAttribute('data-mode', mode);
+        document.documentElement.setAttribute('data-aesthetic', aesthetic);
+      })();
+    </script><link rel="stylesheet" href="/extenote/_astro/_slug_.Cf4BF75M.css">
+<link rel="stylesheet" href="/extenote/_astro/_slug_.COSOcpGJ.css"><script type="module" src="/extenote/_astro/hoisted.BEvs-6yx.js"></script></head> <body>   <header class="top-nav"> <div class="brand"> <a href="/extenote">Extenote</a> </div> <div class="nav-ornament"></div> <nav class="nav-links"> <a href="/extenote">home</a> <span class="nav-dot"></span> <a href="/extenote/docs" aria-current="page">docs</a> <span class="nav-dot"></span> <a href="https://github.com/nickmvincent/extenote" target="_blank">github</a> </nav> </header> <div class="docs-layout" data-astro-cid-uadgga6g> <aside class="sidebar" data-astro-cid-uadgga6g> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Getting Started</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/index" class="sidebar-link " data-astro-cid-uadgga6g> Extenote Documentation </a><a href="/extenote/docs/quickstart" class="sidebar-link " data-astro-cid-uadgga6g> Quick Start </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Reference</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/cli" class="sidebar-link " data-astro-cid-uadgga6g> CLI Reference </a><a href="/extenote/docs/configuration" class="sidebar-link " data-astro-cid-uadgga6g> Configuration Reference </a><a href="/extenote/docs/architecture" class="sidebar-link " data-astro-cid-uadgga6g> Architecture Overview </a><a href="/extenote/docs/interfaces" class="sidebar-link " data-astro-cid-uadgga6g> Interface Comparison </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Features</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/web-ui" class="sidebar-link " data-astro-cid-uadgga6g> Web UI Gallery </a><a href="/extenote/docs/tags" class="sidebar-link " data-astro-cid-uadgga6g> Tags </a><a href="/extenote/docs/reference-check" class="sidebar-link " data-astro-cid-uadgga6g> Refcheck </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Other</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/testing" class="sidebar-link " data-astro-cid-uadgga6g> Manual Testing Guide </a><a href="/extenote/docs/cross-project-linking" class="sidebar-link " data-astro-cid-uadgga6g> Cross-Project Linking </a><a href="/extenote/docs/known-issues" class="sidebar-link " data-astro-cid-uadgga6g> Known Issues </a> </nav> </div> </aside> <main class="content" data-astro-cid-uadgga6g> <a href="/extenote/docs" class="back-link" data-astro-cid-uadgga6g>← All Docs</a> <h1 id="narrative-tests">Narrative Tests</h1>
+<p>Learn how Extenote works by walking through annotated test cases. Each narrative explains a feature through the tests that validate it.</p>
+<h2 id="coverage">Coverage</h2>
+<p><strong>54</strong> of <strong>617</strong> tests (9%) are documented in narratives across <strong>13</strong> topics.</p>
+<p>Narratives are organized by feature area, starting with foundational concepts (validation, string matching) and building toward higher-level features (cross-references, exports).</p>
+<h2 id="check">Check</h2>
+<p><em>Reference verification and metadata matching</em></p>
+<ul>
+<li><a href="/extenote/docs/narratives/check-string-normalization">String Normalization for Matching</a> (3 steps) - When comparing academic metadata (titles, authors, venues), Extenote normalizes strings to handle variations in formatting, diacritics, and whitespace.</li>
+<li><a href="/extenote/docs/narratives/check-author-parsing">Author Name Parsing</a> (3 steps) - Academic papers use different author name formats: “Smith, John” (BibTeX style) vs “John Smith” (natural style).</li>
+</ul>
+<h2 id="validation">Validation</h2>
+<p><em>Schema and field validation</em></p>
+<ul>
+<li><a href="/extenote/docs/narratives/validation-schema-basics">Schema Validation Basics</a> (11 steps) - Learn how Extenote validates objects against their schemas.</li>
+</ul>
+<h2 id="crossref">Crossref</h2>
+<p><em>Links, citations, and backlinks</em></p>
+<ul>
+<li><a href="/extenote/docs/narratives/crossref-wiki-links">Wiki Link Parsing</a> (4 steps) - Wiki links connect your notes together using [[double-bracket]] syntax.</li>
+<li><a href="/extenote/docs/narratives/crossref-citations">Citation Parsing</a> (3 steps) - Extenote supports academic citation syntax similar to Pandoc and Quarto.</li>
+<li><a href="/extenote/docs/narratives/crossref-backlinks">Backlinks and Cross-References</a> (3 steps) - Extenote automatically computes bidirectional links between your content.</li>
+</ul>
+<h2 id="tags">Tags</h2>
+<p><em>Hierarchical tag management</em></p>
+<ul>
+<li><a href="/extenote/docs/narratives/tags-tree-structure">Building the Tag Tree</a> (3 steps) - Extenote organizes tags into a hierarchical tree.</li>
+</ul>
+<h2 id="lint">Lint</h2>
+<p><em>Content linting rules</em></p>
+<ul>
+<li><a href="/extenote/docs/narratives/lint-visibility">Content Linting</a> (5 steps) - Extenote validates your content against configurable rules.</li>
+</ul>
+<h2 id="export">Export</h2>
+<p><em>Exporting to external formats</em></p>
+<ul>
+<li><a href="/extenote/docs/narratives/export-bibtex">BibTeX Export</a> (4 steps) - Export your bibliography entries to standard BibTeX format for use with LaTeX, citation managers, and other academic tools.</li>
+</ul>
+<h2 id="refcheck">Refcheck</h2>
+<p><em>Verifying references against DBLP and OpenAlex</em></p>
+<ul>
+<li><a href="/extenote/docs/narratives/refcheck-field-comparison">Reference Field Comparison</a> (4 steps) - When verifying your bibliography against DBLP or OpenAlex, Extenote compares each field (title, authors, year, venue) individually.</li>
+<li><a href="/extenote/docs/narratives/refcheck-author-comparison">Author List Comparison</a> (4 steps) - Comparing author lists is tricky because names appear in different formats: “John Smith”, “Smith, John”, “J.</li>
+<li><a href="/extenote/docs/narratives/refcheck-page-matching">Page-to-Bibliography Matching</a> (4 steps) - When you visit an academic paper online, Extenote checks if it’s already in your bibliography.</li>
+</ul>
+<h2 id="backup">Backup</h2>
+<p><em>Undo and backup system</em></p>
+<ul>
+<li><a href="/extenote/docs/narratives/backup-undo-system">Backup and Undo System</a> (3 steps) - Every destructive operation in Extenote (tag renames, deletes, merges) creates a backup first.</li>
+</ul>
+<hr>
+<p><em>These documents are generated from test annotations. Run <code>bun run generate:narratives</code> to regenerate.</em></p> </main> </div> <footer class="site-footer" data-astro-cid-sz7xmlte> <div class="footer-content" data-astro-cid-sz7xmlte> <p data-astro-cid-sz7xmlte>Extenote is open source software. Built for researchers, writers, and content creators.</p> </div> <div class="theme-controls" data-astro-cid-sz7xmlte> <div class="theme-toggle" data-astro-cid-sz7xmlte> <span class="toggle-label" data-astro-cid-sz7xmlte>Mode:</span> <button class="toggle-btn" data-mode="light" id="mode-light" data-astro-cid-sz7xmlte>Light</button> <button class="toggle-btn" data-mode="dark" id="mode-dark" data-astro-cid-sz7xmlte>Dark</button> </div> <div class="theme-toggle" data-astro-cid-sz7xmlte> <span class="toggle-label" data-astro-cid-sz7xmlte>Style:</span> <button class="toggle-btn" data-aesthetic="classic" id="aesthetic-classic" data-astro-cid-sz7xmlte>Classic</button> <button class="toggle-btn" data-aesthetic="futuristic" id="aesthetic-futuristic" data-astro-cid-sz7xmlte>Cyber</button> </div> </div> </footer>    <div class="lightbox" id="lightbox" data-astro-cid-uadgga6g> <button class="lightbox-close" aria-label="Close" data-astro-cid-uadgga6g>&times;</button> <img src="" alt="" id="lightbox-img" data-astro-cid-uadgga6g> <div class="lightbox-hint" data-astro-cid-uadgga6g>Click anywhere or press Escape to close</div> </div>   </body></html>

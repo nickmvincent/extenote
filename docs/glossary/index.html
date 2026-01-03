@@ -1,0 +1,99 @@
+<!DOCTYPE html><html lang="en" data-mode="dark" data-aesthetic="classic"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Glossary | Extenote</title><meta name="description" content="Extenote documentation: Glossary"><meta property="og:type" content="website"><meta property="og:url" content="https://extenote.dev"><meta property="og:title" content="Glossary | Extenote"><meta property="og:description" content="Extenote documentation: Glossary"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Glossary | Extenote"><meta name="twitter:description" content="Extenote documentation: Glossary"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet"><script>
+      // Load theme preferences before render to prevent flash
+      (function() {
+        const mode = localStorage.getItem('theme-mode') || 'dark';
+        const aesthetic = localStorage.getItem('theme-aesthetic') || 'classic';
+        document.documentElement.setAttribute('data-mode', mode);
+        document.documentElement.setAttribute('data-aesthetic', aesthetic);
+      })();
+    </script><link rel="stylesheet" href="/extenote/_astro/_slug_.Cf4BF75M.css">
+<link rel="stylesheet" href="/extenote/_astro/_slug_.COSOcpGJ.css"><script type="module" src="/extenote/_astro/hoisted.BEvs-6yx.js"></script></head> <body>   <header class="top-nav"> <div class="brand"> <a href="/extenote">Extenote</a> </div> <div class="nav-ornament"></div> <nav class="nav-links"> <a href="/extenote">home</a> <span class="nav-dot"></span> <a href="/extenote/docs" aria-current="page">docs</a> <span class="nav-dot"></span> <a href="https://github.com/nickmvincent/extenote" target="_blank">github</a> </nav> </header> <div class="docs-layout" data-astro-cid-uadgga6g> <aside class="sidebar" data-astro-cid-uadgga6g> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Getting Started</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/index" class="sidebar-link " data-astro-cid-uadgga6g> Extenote Documentation </a><a href="/extenote/docs/quickstart" class="sidebar-link " data-astro-cid-uadgga6g> Quick Start </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Reference</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/cli" class="sidebar-link " data-astro-cid-uadgga6g> CLI Reference </a><a href="/extenote/docs/configuration" class="sidebar-link " data-astro-cid-uadgga6g> Configuration Reference </a><a href="/extenote/docs/architecture" class="sidebar-link " data-astro-cid-uadgga6g> Architecture Overview </a><a href="/extenote/docs/interfaces" class="sidebar-link " data-astro-cid-uadgga6g> Interface Comparison </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Features</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/web-ui" class="sidebar-link " data-astro-cid-uadgga6g> Web UI Gallery </a><a href="/extenote/docs/tags" class="sidebar-link " data-astro-cid-uadgga6g> Tags </a><a href="/extenote/docs/reference-check" class="sidebar-link " data-astro-cid-uadgga6g> Refcheck </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Other</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/testing" class="sidebar-link " data-astro-cid-uadgga6g> Manual Testing Guide </a><a href="/extenote/docs/cross-project-linking" class="sidebar-link " data-astro-cid-uadgga6g> Cross-Project Linking </a><a href="/extenote/docs/known-issues" class="sidebar-link " data-astro-cid-uadgga6g> Known Issues </a> </nav> </div> </aside> <main class="content" data-astro-cid-uadgga6g> <a href="/extenote/docs" class="back-link" data-astro-cid-uadgga6g>← All Docs</a> <h1 id="glossary">Glossary</h1>
+<p>Quick reference for extenote terminology.</p>
+<h2 id="core-concepts">Core Concepts</h2>
+<p><strong>Object</strong>
+: A single markdown file with YAML frontmatter. The atomic unit of content in extenote. Each object has a <code>type</code> field that determines its schema.
+: Example: <code>shared-references/bibtex-entries/Smith2024.md</code></p>
+<p><strong>Vault</strong>
+: A directory containing objects. Vaults are the physical storage for content.
+: Example: <code>extenote-pub/content/shared-references/</code></p>
+<p><strong>Project</strong>
+: A YAML configuration file that defines sources (which vaults to read), schemas (validation rules), build settings, and deployment targets. Projects tie content to outputs.
+: Example: <code>extenote/projects/shared-references.yaml</code></p>
+<p><strong>Schema</strong>
+: A YAML file defining the valid fields and types for objects of a given <code>type</code>. Schemas enable validation and typed content.
+: Example: <code>extenote/schemas/bibtex_entry.yaml</code></p>
+<h2 id="content-terms">Content Terms</h2>
+<p><strong>Frontmatter</strong>
+: The YAML block at the top of a markdown file (between <code>---</code> markers). Contains metadata like <code>title</code>, <code>type</code>, <code>visibility</code>, <code>tags</code>, etc.</p>
+<p><strong>Type</strong>
+: The <code>type</code> field in frontmatter determines which schema validates the object. Common types: <code>doc</code>, <code>bibtex_entry</code>, <code>blog_post</code>, <code>memo</code>.</p>
+<p><strong>Visibility</strong>
+: Controls whether content is public or private. Set via <code>visibility: public</code> or <code>visibility: private</code> in frontmatter. Projects define <code>defaultVisibility</code>.</p>
+<p><strong>Tags</strong>
+: Hierarchical labels for organizing content. Can be simple (<code>ml-methods</code>) or namespaced (<code>collection:data-leverage</code>). Defined in frontmatter as a list.</p>
+<p><strong>Citation Key</strong>
+: A unique identifier for bibliographic entries (bibtex_entry type). Usually <code>AuthorYear</code> format. Used for cross-references.</p>
+<h2 id="project-configuration">Project Configuration</h2>
+<p><strong>Sources</strong>
+: The <code>sources</code> block in a project config defines where to load content from. Each source has an <code>id</code>, <code>type</code> (usually <code>local</code>), <code>root</code> path, and <code>include</code> patterns.</p>
+<p><strong>Includes</strong>
+: Projects can include other projects via the <code>includes</code> block. This pulls in content from other vaults (e.g., <code>shared-references</code> for citations).</p>
+<p><strong>Build</strong>
+: The <code>build</code> block defines how to generate a website from content. Specifies <code>websiteDir</code>, <code>type</code> (astro/quarto), and <code>preRender</code> steps.</p>
+<p><strong>Deploy</strong>
+: The <code>deploy</code> block specifies where to publish the built site. Supports <code>cloudflare-pages</code>, <code>github-pages</code>, <code>ftp</code>, etc.</p>
+<h2 id="operations">Operations</h2>
+<p><strong>Lint</strong>
+: Validate content against schemas and project rules. Run with <code>bun run cli -- lint &#x3C;project></code>.</p>
+<p><strong>Refcheck</strong>
+: Verify bibliographic entries against external sources (DBLP, OpenAlex, Semantic Scholar). Run with <code>bun run cli -- refcheck &#x3C;project></code>.</p>
+<p><strong>Export</strong>
+: Output content in different formats (JSON, BibTeX). Run with <code>bun run cli -- export &#x3C;project></code>.</p>
+<p><strong>Sync</strong>
+: Push content to external platforms like Semble (ATProto). Configured via <code>semble</code> block in project config.</p>
+<h2 id="interfaces">Interfaces</h2>
+<p><strong>CLI</strong>
+: Command-line interface for all extenote operations. Lives in <code>packages/cli/</code>.</p>
+<p><strong>Web UI</strong>
+: Browser-based interface for browsing and editing content. Lives in <code>packages/web/</code>.</p>
+<p><strong>TUI</strong>
+: Terminal user interface (text-based UI in the terminal). Lives in <code>packages/tui/</code>.</p>
+<h2 id="file-locations">File Locations</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>What</th><th>Where</th></tr></thead><tbody><tr><td>Project configs</td><td><code>extenote/projects/*.yaml</code></td></tr><tr><td>Schemas</td><td><code>extenote/schemas/*.yaml</code></td></tr><tr><td>CLI code</td><td><code>extenote/packages/cli/src/</code></td></tr><tr><td>Core library</td><td><code>extenote/packages/core/src/</code></td></tr><tr><td>Public content</td><td><code>extenote-pub/content/</code></td></tr><tr><td>Private content</td><td><code>extenote-priv/</code></td></tr><tr><td>Website code</td><td><code>extenote-pub/websites/</code></td></tr></tbody></table> </main> </div> <footer class="site-footer" data-astro-cid-sz7xmlte> <div class="footer-content" data-astro-cid-sz7xmlte> <p data-astro-cid-sz7xmlte>Extenote is open source software. Built for researchers, writers, and content creators.</p> </div> <div class="theme-controls" data-astro-cid-sz7xmlte> <div class="theme-toggle" data-astro-cid-sz7xmlte> <span class="toggle-label" data-astro-cid-sz7xmlte>Mode:</span> <button class="toggle-btn" data-mode="light" id="mode-light" data-astro-cid-sz7xmlte>Light</button> <button class="toggle-btn" data-mode="dark" id="mode-dark" data-astro-cid-sz7xmlte>Dark</button> </div> <div class="theme-toggle" data-astro-cid-sz7xmlte> <span class="toggle-label" data-astro-cid-sz7xmlte>Style:</span> <button class="toggle-btn" data-aesthetic="classic" id="aesthetic-classic" data-astro-cid-sz7xmlte>Classic</button> <button class="toggle-btn" data-aesthetic="futuristic" id="aesthetic-futuristic" data-astro-cid-sz7xmlte>Cyber</button> </div> </div> </footer>    <div class="lightbox" id="lightbox" data-astro-cid-uadgga6g> <button class="lightbox-close" aria-label="Close" data-astro-cid-uadgga6g>&times;</button> <img src="" alt="" id="lightbox-img" data-astro-cid-uadgga6g> <div class="lightbox-hint" data-astro-cid-uadgga6g>Click anywhere or press Escape to close</div> </div>   </body></html>

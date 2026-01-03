@@ -1,0 +1,188 @@
+<!DOCTYPE html><html lang="en" data-mode="dark" data-aesthetic="classic"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>BibTeX Export | Extenote</title><meta name="description" content="Extenote documentation: BibTeX Export"><meta property="og:type" content="website"><meta property="og:url" content="https://extenote.dev"><meta property="og:title" content="BibTeX Export | Extenote"><meta property="og:description" content="Extenote documentation: BibTeX Export"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="BibTeX Export | Extenote"><meta name="twitter:description" content="Extenote documentation: BibTeX Export"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet"><script>
+      // Load theme preferences before render to prevent flash
+      (function() {
+        const mode = localStorage.getItem('theme-mode') || 'dark';
+        const aesthetic = localStorage.getItem('theme-aesthetic') || 'classic';
+        document.documentElement.setAttribute('data-mode', mode);
+        document.documentElement.setAttribute('data-aesthetic', aesthetic);
+      })();
+    </script><link rel="stylesheet" href="/extenote/_astro/_slug_.Cf4BF75M.css">
+<link rel="stylesheet" href="/extenote/_astro/_slug_.COSOcpGJ.css"><script type="module" src="/extenote/_astro/hoisted.BEvs-6yx.js"></script></head> <body>   <header class="top-nav"> <div class="brand"> <a href="/extenote">Extenote</a> </div> <div class="nav-ornament"></div> <nav class="nav-links"> <a href="/extenote">home</a> <span class="nav-dot"></span> <a href="/extenote/docs" aria-current="page">docs</a> <span class="nav-dot"></span> <a href="https://github.com/nickmvincent/extenote" target="_blank">github</a> </nav> </header> <div class="docs-layout" data-astro-cid-uadgga6g> <aside class="sidebar" data-astro-cid-uadgga6g> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Getting Started</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/index" class="sidebar-link " data-astro-cid-uadgga6g> Extenote Documentation </a><a href="/extenote/docs/quickstart" class="sidebar-link " data-astro-cid-uadgga6g> Quick Start </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Reference</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/cli" class="sidebar-link " data-astro-cid-uadgga6g> CLI Reference </a><a href="/extenote/docs/configuration" class="sidebar-link " data-astro-cid-uadgga6g> Configuration Reference </a><a href="/extenote/docs/architecture" class="sidebar-link " data-astro-cid-uadgga6g> Architecture Overview </a><a href="/extenote/docs/interfaces" class="sidebar-link " data-astro-cid-uadgga6g> Interface Comparison </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Features</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/web-ui" class="sidebar-link " data-astro-cid-uadgga6g> Web UI Gallery </a><a href="/extenote/docs/tags" class="sidebar-link " data-astro-cid-uadgga6g> Tags </a><a href="/extenote/docs/reference-check" class="sidebar-link " data-astro-cid-uadgga6g> Refcheck </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Other</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/testing" class="sidebar-link " data-astro-cid-uadgga6g> Manual Testing Guide </a><a href="/extenote/docs/cross-project-linking" class="sidebar-link " data-astro-cid-uadgga6g> Cross-Project Linking </a><a href="/extenote/docs/known-issues" class="sidebar-link " data-astro-cid-uadgga6g> Known Issues </a> </nav> </div> </aside> <main class="content" data-astro-cid-uadgga6g> <a href="/extenote/docs" class="back-link" data-astro-cid-uadgga6g>← All Docs</a> <h1 id="bibtex-export">BibTeX Export</h1>
+<p>Export your bibliography entries to standard BibTeX format for use with LaTeX, citation managers, and other academic tools. Extenote converts your markdown frontmatter into properly formatted .bib entries.</p>
+<h2 id="step-1-creates-referencesbib-file">Step 1: creates references.bib file</h2>
+<p>The exporter creates a references.bib file containing all your bibtex_entry objects. Each entry includes standard BibTeX fields like title, author, and year.</p>
+<p><strong>Test:</strong> <code>creates references.bib file</code>
+<strong>File:</strong> <code>packages/core/tests/bibtex.test.ts:70</code></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="typescript"><code><span class="line"><span style="color:#B392F0">it</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"creates references.bib file"</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">async</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> outputDir</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> path.</span><span style="color:#B392F0">join</span><span style="color:#E1E4E8">(tmpDir, </span><span style="color:#9ECBFF">"basic-output"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> object</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> buildBibtexObject</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">      id: </span><span style="color:#9ECBFF">"smith2024"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      frontmatter: {</span></span>
+<span class="line"><span style="color:#E1E4E8">        entry_type: </span><span style="color:#9ECBFF">"article"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        citation_key: </span><span style="color:#9ECBFF">"smith2024"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        title: </span><span style="color:#9ECBFF">"A Test Article"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        authors: [</span><span style="color:#9ECBFF">"John Smith"</span><span style="color:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#E1E4E8">        year: </span><span style="color:#79B8FF">2024</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      },</span></span>
+<span class="line"><span style="color:#E1E4E8">    });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> options</span><span style="color:#F97583">:</span><span style="color:#B392F0"> ExportOptions</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">      format: </span><span style="color:#9ECBFF">"bibtex"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      outputDir,</span></span>
+<span class="line"><span style="color:#E1E4E8">      objects: [object],</span></span>
+<span class="line"><span style="color:#E1E4E8">      config: baseConfig,</span></span>
+<span class="line"><span style="color:#E1E4E8">      schemas: [baseSchema],</span></span>
+<span class="line"><span style="color:#E1E4E8">    };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> result</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#B392F0"> exportBibtex</span><span style="color:#E1E4E8">(options);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">    expect</span><span style="color:#E1E4E8">(result.format).</span><span style="color:#B392F0">toBe</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"bibtex"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#B392F0">    expect</span><span style="color:#E1E4E8">(result.files.</span><span style="color:#79B8FF">length</span><span style="color:#E1E4E8">).</span><span style="color:#B392F0">toBe</span><span style="color:#E1E4E8">(</span><span style="color:#79B8FF">1</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#B392F0">    expect</span><span style="color:#E1E4E8">(result.files[</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">]).</span><span style="color:#B392F0">toContain</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"references.bib"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> content</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> fs.</span><span style="color:#B392F0">readFile</span><span style="color:#E1E4E8">(result.files[</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">], </span><span style="color:#9ECBFF">"utf8"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#B392F0">    expect</span><span style="color:#E1E4E8">(content).</span><span style="color:#B392F0">toContain</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"@article{smith2024"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#B392F0">    expect</span><span style="color:#E1E4E8">(content).</span><span style="color:#B392F0">toContain</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"title = {A Test Article}"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#B392F0">    expect</span><span style="color:#E1E4E8">(content).</span><span style="color:#B392F0">toContain</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"author = {John Smith}"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#B392F0">    expect</span><span style="color:#E1E4E8">(content).</span><span style="color:#B392F0">toContain</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"year = {2024}"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">  });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">  /**</span></span>
+<span class="line"><span style="color:#6A737D">   * @narrative-step 2</span></span>
+<span class="line"><span style="color:#6A737D">   * </span><span style="color:#F97583">@explanation</span><span style="color:#6A737D"> Only objects with type "bibtex_entry" are exported. Other content</span></span>
+<span class="line"><span style="color:#6A737D">   * types like notes or blog posts are automatically filtered out.</span></span>
+<span class="line"><span style="color:#6A737D">   */</span></span>
+<span class="line"><span style="color:#B392F0">  it</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"filters to only bibtex_entry type objects"</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">async</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> outputDir</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> path.</span><span style="color:#B392F0">join</span><span style="color:#E1E4E8">(tmpDir, </span><span style="color:#9ECBFF">"filter-output"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> bibObject</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> buildBibtexObject</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">      id: </span><span style="color:#9ECBFF">"bib-entry"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      frontmatter: { title: </span><span style="color:#9ECBFF">"BibTeX Entry"</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">    });</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> noteObject</span><span style="color:#F97583">:</span><span style="color:#B392F0"> VaultObject</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">      id: </span><span style="color:#9ECBFF">"note-entry"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      type: </span><span style="color:#9ECBFF">"note"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      sourceId: </span><span style="color:#9ECBFF">"local"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      project: </span><span style="color:#9ECBFF">"default"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"></span></code></pre>
+<h2 id="step-2-filters-to-only-bibtex_entry-type-objects">Step 2: filters to only bibtex_entry type objects</h2>
+<p>Only objects with type “bibtex_entry” are exported. Other content types like notes or blog posts are automatically filtered out.</p>
+<p><strong>Test:</strong> <code>filters to only bibtex_entry type objects</code>
+<strong>File:</strong> <code>packages/core/tests/bibtex.test.ts:109</code></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="typescript"><code><span class="line"><span style="color:#B392F0">it</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"filters to only bibtex_entry type objects"</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">async</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> outputDir</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> path.</span><span style="color:#B392F0">join</span><span style="color:#E1E4E8">(tmpDir, </span><span style="color:#9ECBFF">"filter-output"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> bibObject</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> buildBibtexObject</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">      id: </span><span style="color:#9ECBFF">"bib-entry"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      frontmatter: { title: </span><span style="color:#9ECBFF">"BibTeX Entry"</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">    });</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> noteObject</span><span style="color:#F97583">:</span><span style="color:#B392F0"> VaultObject</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">      id: </span><span style="color:#9ECBFF">"note-entry"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      type: </span><span style="color:#9ECBFF">"note"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      sourceId: </span><span style="color:#9ECBFF">"local"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      project: </span><span style="color:#9ECBFF">"default"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      filePath: </span><span style="color:#9ECBFF">"/tmp/note.md"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      relativePath: </span><span style="color:#9ECBFF">"note.md"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      frontmatter: { type: </span><span style="color:#9ECBFF">"note"</span><span style="color:#E1E4E8">, title: </span><span style="color:#9ECBFF">"A Note"</span><span style="color:#E1E4E8"> },</span></span>
+<span class="line"><span style="color:#E1E4E8">      body: </span><span style="color:#9ECBFF">""</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      mtime: Date.</span><span style="color:#B392F0">now</span><span style="color:#E1E4E8">(),</span></span>
+<span class="line"><span style="color:#E1E4E8">      visibility: </span><span style="color:#9ECBFF">"public"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">    };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> options</span><span style="color:#F97583">:</span><span style="color:#B392F0"> ExportOptions</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">      format: </span><span style="color:#9ECBFF">"bibtex"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      outputDir,</span></span>
+<span class="line"><span style="color:#E1E4E8">      objects: [bibObject, noteObject],</span></span>
+<span class="line"><span style="color:#E1E4E8">      config: baseConfig,</span></span>
+<span class="line"><span style="color:#E1E4E8">      schemas: [baseSchema],</span></span>
+<span class="line"><span style="color:#E1E4E8">    };</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> result</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#B392F0"> exportBibtex</span><span style="color:#E1E4E8">(options);</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> content</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> fs.</span><span style="color:#B392F0">readFile</span><span style="color:#E1E4E8">(result.files[</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">], </span><span style="color:#9ECBFF">"utf8"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">    expect</span><span style="color:#E1E4E8">(content).</span><span style="color:#B392F0">toContain</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"bib-entry"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#B392F0">    expect</span><span style="color:#E1E4E8">(content).not.</span><span style="color:#B392F0">toContain</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"note-entry"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#B392F0">    expect</span><span style="color:#E1E4E8">(content).not.</span><span style="color:#B392F0">toContain</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"A Note"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">  });</span></span>
+<span class="line"></span></code></pre>
+<h2 id="step-3-exports-article-with-journal-field">Step 3: exports article with journal field</h2>
+<p>The “venue” field in your frontmatter is mapped to the appropriate BibTeX field: “journal” for articles, “booktitle” for conference papers.</p>
+<p><strong>Test:</strong> <code>exports article with journal field</code>
+<strong>File:</strong> <code>packages/core/tests/bibtex.test.ts:149</code></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="typescript"><code><span class="line"><span style="color:#B392F0">it</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"exports article with journal field"</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">async</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> outputDir</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> path.</span><span style="color:#B392F0">join</span><span style="color:#E1E4E8">(tmpDir, </span><span style="color:#9ECBFF">"article-journal"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> object</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> buildBibtexObject</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">      id: </span><span style="color:#9ECBFF">"article1"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      frontmatter: {</span></span>
+<span class="line"><span style="color:#E1E4E8">        entry_type: </span><span style="color:#9ECBFF">"article"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        title: </span><span style="color:#9ECBFF">"Journal Article"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        venue: </span><span style="color:#9ECBFF">"Nature"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        year: </span><span style="color:#79B8FF">2023</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      },</span></span>
+<span class="line"><span style="color:#E1E4E8">    });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> result</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#B392F0"> exportBibtex</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">      format: </span><span style="color:#9ECBFF">"bibtex"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      outputDir,</span></span>
+<span class="line"><span style="color:#E1E4E8">      objects: [object],</span></span>
+<span class="line"><span style="color:#E1E4E8">      config: baseConfig,</span></span>
+<span class="line"><span style="color:#E1E4E8">      schemas: [baseSchema],</span></span>
+<span class="line"><span style="color:#E1E4E8">    });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> content</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> fs.</span><span style="color:#B392F0">readFile</span><span style="color:#E1E4E8">(result.files[</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">], </span><span style="color:#9ECBFF">"utf8"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#B392F0">    expect</span><span style="color:#E1E4E8">(content).</span><span style="color:#B392F0">toContain</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"@article{"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#B392F0">    expect</span><span style="color:#E1E4E8">(content).</span><span style="color:#B392F0">toContain</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"journal = {Nature}"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">  });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#B392F0">  it</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"exports inproceedings with booktitle field"</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">async</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> outputDir</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> path.</span><span style="color:#B392F0">join</span><span style="color:#E1E4E8">(tmpDir, </span><span style="color:#9ECBFF">"inproceedings"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> object</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> buildBibtexObject</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">      id: </span><span style="color:#9ECBFF">"conf1"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      frontmatter: {</span></span>
+<span class="line"><span style="color:#E1E4E8">        entry_type: </span><span style="color:#9ECBFF">"inproceedings"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        title: </span><span style="color:#9ECBFF">"Conference Paper"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        venue: </span><span style="color:#9ECBFF">"ICML 2024"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        year: </span><span style="color:#79B8FF">2024</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      },</span></span>
+<span class="line"><span style="color:#E1E4E8">    });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> result</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#B392F0"> exportBibtex</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">      format: </span><span style="color:#9ECBFF">"bibtex"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      outputDir,</span></span>
+<span class="line"><span style="color:#E1E4E8">      objects: [object],</span></span>
+<span class="line"><span style="color:#E1E4E8">      config: baseConfig,</span></span>
+<span class="line"><span style="color:#E1E4E8">      schemas: [baseSchema],</span></span>
+<span class="line"><span style="color:#E1E4E8">    });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> content</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> fs.</span><span style="color:#B392F0">readFile</span><span style="color:#E1E4E8">(result.files[</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">], </span><span style="color:#9ECBFF">"utf8"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#B392F0">    expect</span><span style="color:#E1E4E8">(content).</span><span style="color:#B392F0">toContain</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"@inproceedings{"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#B392F0">    expect</span><span style="color:#E1E4E8">(content).</span><span style="color:#B392F0">toContain</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"booktitle = {ICML 2024}"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">  });</span></span>
+<span class="line"></span></code></pre>
+<h2 id="step-4-formats-multiple-authors-with-and-separator">Step 4: formats multiple authors with ‘and’ separator</h2>
+<p>Author lists are automatically formatted with “and” separators as required by BibTeX. You can list authors as an array in your frontmatter.</p>
+<p><strong>Test:</strong> <code>formats multiple authors with 'and' separator</code>
+<strong>File:</strong> <code>packages/core/tests/bibtex.test.ts:204</code></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="typescript"><code><span class="line"><span style="color:#B392F0">it</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"formats multiple authors with 'and' separator"</span><span style="color:#E1E4E8">, </span><span style="color:#F97583">async</span><span style="color:#E1E4E8"> () </span><span style="color:#F97583">=></span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> outputDir</span><span style="color:#F97583"> =</span><span style="color:#E1E4E8"> path.</span><span style="color:#B392F0">join</span><span style="color:#E1E4E8">(tmpDir, </span><span style="color:#9ECBFF">"multi-author"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> object</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> buildBibtexObject</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">      id: </span><span style="color:#9ECBFF">"multi"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      frontmatter: {</span></span>
+<span class="line"><span style="color:#E1E4E8">        entry_type: </span><span style="color:#9ECBFF">"article"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        title: </span><span style="color:#9ECBFF">"Collaborative Work"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">        authors: [</span><span style="color:#9ECBFF">"Alice Smith"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"Bob Jones"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"Carol White"</span><span style="color:#E1E4E8">],</span></span>
+<span class="line"><span style="color:#E1E4E8">      },</span></span>
+<span class="line"><span style="color:#E1E4E8">    });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> result</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#B392F0"> exportBibtex</span><span style="color:#E1E4E8">({</span></span>
+<span class="line"><span style="color:#E1E4E8">      format: </span><span style="color:#9ECBFF">"bibtex"</span><span style="color:#E1E4E8">,</span></span>
+<span class="line"><span style="color:#E1E4E8">      outputDir,</span></span>
+<span class="line"><span style="color:#E1E4E8">      objects: [object],</span></span>
+<span class="line"><span style="color:#E1E4E8">      config: baseConfig,</span></span>
+<span class="line"><span style="color:#E1E4E8">      schemas: [baseSchema],</span></span>
+<span class="line"><span style="color:#E1E4E8">    });</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#F97583">    const</span><span style="color:#79B8FF"> content</span><span style="color:#F97583"> =</span><span style="color:#F97583"> await</span><span style="color:#E1E4E8"> fs.</span><span style="color:#B392F0">readFile</span><span style="color:#E1E4E8">(result.files[</span><span style="color:#79B8FF">0</span><span style="color:#E1E4E8">], </span><span style="color:#9ECBFF">"utf8"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#B392F0">    expect</span><span style="color:#E1E4E8">(content).</span><span style="color:#B392F0">toContain</span><span style="color:#E1E4E8">(</span><span style="color:#9ECBFF">"author = {Alice Smith and Bob Jones and Carol White}"</span><span style="color:#E1E4E8">);</span></span>
+<span class="line"><span style="color:#E1E4E8">  });</span></span>
+<span class="line"></span></code></pre>
+<hr>
+<p><em>This documentation is generated from test annotations. Edit the source test file to update.</em></p> </main> </div> <footer class="site-footer" data-astro-cid-sz7xmlte> <div class="footer-content" data-astro-cid-sz7xmlte> <p data-astro-cid-sz7xmlte>Extenote is open source software. Built for researchers, writers, and content creators.</p> </div> <div class="theme-controls" data-astro-cid-sz7xmlte> <div class="theme-toggle" data-astro-cid-sz7xmlte> <span class="toggle-label" data-astro-cid-sz7xmlte>Mode:</span> <button class="toggle-btn" data-mode="light" id="mode-light" data-astro-cid-sz7xmlte>Light</button> <button class="toggle-btn" data-mode="dark" id="mode-dark" data-astro-cid-sz7xmlte>Dark</button> </div> <div class="theme-toggle" data-astro-cid-sz7xmlte> <span class="toggle-label" data-astro-cid-sz7xmlte>Style:</span> <button class="toggle-btn" data-aesthetic="classic" id="aesthetic-classic" data-astro-cid-sz7xmlte>Classic</button> <button class="toggle-btn" data-aesthetic="futuristic" id="aesthetic-futuristic" data-astro-cid-sz7xmlte>Cyber</button> </div> </div> </footer>    <div class="lightbox" id="lightbox" data-astro-cid-uadgga6g> <button class="lightbox-close" aria-label="Close" data-astro-cid-uadgga6g>&times;</button> <img src="" alt="" id="lightbox-img" data-astro-cid-uadgga6g> <div class="lightbox-hint" data-astro-cid-uadgga6g>Click anywhere or press Escape to close</div> </div>   </body></html>

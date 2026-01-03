@@ -1,0 +1,186 @@
+<!DOCTYPE html><html lang="en" data-mode="dark" data-aesthetic="classic"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Computed Data | Extenote</title><meta name="description" content="Extenote documentation: Computed Data"><meta property="og:type" content="website"><meta property="og:url" content="https://extenote.dev"><meta property="og:title" content="Computed Data | Extenote"><meta property="og:description" content="Extenote documentation: Computed Data"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Computed Data | Extenote"><meta name="twitter:description" content="Extenote documentation: Computed Data"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet"><script>
+      // Load theme preferences before render to prevent flash
+      (function() {
+        const mode = localStorage.getItem('theme-mode') || 'dark';
+        const aesthetic = localStorage.getItem('theme-aesthetic') || 'classic';
+        document.documentElement.setAttribute('data-mode', mode);
+        document.documentElement.setAttribute('data-aesthetic', aesthetic);
+      })();
+    </script><link rel="stylesheet" href="/extenote/_astro/_slug_.Cf4BF75M.css">
+<link rel="stylesheet" href="/extenote/_astro/_slug_.COSOcpGJ.css"><script type="module" src="/extenote/_astro/hoisted.BEvs-6yx.js"></script></head> <body>   <header class="top-nav"> <div class="brand"> <a href="/extenote">Extenote</a> </div> <div class="nav-ornament"></div> <nav class="nav-links"> <a href="/extenote">home</a> <span class="nav-dot"></span> <a href="/extenote/docs" aria-current="page">docs</a> <span class="nav-dot"></span> <a href="https://github.com/nickmvincent/extenote" target="_blank">github</a> </nav> </header> <div class="docs-layout" data-astro-cid-uadgga6g> <aside class="sidebar" data-astro-cid-uadgga6g> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Getting Started</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/index" class="sidebar-link " data-astro-cid-uadgga6g> Extenote Documentation </a><a href="/extenote/docs/quickstart" class="sidebar-link " data-astro-cid-uadgga6g> Quick Start </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Reference</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/cli" class="sidebar-link " data-astro-cid-uadgga6g> CLI Reference </a><a href="/extenote/docs/configuration" class="sidebar-link " data-astro-cid-uadgga6g> Configuration Reference </a><a href="/extenote/docs/architecture" class="sidebar-link " data-astro-cid-uadgga6g> Architecture Overview </a><a href="/extenote/docs/interfaces" class="sidebar-link " data-astro-cid-uadgga6g> Interface Comparison </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Features</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/web-ui" class="sidebar-link " data-astro-cid-uadgga6g> Web UI Gallery </a><a href="/extenote/docs/tags" class="sidebar-link " data-astro-cid-uadgga6g> Tags </a><a href="/extenote/docs/reference-check" class="sidebar-link " data-astro-cid-uadgga6g> Refcheck </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Other</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/testing" class="sidebar-link " data-astro-cid-uadgga6g> Manual Testing Guide </a><a href="/extenote/docs/cross-project-linking" class="sidebar-link " data-astro-cid-uadgga6g> Cross-Project Linking </a><a href="/extenote/docs/known-issues" class="sidebar-link " data-astro-cid-uadgga6g> Known Issues </a> </nav> </div> </aside> <main class="content" data-astro-cid-uadgga6g> <a href="/extenote/docs" class="back-link" data-astro-cid-uadgga6g>← All Docs</a> <h1 id="computed-data">Computed Data</h1>
+<p>Extenote derives certain data dynamically from your vault content. This page explains what gets computed, when it’s computed, and how to choose between dynamic computation and persisted values.</p>
+<h2 id="computed-vs-persisted">Computed vs Persisted</h2>
+<p>Some data can be either:</p>
+<ul>
+<li><strong>Computed on-demand</strong>: Calculated fresh each time it’s needed</li>
+<li><strong>Persisted</strong>: Saved to frontmatter via CLI commands, then read back</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Data Type</th><th>Computed</th><th>Persisted</th><th>Notes</th></tr></thead><tbody><tr><td>cited_in</td><td><code>computeCitedIn()</code></td><td><code>sync-citations</code></td><td>Which projects cite each bibtex entry</td></tr><tr><td>cross-refs</td><td><code>computeAllCrossRefs()</code></td><td>-</td><td>Wikilinks and backlinks</td></tr><tr><td>tag index</td><td><code>buildTagTree()</code></td><td>-</td><td>All tags and their objects</td></tr><tr><td>project membership</td><td><code>objectBelongsToProject()</code></td><td>-</td><td>Which objects belong to each project</td></tr><tr><td>vault summary</td><td><code>summarizeVault()</code></td><td>-</td><td>Object counts, issues, etc.</td></tr></tbody></table>
+<h2 id="when-to-use-each-approach">When to Use Each Approach</h2>
+<h3 id="dynamic-computation">Dynamic Computation</h3>
+<ul>
+<li><strong>Small vaults</strong>: Computation is fast enough</li>
+<li><strong>Always fresh</strong>: No risk of stale data</li>
+<li><strong>Read-only use</strong>: Viewing, searching, querying</li>
+</ul>
+<h3 id="persisted-values">Persisted Values</h3>
+<ul>
+<li><strong>Large vaults</strong>: Avoid re-computing on every load</li>
+<li><strong>Static builds</strong>: Generate data once, use in builds</li>
+<li><strong>Audit trails</strong>: Track what was computed and when</li>
+</ul>
+<h2 id="computation-details">Computation Details</h2>
+<h3 id="cited_in-citation-tracking">cited_in (Citation Tracking)</h3>
+<p>Scans all projects that include <code>shared-references</code> for Pandoc/Quarto citations (<code>[@key]</code>) and builds a reverse index.</p>
+<p><strong>Dynamic</strong>: <code>computeCitedIn(objects, config)</code> returns <code>CitedInMap</code> with:</p>
+<ul>
+<li><code>citedIn: Map&#x3C;string, string[]></code> - citation_key → [project1, project2, …]</li>
+<li><code>totalCitations: number</code></li>
+<li><code>scannedProjects: string[]</code></li>
+</ul>
+<p><strong>Persist</strong>: <code>extenote sync-citations</code> writes <code>cited_in</code> field to each bibtex entry.</p>
+<h3 id="cross-references-wikilinks">Cross-References (Wikilinks)</h3>
+<p>Parses <code>[[wikilinks]]</code> in document bodies and builds forward/backward reference maps.</p>
+<p><strong>Dynamic only</strong>: <code>computeAllCrossRefs(objects)</code> returns refs per object.</p>
+<p>Uses <code>parseWikiLinks()</code> to extract links, <code>buildObjectIndex()</code> for ID lookups.</p>
+<h3 id="tag-index">Tag Index</h3>
+<p>Builds a tree structure of all tags with their objects.</p>
+<p><strong>Dynamic only</strong>:</p>
+<ul>
+<li><code>getAllTags(objects)</code> - flat list of all tags</li>
+<li><code>buildTagTree(objects)</code> - hierarchical tree with counts</li>
+</ul>
+<p>Tags support namespaces via <code>:</code> (e.g., <code>collection:data-leverage</code>).</p>
+<h3 id="project-membership">Project Membership</h3>
+<p>Determines which objects belong to each project based on source configuration and includes.</p>
+<p><strong>Dynamic only</strong>: <code>objectBelongsToProject(obj, projectName, config)</code> checks:</p>
+<ol>
+<li>Object’s <code>sourceId</code> matches project sources</li>
+<li>Object type matches project includes</li>
+</ol>
+<h3 id="vault-summary">Vault Summary</h3>
+<p>Aggregates statistics about the vault.</p>
+<p><strong>Dynamic only</strong>: <code>summarizeVault(vault)</code> returns:</p>
+<ul>
+<li>Total object count by type</li>
+<li>Public/private/unlisted counts</li>
+<li>Issue counts by severity</li>
+<li>Project breakdowns</li>
+</ul>
+<h2 id="web-ui-computed-data-view">Web UI: Computed Data View</h2>
+<p>The web app’s status page shows:</p>
+<ul>
+<li>Last vault load time</li>
+<li>Computation times for each derived data type</li>
+<li>Memory usage</li>
+<li>Option to recompute specific data</li>
+</ul>
+<p>Access via the “System” or “Status” menu item.</p>
+<h2 id="performance-considerations">Performance Considerations</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Operation</th><th>Typical Time</th><th>Notes</th></tr></thead><tbody><tr><td>Load vault (500 objects)</td><td>~200ms</td><td>File I/O + parsing</td></tr><tr><td>computeCitedIn</td><td>~50ms</td><td>Regex scanning</td></tr><tr><td>computeAllCrossRefs</td><td>~100ms</td><td>Link parsing + indexing</td></tr><tr><td>buildTagTree</td><td>~20ms</td><td>String processing</td></tr></tbody></table>
+<p>For vaults with 1000+ objects, consider persisting frequently-accessed computed data.</p>
+<h2 id="cli-commands">CLI Commands</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Persist cited_in to bibtex entries</span></span>
+<span class="line"><span style="color:#B392F0">extenote</span><span style="color:#9ECBFF"> sync-citations</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Preview what would be updated</span></span>
+<span class="line"><span style="color:#B392F0">extenote</span><span style="color:#9ECBFF"> sync-citations</span><span style="color:#79B8FF"> --dry-run</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># View vault summary (computed)</span></span>
+<span class="line"><span style="color:#B392F0">extenote</span><span style="color:#9ECBFF"> summary</span></span>
+<span class="line"></span></code></pre>
+<h2 id="api-reference">API Reference</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="typescript"><code><span class="line"><span style="color:#F97583">import</span><span style="color:#E1E4E8"> {</span></span>
+<span class="line"><span style="color:#E1E4E8">  computeCitedIn,</span></span>
+<span class="line"><span style="color:#E1E4E8">  getCitedIn,</span></span>
+<span class="line"><span style="color:#E1E4E8">  computeAllCrossRefs,</span></span>
+<span class="line"><span style="color:#E1E4E8">  buildTagTree,</span></span>
+<span class="line"><span style="color:#E1E4E8">  summarizeVault</span></span>
+<span class="line"><span style="color:#E1E4E8">} </span><span style="color:#F97583">from</span><span style="color:#9ECBFF"> "@extenote/core"</span><span style="color:#E1E4E8">;</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Compute cited_in dynamically</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> citedInMap</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> computeCitedIn</span><span style="color:#E1E4E8">(vault.objects, vault.config);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Get cited_in for specific entry (checks persisted first, falls back to computed)</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> projects</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> getCitedIn</span><span style="color:#E1E4E8">(entry, citedInMap);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Build full cross-reference graph</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> crossRefs</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> computeAllCrossRefs</span><span style="color:#E1E4E8">(vault.objects);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Build tag tree</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> tagTree</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> buildTagTree</span><span style="color:#E1E4E8">(vault.objects);</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D">// Get vault summary</span></span>
+<span class="line"><span style="color:#F97583">const</span><span style="color:#79B8FF"> summary</span><span style="color:#F97583"> =</span><span style="color:#B392F0"> summarizeVault</span><span style="color:#E1E4E8">(vault);</span></span>
+<span class="line"></span></code></pre> </main> </div> <footer class="site-footer" data-astro-cid-sz7xmlte> <div class="footer-content" data-astro-cid-sz7xmlte> <p data-astro-cid-sz7xmlte>Extenote is open source software. Built for researchers, writers, and content creators.</p> </div> <div class="theme-controls" data-astro-cid-sz7xmlte> <div class="theme-toggle" data-astro-cid-sz7xmlte> <span class="toggle-label" data-astro-cid-sz7xmlte>Mode:</span> <button class="toggle-btn" data-mode="light" id="mode-light" data-astro-cid-sz7xmlte>Light</button> <button class="toggle-btn" data-mode="dark" id="mode-dark" data-astro-cid-sz7xmlte>Dark</button> </div> <div class="theme-toggle" data-astro-cid-sz7xmlte> <span class="toggle-label" data-astro-cid-sz7xmlte>Style:</span> <button class="toggle-btn" data-aesthetic="classic" id="aesthetic-classic" data-astro-cid-sz7xmlte>Classic</button> <button class="toggle-btn" data-aesthetic="futuristic" id="aesthetic-futuristic" data-astro-cid-sz7xmlte>Cyber</button> </div> </div> </footer>    <div class="lightbox" id="lightbox" data-astro-cid-uadgga6g> <button class="lightbox-close" aria-label="Close" data-astro-cid-uadgga6g>&times;</button> <img src="" alt="" id="lightbox-img" data-astro-cid-uadgga6g> <div class="lightbox-hint" data-astro-cid-uadgga6g>Click anywhere or press Escape to close</div> </div>   </body></html>

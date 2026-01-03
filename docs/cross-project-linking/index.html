@@ -1,0 +1,223 @@
+<!DOCTYPE html><html lang="en" data-mode="dark" data-aesthetic="classic"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Cross-Project Linking | Extenote</title><meta name="description" content="Extenote documentation: Cross-Project Linking"><meta property="og:type" content="website"><meta property="og:url" content="https://extenote.dev"><meta property="og:title" content="Cross-Project Linking | Extenote"><meta property="og:description" content="Extenote documentation: Cross-Project Linking"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Cross-Project Linking | Extenote"><meta name="twitter:description" content="Extenote documentation: Cross-Project Linking"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet"><script>
+      // Load theme preferences before render to prevent flash
+      (function() {
+        const mode = localStorage.getItem('theme-mode') || 'dark';
+        const aesthetic = localStorage.getItem('theme-aesthetic') || 'classic';
+        document.documentElement.setAttribute('data-mode', mode);
+        document.documentElement.setAttribute('data-aesthetic', aesthetic);
+      })();
+    </script><link rel="stylesheet" href="/extenote/_astro/_slug_.Cf4BF75M.css">
+<link rel="stylesheet" href="/extenote/_astro/_slug_.COSOcpGJ.css"><script type="module" src="/extenote/_astro/hoisted.BEvs-6yx.js"></script></head> <body>   <header class="top-nav"> <div class="brand"> <a href="/extenote">Extenote</a> </div> <div class="nav-ornament"></div> <nav class="nav-links"> <a href="/extenote">home</a> <span class="nav-dot"></span> <a href="/extenote/docs" aria-current="page">docs</a> <span class="nav-dot"></span> <a href="https://github.com/nickmvincent/extenote" target="_blank">github</a> </nav> </header> <div class="docs-layout" data-astro-cid-uadgga6g> <aside class="sidebar" data-astro-cid-uadgga6g> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Getting Started</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/index" class="sidebar-link " data-astro-cid-uadgga6g> Extenote Documentation </a><a href="/extenote/docs/quickstart" class="sidebar-link " data-astro-cid-uadgga6g> Quick Start </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Reference</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/cli" class="sidebar-link " data-astro-cid-uadgga6g> CLI Reference </a><a href="/extenote/docs/configuration" class="sidebar-link " data-astro-cid-uadgga6g> Configuration Reference </a><a href="/extenote/docs/architecture" class="sidebar-link " data-astro-cid-uadgga6g> Architecture Overview </a><a href="/extenote/docs/interfaces" class="sidebar-link " data-astro-cid-uadgga6g> Interface Comparison </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Features</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/web-ui" class="sidebar-link " data-astro-cid-uadgga6g> Web UI Gallery </a><a href="/extenote/docs/tags" class="sidebar-link " data-astro-cid-uadgga6g> Tags </a><a href="/extenote/docs/reference-check" class="sidebar-link " data-astro-cid-uadgga6g> Refcheck </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Other</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/testing" class="sidebar-link " data-astro-cid-uadgga6g> Manual Testing Guide </a><a href="/extenote/docs/cross-project-linking" class="sidebar-link active" data-astro-cid-uadgga6g> Cross-Project Linking </a><a href="/extenote/docs/known-issues" class="sidebar-link " data-astro-cid-uadgga6g> Known Issues </a> </nav> </div> </aside> <main class="content" data-astro-cid-uadgga6g> <a href="/extenote/docs" class="back-link" data-astro-cid-uadgga6g>← All Docs</a> <h1 id="cross-project-linking">Cross-Project Linking</h1>
+<p>Extenote supports linking content across projects using reference keys. This enables a “single source of truth” pattern where canonical data lives in one location and other projects reference it.</p>
+<h2 id="key-concepts">Key Concepts</h2>
+<h3 id="reference-keys">Reference Keys</h3>
+<p>Reference keys are frontmatter fields that point to content in another project:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Key</th><th>Points To</th><th>Use Case</th></tr></thead><tbody><tr><td><code>citation_key</code></td><td>Bibtex entry in shared-references</td><td>Papers linking to bibliographic metadata</td></tr><tr><td><code>archive_ref</code></td><td>Blog post in data-leverage-blogs</td><td>Editorial stubs linking to full content</td></tr></tbody></table>
+<h3 id="single-source-of-truth">Single Source of Truth</h3>
+<p>Instead of duplicating data:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span># Bad: Duplicate data that can get out of sync</span></span>
+<span class="line"><span>scholarly-publication/paper.md:</span></span>
+<span class="line"><span>  title: "My Paper Title"</span></span>
+<span class="line"><span>  authors: ["Alice", "Bob"]</span></span>
+<span class="line"><span>  venue: "Conference 2025"</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>shared-references/bibtex-entries/mypaper2025.md:</span></span>
+<span class="line"><span>  title: "My Paper Title"  # duplicated!</span></span>
+<span class="line"><span>  authors: ["Alice", "Bob"]  # duplicated!</span></span>
+<span class="line"><span>  venue: "Conference 2025"  # duplicated!</span></span>
+<span class="line"><span></span></span></code></pre>
+<p>Use reference keys:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span># Good: Single source of truth</span></span>
+<span class="line"><span>scholarly-publication/paper.md:</span></span>
+<span class="line"><span>  citation_key: mypaper2025</span></span>
+<span class="line"><span>  url: https://mysite.com/paper  # local override</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>shared-references/bibtex-entries/mypaper2025.md:</span></span>
+<span class="line"><span>  title: "My Paper Title"  # canonical</span></span>
+<span class="line"><span>  authors: ["Alice", "Bob"]  # canonical</span></span>
+<span class="line"><span>  venue: "Conference 2025"  # canonical</span></span>
+<span class="line"><span></span></span></code></pre>
+<h2 id="citation_key-linking-papers-to-bibtex-entries">citation_key: Linking Papers to Bibtex Entries</h2>
+<p>The <code>citation_key</code> field links a scholarly publication to its canonical bibliographic entry.</p>
+<h3 id="setup">Setup</h3>
+<ol>
+<li>Create a bibtex entry in <code>shared-references/bibtex-entries/</code>:</li>
+</ol>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#6A737D"># shared-references/bibtex-entries/vincent2025bargaining.md</span></span>
+<span class="line"><span style="color:#B392F0">---</span></span>
+<span class="line"><span style="color:#85E89D">title</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"Collective Bargaining in the Information Economy"</span></span>
+<span class="line"><span style="color:#85E89D">authors</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">  - </span><span style="color:#9ECBFF">Nicholas Vincent</span></span>
+<span class="line"><span style="color:#E1E4E8">  - </span><span style="color:#9ECBFF">Matthew Prewitt</span></span>
+<span class="line"><span style="color:#E1E4E8">  - </span><span style="color:#9ECBFF">Hanlin Li</span></span>
+<span class="line"><span style="color:#85E89D">year</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">2025</span></span>
+<span class="line"><span style="color:#85E89D">venue</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">NeurIPS Position Papers</span></span>
+<span class="line"><span style="color:#85E89D">doi</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"10.xxxx/xxxxx"</span></span>
+<span class="line"><span style="color:#85E89D">url</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"https://arxiv.org/abs/2506.10272"</span></span>
+<span class="line"><span style="color:#85E89D">abstract</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"We argue that..."</span></span>
+<span class="line"><span style="color:#B392F0">---</span></span>
+<span class="line"></span></code></pre>
+<ol start="2">
+<li>Reference it from your publication:</li>
+</ol>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#6A737D"># personal-website/scholarly-publication/2025-12-06_cbi.md</span></span>
+<span class="line"><span style="color:#B392F0">---</span></span>
+<span class="line"><span style="color:#85E89D">citation_key</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">vincent2025bargaining</span></span>
+<span class="line"><span style="color:#85E89D">publication_type</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">Publication</span></span>
+<span class="line"><span style="color:#85E89D">visibility</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">public</span></span>
+<span class="line"><span style="color:#B392F0">---</span></span>
+<span class="line"></span></code></pre>
+<h3 id="how-it-works">How It Works</h3>
+<p>When building the personal website, <code>contentLoader.ts</code>:</p>
+<ol>
+<li>Detects <code>citation_key</code> in scholarly publication frontmatter</li>
+<li>Loads the corresponding bibtex entry from <code>shared-references/bibtex-entries/{citation_key}.md</code></li>
+<li>Merges metadata (bibtex is source of truth for title, authors, year, venue, doi, abstract)</li>
+<li>Local fields like <code>url</code> take precedence if specified</li>
+</ol>
+<h3 id="fields-merged-from-bibtex">Fields Merged from Bibtex</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Field</th><th>Priority</th></tr></thead><tbody><tr><td><code>title</code></td><td>Bibtex wins</td></tr><tr><td><code>authors</code></td><td>Bibtex wins</td></tr><tr><td><code>year</code></td><td>Bibtex wins</td></tr><tr><td><code>venue</code></td><td>Bibtex wins</td></tr><tr><td><code>doi</code></td><td>Bibtex wins</td></tr><tr><td><code>abstract</code></td><td>Bibtex wins</td></tr><tr><td><code>url</code></td><td>Local wins (allows custom links)</td></tr></tbody></table>
+<h2 id="archive_ref-linking-blogs-to-archives">archive_ref: Linking Blogs to Archives</h2>
+<p>The <code>archive_ref</code> field links a blog stub to the full post content in an archive.</p>
+<h3 id="setup-1">Setup</h3>
+<ol>
+<li>Ensure full blog post exists in <code>data-leverage-blogs/</code>:</li>
+</ol>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#6A737D"># data-leverage-blogs/2023-03-02-measuring-relative-ai-alignment.md</span></span>
+<span class="line"><span style="color:#B392F0">---</span></span>
+<span class="line"><span style="color:#85E89D">title</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">Measuring Relative AI Alignment</span></span>
+<span class="line"><span style="color:#85E89D">subtitle</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">In Terms of Data Pipelines</span></span>
+<span class="line"><span style="color:#85E89D">date</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">2023-03-02</span></span>
+<span class="line"><span style="color:#B392F0">---</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">Full blog post content here...</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#9ECBFF">This is the canonical version of the post with all the details.</span></span>
+<span class="line"></span></code></pre>
+<ol start="2">
+<li>Create a stub in your editorial collection:</li>
+</ol>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#6A737D"># personal-website/editorial-blog/2023-03-01_plural-ai-data-alignment.md</span></span>
+<span class="line"><span style="color:#B392F0">---</span></span>
+<span class="line"><span style="color:#85E89D">title</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">Plural AI Data Alignment</span></span>
+<span class="line"><span style="color:#85E89D">type</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">blog_post</span></span>
+<span class="line"><span style="color:#85E89D">date</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">'2023-03-01'</span></span>
+<span class="line"><span style="color:#85E89D">venue</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">Data Leverage Newsletter</span></span>
+<span class="line"><span style="color:#85E89D">url</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">https://dataleverage.substack.com/p/measuring-relative-ai-alignment</span></span>
+<span class="line"><span style="color:#85E89D">archive_ref</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">2023-03-02-measuring-relative-ai-alignment</span></span>
+<span class="line"><span style="color:#85E89D">visibility</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">public</span></span>
+<span class="line"><span style="color:#B392F0">---</span></span>
+<span class="line"></span></code></pre>
+<h3 id="how-it-works-1">How It Works</h3>
+<p>When building the personal website, <code>contentLoader.ts</code>:</p>
+<ol>
+<li>Detects <code>archive_ref</code> in editorial blog frontmatter</li>
+<li>Loads the full content from <code>data-leverage-blogs/{archive_ref}.md</code></li>
+<li>Uses the archive body as the entry body</li>
+<li>Merges select metadata (like <code>subtitle</code>)</li>
+</ol>
+<h2 id="environment-variables">Environment Variables</h2>
+<p>Path resolution uses environment variables with sensible defaults:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Bibtex entries location</span></span>
+<span class="line"><span style="color:#E1E4E8">SHARED_REFS_PATH</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">../../content/shared-references/bibtex-entries</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Blog archive location</span></span>
+<span class="line"><span style="color:#E1E4E8">DATA_LEVERAGE_BLOGS_PATH</span><span style="color:#F97583">=</span><span style="color:#9ECBFF">../../content/data-leverage-blogs</span></span>
+<span class="line"></span></code></pre>
+<h2 id="benefits">Benefits</h2>
+<ol>
+<li><strong>No stale data</strong>: Update the source, all references get the update</li>
+<li><strong>Cleaner stubs</strong>: Publication files just need the key, not all metadata</li>
+<li><strong>Flexible overrides</strong>: Local values can override when needed</li>
+<li><strong>Cross-project reuse</strong>: Same bibtex entry powers multiple sites</li>
+</ol>
+<h2 id="creating-new-links">Creating New Links</h2>
+<h3 id="for-a-new-publication">For a new publication:</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># 1. Import or create bibtex entry</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> import-bib</span><span style="color:#9ECBFF"> path/to/paper.bib</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 2. Add citation_key to publication</span></span>
+<span class="line"><span style="color:#6A737D"># Edit: personal-website/scholarly-publication/my-paper.md</span></span>
+<span class="line"><span style="color:#6A737D"># Add: citation_key: authorYYYYkeyword</span></span>
+<span class="line"></span></code></pre>
+<h3 id="for-a-new-blog">For a new blog:</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># 1. Ensure blog exists in data-leverage-blogs/</span></span>
+<span class="line"><span style="color:#6A737D"># 2. Add archive_ref to editorial stub</span></span>
+<span class="line"><span style="color:#6A737D"># Edit: personal-website/editorial-blog/my-post.md</span></span>
+<span class="line"><span style="color:#6A737D"># Add: archive_ref: YYYY-MM-DD-slug-name</span></span>
+<span class="line"></span></code></pre>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="bibtex-entry-not-found-for-citation_key-x">”Bibtex entry not found for citation_key: X”</h3>
+<p>The referenced bibtex entry doesn’t exist. Check:</p>
+<ul>
+<li>File exists at <code>shared-references/bibtex-entries/{citation_key}.md</code></li>
+<li>Citation key matches exactly (case-sensitive)</li>
+</ul>
+<h3 id="data-leverage-blog-not-found-for-archive_ref-x">“Data leverage blog not found for archive_ref: X”</h3>
+<p>The referenced blog post doesn’t exist. Check:</p>
+<ul>
+<li>File exists at <code>data-leverage-blogs/{archive_ref}.md</code></li>
+<li>Slug matches exactly (case-sensitive)</li>
+</ul>
+<h3 id="data-not-updating">Data not updating</h3>
+<p>The personal website caches data in production. Force rebuild:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#79B8FF">cd</span><span style="color:#9ECBFF"> websites/personal-website-astro</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> build</span></span>
+<span class="line"></span></code></pre> </main> </div> <footer class="site-footer" data-astro-cid-sz7xmlte> <div class="footer-content" data-astro-cid-sz7xmlte> <p data-astro-cid-sz7xmlte>Extenote is open source software. Built for researchers, writers, and content creators.</p> </div> <div class="theme-controls" data-astro-cid-sz7xmlte> <div class="theme-toggle" data-astro-cid-sz7xmlte> <span class="toggle-label" data-astro-cid-sz7xmlte>Mode:</span> <button class="toggle-btn" data-mode="light" id="mode-light" data-astro-cid-sz7xmlte>Light</button> <button class="toggle-btn" data-mode="dark" id="mode-dark" data-astro-cid-sz7xmlte>Dark</button> </div> <div class="theme-toggle" data-astro-cid-sz7xmlte> <span class="toggle-label" data-astro-cid-sz7xmlte>Style:</span> <button class="toggle-btn" data-aesthetic="classic" id="aesthetic-classic" data-astro-cid-sz7xmlte>Classic</button> <button class="toggle-btn" data-aesthetic="futuristic" id="aesthetic-futuristic" data-astro-cid-sz7xmlte>Cyber</button> </div> </div> </footer>    <div class="lightbox" id="lightbox" data-astro-cid-uadgga6g> <button class="lightbox-close" aria-label="Close" data-astro-cid-uadgga6g>&times;</button> <img src="" alt="" id="lightbox-img" data-astro-cid-uadgga6g> <div class="lightbox-hint" data-astro-cid-uadgga6g>Click anywhere or press Escape to close</div> </div>   </body></html>

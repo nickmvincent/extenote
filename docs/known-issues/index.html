@@ -1,0 +1,67 @@
+<!DOCTYPE html><html lang="en" data-mode="dark" data-aesthetic="classic"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Known Issues | Extenote</title><meta name="description" content="Extenote documentation: Known Issues"><meta property="og:type" content="website"><meta property="og:url" content="https://extenote.dev"><meta property="og:title" content="Known Issues | Extenote"><meta property="og:description" content="Extenote documentation: Known Issues"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Known Issues | Extenote"><meta name="twitter:description" content="Extenote documentation: Known Issues"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet"><script>
+      // Load theme preferences before render to prevent flash
+      (function() {
+        const mode = localStorage.getItem('theme-mode') || 'dark';
+        const aesthetic = localStorage.getItem('theme-aesthetic') || 'classic';
+        document.documentElement.setAttribute('data-mode', mode);
+        document.documentElement.setAttribute('data-aesthetic', aesthetic);
+      })();
+    </script><link rel="stylesheet" href="/extenote/_astro/_slug_.Cf4BF75M.css">
+<link rel="stylesheet" href="/extenote/_astro/_slug_.COSOcpGJ.css"><script type="module" src="/extenote/_astro/hoisted.BEvs-6yx.js"></script></head> <body>   <header class="top-nav"> <div class="brand"> <a href="/extenote">Extenote</a> </div> <div class="nav-ornament"></div> <nav class="nav-links"> <a href="/extenote">home</a> <span class="nav-dot"></span> <a href="/extenote/docs" aria-current="page">docs</a> <span class="nav-dot"></span> <a href="https://github.com/nickmvincent/extenote" target="_blank">github</a> </nav> </header> <div class="docs-layout" data-astro-cid-uadgga6g> <aside class="sidebar" data-astro-cid-uadgga6g> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Getting Started</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/index" class="sidebar-link " data-astro-cid-uadgga6g> Extenote Documentation </a><a href="/extenote/docs/quickstart" class="sidebar-link " data-astro-cid-uadgga6g> Quick Start </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Reference</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/cli" class="sidebar-link " data-astro-cid-uadgga6g> CLI Reference </a><a href="/extenote/docs/configuration" class="sidebar-link " data-astro-cid-uadgga6g> Configuration Reference </a><a href="/extenote/docs/architecture" class="sidebar-link " data-astro-cid-uadgga6g> Architecture Overview </a><a href="/extenote/docs/interfaces" class="sidebar-link " data-astro-cid-uadgga6g> Interface Comparison </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Features</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/web-ui" class="sidebar-link " data-astro-cid-uadgga6g> Web UI Gallery </a><a href="/extenote/docs/tags" class="sidebar-link " data-astro-cid-uadgga6g> Tags </a><a href="/extenote/docs/reference-check" class="sidebar-link " data-astro-cid-uadgga6g> Refcheck </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Other</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/testing" class="sidebar-link " data-astro-cid-uadgga6g> Manual Testing Guide </a><a href="/extenote/docs/cross-project-linking" class="sidebar-link " data-astro-cid-uadgga6g> Cross-Project Linking </a><a href="/extenote/docs/known-issues" class="sidebar-link active" data-astro-cid-uadgga6g> Known Issues </a> </nav> </div> </aside> <main class="content" data-astro-cid-uadgga6g> <a href="/extenote/docs" class="back-link" data-astro-cid-uadgga6g>← All Docs</a> <h1 id="known-issues">Known Issues</h1>
+<h2 id="current-limitations">Current Limitations</h2>
+<h3 id="content-operations">Content Operations</h3>
+<ul>
+<li><strong>No editing through interfaces</strong> - Objects can be created and viewed, but editing requires manual file changes</li>
+<li><strong>No delete/rename</strong> - Must be done manually in filesystem</li>
+<li><strong>No live preview while editing</strong> - Preview is view-only</li>
+</ul>
+<h3 id="core">Core</h3>
+<ul>
+<li><strong>Only <code>local</code> sources</strong> - GitHub, ATProto, and HTTP sources not yet implemented</li>
+<li><strong>Web API caching</strong> - The web server caches vault state for 30 seconds (configurable via <code>EXTENOTE_CACHE_TTL</code>). Use <code>/api/reload</code> to force refresh.</li>
+<li><strong>Performance</strong> - May be slow with 1000+ objects; use more specific <code>include</code> patterns</li>
+</ul>
+<h3 id="web">Web</h3>
+<ul>
+<li><strong>Web UI gallery</strong> - The gallery view is currently not working end-to-end</li>
+</ul>
+<h3 id="tui">TUI</h3>
+<ul>
+<li><strong>Keyboard only</strong> - No mouse support</li>
+<li><strong>No syntax highlighting</strong> - Plain text display</li>
+</ul>
+<h2 id="workarounds">Workarounds</h2>
+<h3 id="editing-objects">Editing Objects</h3>
+<p>Until in-app editing is implemented, use the “Open in Editor” feature:</p>
+<ul>
+<li><strong>CLI:</strong> <code>bun run cli -- edit &#x3C;path></code></li>
+<li><strong>TUI:</strong> <code>o</code> key on object detail view</li>
+</ul>
+<p>Or edit files directly in your content directory.</p>
+<h3 id="remote-content">Remote Content</h3>
+<p>Only local sources are supported. To use remote content, fetch it manually:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># GitHub raw pull</span></span>
+<span class="line"><span style="color:#B392F0">curl</span><span style="color:#79B8FF"> -H</span><span style="color:#9ECBFF"> "Authorization: token </span><span style="color:#E1E4E8">$GITHUB_TOKEN</span><span style="color:#9ECBFF">"</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#9ECBFF">  https://raw.githubusercontent.com/you/project/main/README.md</span><span style="color:#79B8FF"> \</span></span>
+<span class="line"><span style="color:#F97583">  ></span><span style="color:#9ECBFF"> ../extenote-pub/external/github/project/README.md</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Copy from cloned repo</span></span>
+<span class="line"><span style="color:#B392F0">rsync</span><span style="color:#79B8FF"> -av</span><span style="color:#9ECBFF"> /tmp/project/docs/</span><span style="color:#9ECBFF"> ../extenote-pub/external/docs/</span></span>
+<span class="line"></span></code></pre>
+<p>Then point a local source at the result. Automate with cron/CI for scheduled pulls.</p>
+<h3 id="port-conflict-web">Port Conflict (Web)</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">lsof</span><span style="color:#79B8FF"> -ti:3001</span><span style="color:#F97583"> |</span><span style="color:#B392F0"> xargs</span><span style="color:#9ECBFF"> kill</span><span style="color:#79B8FF"> -9</span></span>
+<span class="line"><span style="color:#B392F0">lsof</span><span style="color:#79B8FF"> -ti:3000</span><span style="color:#F97583"> |</span><span style="color:#B392F0"> xargs</span><span style="color:#9ECBFF"> kill</span><span style="color:#79B8FF"> -9</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> web</span></span>
+<span class="line"></span></code></pre>
+<h3 id="missing-dependencies">Missing Dependencies</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">rm</span><span style="color:#79B8FF"> -rf</span><span style="color:#9ECBFF"> node_modules</span><span style="color:#9ECBFF"> packages/</span><span style="color:#79B8FF">*</span><span style="color:#9ECBFF">/node_modules</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> install</span><span style="color:#E1E4E8"> &#x26;&#x26; </span><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> build</span></span>
+<span class="line"></span></code></pre>
+<h3 id="slow-performance">Slow Performance</h3>
+<p>If the vault feels slow:</p>
+<ol>
+<li>Reduce source scope with more specific <code>include</code> patterns</li>
+<li>Split into multiple projects with targeted includes</li>
+<li>Use CLI for quick operations instead of Web/TUI</li>
+</ol> </main> </div> <footer class="site-footer" data-astro-cid-sz7xmlte> <div class="footer-content" data-astro-cid-sz7xmlte> <p data-astro-cid-sz7xmlte>Extenote is open source software. Built for researchers, writers, and content creators.</p> </div> <div class="theme-controls" data-astro-cid-sz7xmlte> <div class="theme-toggle" data-astro-cid-sz7xmlte> <span class="toggle-label" data-astro-cid-sz7xmlte>Mode:</span> <button class="toggle-btn" data-mode="light" id="mode-light" data-astro-cid-sz7xmlte>Light</button> <button class="toggle-btn" data-mode="dark" id="mode-dark" data-astro-cid-sz7xmlte>Dark</button> </div> <div class="theme-toggle" data-astro-cid-sz7xmlte> <span class="toggle-label" data-astro-cid-sz7xmlte>Style:</span> <button class="toggle-btn" data-aesthetic="classic" id="aesthetic-classic" data-astro-cid-sz7xmlte>Classic</button> <button class="toggle-btn" data-aesthetic="futuristic" id="aesthetic-futuristic" data-astro-cid-sz7xmlte>Cyber</button> </div> </div> </footer>    <div class="lightbox" id="lightbox" data-astro-cid-uadgga6g> <button class="lightbox-close" aria-label="Close" data-astro-cid-uadgga6g>&times;</button> <img src="" alt="" id="lightbox-img" data-astro-cid-uadgga6g> <div class="lightbox-hint" data-astro-cid-uadgga6g>Click anywhere or press Escape to close</div> </div>   </body></html>

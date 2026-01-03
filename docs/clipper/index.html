@@ -1,0 +1,268 @@
+<!DOCTYPE html><html lang="en" data-mode="dark" data-aesthetic="classic"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Browser Clipper Extension | Extenote</title><meta name="description" content="Extenote documentation: Browser Clipper Extension"><meta property="og:type" content="website"><meta property="og:url" content="https://extenote.dev"><meta property="og:title" content="Browser Clipper Extension | Extenote"><meta property="og:description" content="Extenote documentation: Browser Clipper Extension"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Browser Clipper Extension | Extenote"><meta name="twitter:description" content="Extenote documentation: Browser Clipper Extension"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet"><script>
+      // Load theme preferences before render to prevent flash
+      (function() {
+        const mode = localStorage.getItem('theme-mode') || 'dark';
+        const aesthetic = localStorage.getItem('theme-aesthetic') || 'classic';
+        document.documentElement.setAttribute('data-mode', mode);
+        document.documentElement.setAttribute('data-aesthetic', aesthetic);
+      })();
+    </script><link rel="stylesheet" href="/extenote/_astro/_slug_.Cf4BF75M.css">
+<link rel="stylesheet" href="/extenote/_astro/_slug_.COSOcpGJ.css"><script type="module" src="/extenote/_astro/hoisted.BEvs-6yx.js"></script></head> <body>   <header class="top-nav"> <div class="brand"> <a href="/extenote">Extenote</a> </div> <div class="nav-ornament"></div> <nav class="nav-links"> <a href="/extenote">home</a> <span class="nav-dot"></span> <a href="/extenote/docs" aria-current="page">docs</a> <span class="nav-dot"></span> <a href="https://github.com/nickmvincent/extenote" target="_blank">github</a> </nav> </header> <div class="docs-layout" data-astro-cid-uadgga6g> <aside class="sidebar" data-astro-cid-uadgga6g> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Getting Started</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/index" class="sidebar-link " data-astro-cid-uadgga6g> Extenote Documentation </a><a href="/extenote/docs/quickstart" class="sidebar-link " data-astro-cid-uadgga6g> Quick Start </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Reference</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/cli" class="sidebar-link " data-astro-cid-uadgga6g> CLI Reference </a><a href="/extenote/docs/configuration" class="sidebar-link " data-astro-cid-uadgga6g> Configuration Reference </a><a href="/extenote/docs/architecture" class="sidebar-link " data-astro-cid-uadgga6g> Architecture Overview </a><a href="/extenote/docs/interfaces" class="sidebar-link " data-astro-cid-uadgga6g> Interface Comparison </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Features</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/web-ui" class="sidebar-link " data-astro-cid-uadgga6g> Web UI Gallery </a><a href="/extenote/docs/tags" class="sidebar-link " data-astro-cid-uadgga6g> Tags </a><a href="/extenote/docs/reference-check" class="sidebar-link " data-astro-cid-uadgga6g> Refcheck </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Other</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/testing" class="sidebar-link " data-astro-cid-uadgga6g> Manual Testing Guide </a><a href="/extenote/docs/cross-project-linking" class="sidebar-link " data-astro-cid-uadgga6g> Cross-Project Linking </a><a href="/extenote/docs/known-issues" class="sidebar-link " data-astro-cid-uadgga6g> Known Issues </a> </nav> </div> </aside> <main class="content" data-astro-cid-uadgga6g> <a href="/extenote/docs" class="back-link" data-astro-cid-uadgga6g>← All Docs</a> <h1 id="browser-clipper-extension">Browser Clipper Extension</h1>
+<p>The Extenote Web Clipper is a browser extension that lets you save web pages as markdown objects and validate existing references against live metadata APIs.</p>
+<h2 id="features">Features</h2>
+<h3 id="capture-mode">Capture Mode</h3>
+<ul>
+<li><strong>API-First Search</strong>: Queries DBLP and Semantic Scholar by default; OpenAlex and Crossref available as optional secondary sources</li>
+<li><strong>Smart Detection</strong>: Automatically extracts DOIs and arXiv IDs from URLs</li>
+<li><strong>Auto-Select</strong>: Automatically chooses the best result based on completeness</li>
+<li><strong>Lookup Trail</strong>: Shows which sources were tried and what was found</li>
+<li><strong>Editable Metadata</strong>: Review and edit all fields before saving</li>
+<li><strong>Tag Suggestions</strong>: AI-powered tag suggestions based on content</li>
+</ul>
+<h3 id="validation-mode">Validation Mode</h3>
+<p>When you visit a page that’s already in your vault:</p>
+<ul>
+<li><strong>Validate Existing Entries</strong>: Compare vault entries with fresh API data</li>
+<li><strong>Field Comparison</strong>: Side-by-side view of vault vs API values</li>
+<li><strong>Update check_log</strong>: Persist validation results to track entry quality</li>
+<li><strong>Fix Mismatches</strong>: One-click update of mismatched fields</li>
+<li><strong>Status Badge</strong>: Color-coded icon shows validation status:
+<ul>
+<li>Green check: Confirmed</li>
+<li>Yellow warning: Mismatch detected</li>
+<li>Gray question: Unchecked or stale (>30 days)</li>
+<li>Red X: Not found or error</li>
+</ul>
+</li>
+</ul>
+<h3 id="validation-queue">Validation Queue</h3>
+<p>Browse and process entries that need validation without leaving your browser.</p>
+<h2 id="installation">Installation</h2>
+<h3 id="firefox-temporary-add-on">Firefox (Temporary Add-on)</h3>
+<ol>
+<li>
+<p>Build the extension:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#79B8FF">cd</span><span style="color:#9ECBFF"> extenote/extensions/clipper</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> install</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> build</span></span>
+<span class="line"></span></code></pre>
+</li>
+<li>
+<p>Load in Firefox:</p>
+<ul>
+<li>Open <code>about:debugging</code> in Firefox</li>
+<li>Click “This Firefox” in the sidebar</li>
+<li>Click “Load Temporary Add-on…”</li>
+<li>Navigate to <code>extenote/extensions/clipper/dist/</code> and select <code>manifest.json</code></li>
+</ul>
+</li>
+</ol>
+<h3 id="chrome-developer-mode">Chrome (Developer Mode)</h3>
+<ol>
+<li>Build the extension (same as above)</li>
+<li>Open <code>chrome://extensions/</code></li>
+<li>Enable “Developer mode” (toggle in top right)</li>
+<li>Click “Load unpacked”</li>
+<li>Select the <code>dist/</code> folder</li>
+</ol>
+<h2 id="modes">Modes</h2>
+<h3 id="download-mode-default">Download Mode (Default)</h3>
+<ul>
+<li>Saves markdown files directly to your browser’s download folder</li>
+<li>Files go to <code>shared-references/</code> subdirectory by default</li>
+<li>No API connection required</li>
+<li>Good for getting started quickly</li>
+</ul>
+<h3 id="api-mode">API Mode</h3>
+<ul>
+<li>Connect to a running Extenote web server</li>
+<li>Saves directly to your vault</li>
+<li>Enables validation features</li>
+<li>Shows live vault matching</li>
+</ul>
+<p>To enable API mode:</p>
+<ol>
+<li>Start the Extenote web server: <code>bun run web:server</code></li>
+<li>Click the extension icon, then the gear icon for options</li>
+<li>Switch to “API mode”</li>
+<li>Enter API URL (default: <code>http://localhost:3001</code>)</li>
+</ol>
+<h2 id="usage">Usage</h2>
+<h3 id="clipping-a-new-reference">Clipping a New Reference</h3>
+<ol>
+<li>Navigate to a paper on any website (arXiv, ACM DL, Google Scholar, etc.)</li>
+<li>Click the Extenote Clipper icon (or press <code>Alt+Shift+C</code>)</li>
+<li>The popup shows a pre-filled search query (DOI, arXiv ID, or title)</li>
+<li>The “Lookup trail” shows which sources were searched:
+<ul>
+<li><strong>Page</strong>: Direct extraction from page metadata</li>
+<li><strong>DBLP</strong>: Computer science bibliography</li>
+<li><strong>Semantic Scholar</strong>: Broad academic coverage</li>
+<li><strong>OpenAlex</strong> (optional): Additional coverage</li>
+<li><strong>Crossref</strong> (optional): DOI verification</li>
+</ul>
+</li>
+<li>Review the auto-selected best result (or select a different source)</li>
+<li>Edit fields if needed</li>
+<li>Click “Save to Vault” (API mode) or “Download” (download mode)</li>
+</ol>
+<h3 id="validating-existing-entries">Validating Existing Entries</h3>
+<p>When you visit a page that’s already in your vault:</p>
+<ol>
+<li>The popup automatically shows validation mode</li>
+<li>Fresh API data is fetched and compared to vault</li>
+<li>Field-by-field comparison shows matches and mismatches</li>
+<li>Options:
+<ul>
+<li><strong>Update check_log</strong>: Save validation status without changing fields</li>
+<li><strong>Fix Mismatches</strong>: Update vault with API values</li>
+<li><strong>Clip as New</strong>: Create a separate entry</li>
+</ul>
+</li>
+</ol>
+<h3 id="using-the-validation-queue">Using the Validation Queue</h3>
+<ol>
+<li>Click “Queue” in the popup footer</li>
+<li>Browse entries that haven’t been validated</li>
+<li>Click an entry to open its URL</li>
+<li>Validate using the normal validation flow</li>
+<li>Click “Refresh” to update the queue</li>
+</ol>
+<h2 id="search-sources">Search Sources</h2>
+<p>The clipper evaluates multiple sources and picks the most complete result:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Source</th><th>Default</th><th>Best For</th></tr></thead><tbody><tr><td><strong>DBLP</strong></td><td>Yes</td><td>Computer science papers</td></tr><tr><td><strong>Semantic Scholar</strong></td><td>Yes</td><td>Broad coverage, abstracts</td></tr><tr><td><strong>OpenAlex</strong></td><td>Optional</td><td>Wide academic coverage</td></tr><tr><td><strong>Crossref</strong></td><td>Optional</td><td>DOI verification</td></tr></tbody></table>
+<p>Unlike the CLI which stops at the first match, the clipper evaluates all enabled sources and auto-selects based on completeness (number of populated fields).</p>
+<h2 id="configuration">Configuration</h2>
+<p>Open extension options (click gear icon) to configure:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Setting</th><th>Description</th><th>Default</th></tr></thead><tbody><tr><td>Mode</td><td>Download or API</td><td>Download</td></tr><tr><td>API URL</td><td>Server URL for API mode</td><td><code>http://localhost:3001</code></td></tr><tr><td>Default Project</td><td>Project for new entries</td><td>-</td></tr><tr><td>Default Schema</td><td>Schema type for clipped pages</td><td><code>bibtex_entry</code></td></tr><tr><td>Default Tags</td><td>Tags to add to all clipped pages</td><td><code>clipped</code></td></tr><tr><td>Download Subdirectory</td><td>Subdirectory for downloads</td><td><code>shared-references/</code></td></tr></tbody></table>
+<h2 id="keyboard-shortcuts">Keyboard Shortcuts</h2>
+<ul>
+<li><code>Alt+Shift+C</code>: Open clipper popup</li>
+</ul>
+<h2 id="workflow-integration">Workflow Integration</h2>
+<p>The clipper integrates with the broader Extenote workflow:</p>
+<ol>
+<li><strong>Capture</strong>: Use the clipper to save references while browsing</li>
+<li><strong>Review</strong>: Use the web UI’s Review page to check for mismatches</li>
+<li><strong>Refcheck</strong>: Use the CLI to batch-validate references</li>
+<li><strong>Fix</strong>: Use either the clipper or CLI to update mismatched fields</li>
+</ol>
+<p>See <a href="./reference-check.md">Reference Check</a> for the full refcheck documentation.</p>
+<h2 id="caching">Caching</h2>
+<p>The extension caches responses from external APIs (DBLP, Semantic Scholar, OpenAlex, Crossref) to improve performance:</p>
+<ul>
+<li><strong>TTL</strong>: 10 minutes - academic metadata rarely changes</li>
+<li><strong>Storage</strong>: Two-tier caching with in-memory Map (fast) and IndexedDB (persistent)</li>
+<li><strong>Automatic</strong>: No configuration needed; caching is transparent</li>
+</ul>
+<p>This means:</p>
+<ul>
+<li>Repeated searches for the same paper are instant</li>
+<li>Recently searched papers work offline</li>
+<li>External APIs see reduced load</li>
+</ul>
+<p>The cache expires automatically. Restarting the browser clears the memory layer but IndexedDB persists until the TTL expires.</p>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<h3 id="failed-to-save-error">”Failed to save” error</h3>
+<ul>
+<li>Check that the API server is running (<code>bun run web:server</code>)</li>
+<li>Verify the API URL in extension options</li>
+<li>Check browser console for detailed error messages</li>
+</ul>
+<h3 id="no-results-found">No results found</h3>
+<ul>
+<li>Try checking the optional sources (OpenAlex, Crossref)</li>
+<li>Verify the DOI or arXiv ID is correct</li>
+<li>Some preprints may not be indexed yet</li>
+</ul>
+<h3 id="extension-not-updating-vault">Extension not updating vault</h3>
+<ul>
+<li>Make sure you’re in API mode, not download mode</li>
+<li>Check that the file path is correct</li>
+<li>Try refreshing the vault in the web UI</li>
+</ul>
+<h2 id="development">Development</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#79B8FF">cd</span><span style="color:#9ECBFF"> extenote/extensions/clipper</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Install dependencies</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> install</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Build once</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> build</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Watch for changes during development</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> watch</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Run tests</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> test</span></span>
+<span class="line"></span></code></pre> </main> </div> <footer class="site-footer" data-astro-cid-sz7xmlte> <div class="footer-content" data-astro-cid-sz7xmlte> <p data-astro-cid-sz7xmlte>Extenote is open source software. Built for researchers, writers, and content creators.</p> </div> <div class="theme-controls" data-astro-cid-sz7xmlte> <div class="theme-toggle" data-astro-cid-sz7xmlte> <span class="toggle-label" data-astro-cid-sz7xmlte>Mode:</span> <button class="toggle-btn" data-mode="light" id="mode-light" data-astro-cid-sz7xmlte>Light</button> <button class="toggle-btn" data-mode="dark" id="mode-dark" data-astro-cid-sz7xmlte>Dark</button> </div> <div class="theme-toggle" data-astro-cid-sz7xmlte> <span class="toggle-label" data-astro-cid-sz7xmlte>Style:</span> <button class="toggle-btn" data-aesthetic="classic" id="aesthetic-classic" data-astro-cid-sz7xmlte>Classic</button> <button class="toggle-btn" data-aesthetic="futuristic" id="aesthetic-futuristic" data-astro-cid-sz7xmlte>Cyber</button> </div> </div> </footer>    <div class="lightbox" id="lightbox" data-astro-cid-uadgga6g> <button class="lightbox-close" aria-label="Close" data-astro-cid-uadgga6g>&times;</button> <img src="" alt="" id="lightbox-img" data-astro-cid-uadgga6g> <div class="lightbox-hint" data-astro-cid-uadgga6g>Click anywhere or press Escape to close</div> </div>   </body></html>

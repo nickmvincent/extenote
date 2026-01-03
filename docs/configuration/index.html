@@ -1,0 +1,851 @@
+<!DOCTYPE html><html lang="en" data-mode="dark" data-aesthetic="classic"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Configuration Reference | Extenote</title><meta name="description" content="Extenote documentation: Configuration Reference"><meta property="og:type" content="website"><meta property="og:url" content="https://extenote.dev"><meta property="og:title" content="Configuration Reference | Extenote"><meta property="og:description" content="Extenote documentation: Configuration Reference"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Configuration Reference | Extenote"><meta name="twitter:description" content="Extenote documentation: Configuration Reference"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet"><script>
+      // Load theme preferences before render to prevent flash
+      (function() {
+        const mode = localStorage.getItem('theme-mode') || 'dark';
+        const aesthetic = localStorage.getItem('theme-aesthetic') || 'classic';
+        document.documentElement.setAttribute('data-mode', mode);
+        document.documentElement.setAttribute('data-aesthetic', aesthetic);
+      })();
+    </script><link rel="stylesheet" href="/extenote/_astro/_slug_.Cf4BF75M.css">
+<link rel="stylesheet" href="/extenote/_astro/_slug_.COSOcpGJ.css"><script type="module" src="/extenote/_astro/hoisted.BEvs-6yx.js"></script></head> <body>   <header class="top-nav"> <div class="brand"> <a href="/extenote">Extenote</a> </div> <div class="nav-ornament"></div> <nav class="nav-links"> <a href="/extenote">home</a> <span class="nav-dot"></span> <a href="/extenote/docs" aria-current="page">docs</a> <span class="nav-dot"></span> <a href="https://github.com/nickmvincent/extenote" target="_blank">github</a> </nav> </header> <div class="docs-layout" data-astro-cid-uadgga6g> <aside class="sidebar" data-astro-cid-uadgga6g> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Getting Started</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/index" class="sidebar-link " data-astro-cid-uadgga6g> Extenote Documentation </a><a href="/extenote/docs/quickstart" class="sidebar-link " data-astro-cid-uadgga6g> Quick Start </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Reference</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/cli" class="sidebar-link " data-astro-cid-uadgga6g> CLI Reference </a><a href="/extenote/docs/configuration" class="sidebar-link active" data-astro-cid-uadgga6g> Configuration Reference </a><a href="/extenote/docs/architecture" class="sidebar-link " data-astro-cid-uadgga6g> Architecture Overview </a><a href="/extenote/docs/interfaces" class="sidebar-link " data-astro-cid-uadgga6g> Interface Comparison </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Features</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/web-ui" class="sidebar-link " data-astro-cid-uadgga6g> Web UI Gallery </a><a href="/extenote/docs/tags" class="sidebar-link " data-astro-cid-uadgga6g> Tags </a><a href="/extenote/docs/reference-check" class="sidebar-link " data-astro-cid-uadgga6g> Refcheck </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Other</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/testing" class="sidebar-link " data-astro-cid-uadgga6g> Manual Testing Guide </a><a href="/extenote/docs/cross-project-linking" class="sidebar-link " data-astro-cid-uadgga6g> Cross-Project Linking </a><a href="/extenote/docs/known-issues" class="sidebar-link " data-astro-cid-uadgga6g> Known Issues </a> </nav> </div> </aside> <main class="content" data-astro-cid-uadgga6g> <a href="/extenote/docs" class="back-link" data-astro-cid-uadgga6g>← All Docs</a> <h1 id="configuration-reference">Configuration Reference</h1>
+<p>Extenote uses two directories for configuration:</p>
+<ul>
+<li><code>projects/</code> - Project configuration files (one YAML per project)</li>
+<li><code>schemas/</code> - Schema definition files (content type definitions)</li>
+</ul>
+<p><strong>Quick Navigation:</strong></p>
+<ul>
+<li><a href="#project-configuration">Project Configuration</a> - Sources, visibility, lint settings</li>
+<li><a href="#schema-configuration">Schema Configuration</a> - Content type definitions</li>
+<li><a href="#export-configuration">Export Configuration</a> - JSON/BibTeX/Markdown export</li>
+<li><a href="#build-configuration">Build Configuration</a> - Astro/Quarto website builds</li>
+<li><a href="#deploy-configuration">Deploy Configuration</a> - Cloudflare, GitHub Pages, etc.</li>
+<li><a href="#configuration-defaults">Configuration Defaults</a> - Default values and fallbacks</li>
+<li><a href="#semble-sync-configuration">Semble Sync Configuration</a> - ATProto integration</li>
+</ul>
+<hr>
+<h2 id="project-configuration">Project Configuration</h2>
+<p>Each project has a YAML file in <code>projects/</code> defining its sources, visibility rules, lint settings, build, and deploy configuration.</p>
+<p><strong>Example files:</strong></p>
+<ul>
+<li><code>projects/personal-website.yaml</code> - Simple project with local sources</li>
+<li><code>projects/data-leverage-blogs.yaml</code> - Full example with build, deploy, includes, and discussion config</li>
+</ul>
+<h3 id="key-fields">Key Fields</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Field</th><th>Description</th></tr></thead><tbody><tr><td><code>project</code></td><td>Project identifier</td></tr><tr><td><code>defaultVisibility</code></td><td>Default for new content: <code>public</code> | <code>private</code> | <code>unlisted</code></td></tr><tr><td><code>visibilityField</code></td><td>Frontmatter field name for visibility (default: <code>visibility</code>)</td></tr><tr><td><code>includes</code></td><td>List of other project names to include objects from</td></tr><tr><td><code>sources</code></td><td>Content source definitions (see below)</td></tr><tr><td><code>lint</code></td><td>Linting rules and autofix settings</td></tr><tr><td><code>compatibility</code></td><td>Platform-specific requirements (astro, quarto)</td></tr><tr><td><code>build</code></td><td>Website build configuration</td></tr><tr><td><code>deploy</code></td><td>Deployment platform configuration</td></tr><tr><td><code>discussion</code></td><td>Discussion plugin configuration</td></tr><tr><td><code>semble</code></td><td>Semble ATProto sync configuration</td></tr><tr><td><code>recipes</code></td><td>Named export configurations (see Export Configuration)</td></tr></tbody></table>
+<h3 id="environment-variables">Environment Variables</h3>
+<p>Source paths support environment variable substitution with fallback syntax: <code>${VAR:-fallback}</code></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Variable</th><th>Purpose</th><th>Default</th></tr></thead><tbody><tr><td><code>EXTENOTE_CONTENT_ROOT</code></td><td>Primary content vault</td><td><code>../extenote-pub/content</code></td></tr><tr><td><code>EXTENOTE_PRIVATE_ROOT</code></td><td>Private content vault</td><td><code>../extenote-priv/content</code></td></tr></tbody></table>
+<h3 id="source-types">Source Types</h3>
+<p>Currently only <code>local</code> sources are supported. See <code>packages/core/src/types.ts</code> for the <code>LocalSourceConfig</code> interface.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Field</th><th>Required</th><th>Description</th></tr></thead><tbody><tr><td><code>id</code></td><td>Yes</td><td>Unique identifier</td></tr><tr><td><code>type</code></td><td>Yes</td><td>Source type (<code>local</code>)</td></tr><tr><td><code>root</code></td><td>Yes</td><td>Directory path (supports env vars)</td></tr><tr><td><code>include</code></td><td>No</td><td>Glob patterns to include (e.g., <code>["**/*.md"]</code>)</td></tr><tr><td><code>exclude</code></td><td>No</td><td>Glob patterns to exclude</td></tr><tr><td><code>visibility</code></td><td>No</td><td>Default visibility for this source</td></tr><tr><td><code>disabled</code></td><td>No</td><td>Skip this source if <code>true</code></td></tr></tbody></table>
+<p><strong>Path handling</strong>: When creating new files, the CLI automatically detects if the source <code>root</code> already includes the project name (e.g., <code>content/shared-references</code>) and avoids adding a duplicate project prefix. If the schema’s <code>subdirectory</code> is <code>.</code>, files go directly in the source root.</p>
+<h3 id="lint-rules">Lint Rules</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Rule</th><th>Description</th><th>Values</th></tr></thead><tbody><tr><td><code>required-visibility</code></td><td>Check for visibility field</td><td><code>off</code>, <code>warn</code>, <code>error</code></td></tr><tr><td><code>compatibility:{target}</code></td><td>Check platform requirements</td><td><code>off</code>, <code>warn</code>, <code>error</code></td></tr></tbody></table>
+<h3 id="compatibility-targets">Compatibility Targets</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Target</th><th>Description</th></tr></thead><tbody><tr><td><code>astro</code></td><td>Astro static site generator</td></tr><tr><td><code>quarto</code></td><td>Quarto publishing system</td></tr></tbody></table>
+<h2 id="schema-configuration">Schema Configuration</h2>
+<p>Schema files in <code>schemas/</code> define content types and their frontmatter fields.</p>
+<p><strong>Example files:</strong></p>
+<ul>
+<li><code>schemas/common.yaml</code> - Minimal schema (just <code>readme</code>)</li>
+<li><code>schemas/personal-website.yaml</code> - Comprehensive example with many schema types</li>
+<li><code>schemas/shared-references.yaml</code> - Bibliography schemas</li>
+</ul>
+<h3 id="schema-fields">Schema Fields</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Field</th><th>Description</th></tr></thead><tbody><tr><td><code>name</code></td><td>Unique schema identifier</td></tr><tr><td><code>description</code></td><td>Human-readable description</td></tr><tr><td><code>subdirectory</code></td><td>Default storage subdirectory for new objects (use <code>.</code> for root)</td></tr><tr><td><code>identityField</code></td><td>Field used as object ID (default: <code>slug</code>)</td></tr><tr><td><code>required</code></td><td>List of required frontmatter fields</td></tr><tr><td><code>fields</code></td><td>Field definitions (see below)</td></tr></tbody></table>
+<h3 id="field-types">Field Types</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Type</th><th>Description</th><th>Example</th></tr></thead><tbody><tr><td><code>string</code></td><td>Text value</td><td><code>"Hello"</code></td></tr><tr><td><code>number</code></td><td>Numeric value</td><td><code>42</code></td></tr><tr><td><code>boolean</code></td><td>True/false</td><td><code>true</code></td></tr><tr><td><code>date</code></td><td>ISO 8601 date</td><td><code>2024-12-17</code></td></tr><tr><td><code>array</code></td><td>List with item type</td><td><code>["a", "b"]</code></td></tr></tbody></table>
+<p>For arrays, specify the item type with <code>items: string | number | date | boolean</code>.</p>
+<h3 id="schema-validation-and-issue-tracking">Schema Validation and Issue Tracking</h3>
+<p>Schema validation is performed automatically when the vault loads. Any validation issues are tracked and surfaced through:</p>
+<ul>
+<li><strong>Web UI</strong>: Issues page shows all validation errors with filters by severity</li>
+<li><strong>CLI</strong>: <code>extenote issues</code> lists all issues, with <code>--limit N</code> to show top N</li>
+<li><strong>TUI</strong>: Press <code>i</code> to view the Issues page</li>
+</ul>
+<p>Common validation issues include:</p>
+<ul>
+<li>Missing required fields (e.g., <code>title</code> on a blog_post)</li>
+<li>Unknown object types (no matching schema)</li>
+<li>Invalid field values (wrong type, malformed dates)</li>
+<li>Empty or whitespace-only required fields</li>
+</ul>
+<p>Each issue shows the file path, field name, and specific error message. Fix issues by editing the frontmatter directly or using the web UI’s object editor.</p>
+<h3 id="project-ownership-and-includes">Project Ownership and Includes</h3>
+<p>Each object belongs to exactly one project, determined by its source. Projects can include objects from other projects using the <code>includes</code> field.</p>
+<p><strong>How objects get assigned to projects:</strong></p>
+<ol>
+<li>Each source in a project config has an <code>id</code></li>
+<li>When vault loads, objects from that source are assigned to the project</li>
+<li>The project name is inferred from the config file (e.g., <code>projects/my-blog.yaml</code> → project <code>my-blog</code>)</li>
+</ol>
+<p><strong>Example relationship:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>projects/personal-website.yaml</span></span>
+<span class="line"><span>├── sources:</span></span>
+<span class="line"><span>│   └── id: "personal-website"         # Objects from here belong to "personal-website"</span></span>
+<span class="line"><span>└── includes: ["shared-references"]    # Can also see objects from "shared-references"</span></span>
+<span class="line"><span></span></span>
+<span class="line"><span>projects/shared-references.yaml</span></span>
+<span class="line"><span>└── sources:</span></span>
+<span class="line"><span>    └── id: "shared-references"        # Objects from here belong to "shared-references"</span></span>
+<span class="line"><span></span></span></code></pre>
+<p>When project A includes project B:</p>
+<ul>
+<li>Objects from B’s sources still belong to project B</li>
+<li>They appear in project A’s views alongside A’s own objects</li>
+<li>Export/build for project A will include B’s objects</li>
+<li>Clear ownership: each object has exactly one owning project</li>
+</ul>
+<p><strong>Common pattern:</strong> A “shared-references” project contains bibliography entries that multiple blog/website projects include. Each project builds with its own content plus the shared references.</p>
+<p>See <code>projects/data-leverage-blogs.yaml</code> for a real example that includes <code>shared-references</code> and <code>discussions</code>.</p>
+<h2 id="export-configuration">Export Configuration</h2>
+<p>Export generates static files from your vault objects. This is useful for:</p>
+<ul>
+<li>Feeding data into static site generators (Astro, Quarto)</li>
+<li>Creating bibliography files for citation managers</li>
+<li>Publishing to federated platforms (ATProto)</li>
+<li>Archiving content in portable formats</li>
+</ul>
+<h3 id="export-vs-build-vs-sync">Export vs Build vs Sync</h3>
+<p>These three operations serve different purposes:</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Operation</th><th>What it does</th><th>Output</th></tr></thead><tbody><tr><td><strong>Export</strong></td><td>Transforms vault objects into static files</td><td><code>dist/export/</code> files (JSON, markdown, HTML, etc.)</td></tr><tr><td><strong>Build</strong></td><td>Compiles a website from source files</td><td><code>dist/</code> website ready for hosting</td></tr><tr><td><strong>Sync</strong></td><td>Pushes/pulls objects to/from ATProto (Semble)</td><td>Remote records on ATProto PDS</td></tr></tbody></table>
+<p><strong>Typical workflow:</strong></p>
+<ol>
+<li><strong>Export</strong> content to JSON/markdown files</li>
+<li><strong>Build</strong> website that consumes those exported files</li>
+<li><strong>Deploy</strong> the built website to hosting</li>
+</ol>
+<p>Export and sync are independent—you can use either, both, or neither.</p>
+<h3 id="supported-formats">Supported Formats</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Format</th><th>Output File</th><th>Description</th></tr></thead><tbody><tr><td><code>json</code></td><td><code>objects.json</code></td><td>All objects as structured JSON with frontmatter and body</td></tr><tr><td><code>markdown</code></td><td>Mirrored file tree</td><td>Preserves original directory structure and filenames</td></tr><tr><td><code>html</code></td><td><code>index.html</code></td><td>Single HTML page listing all objects</td></tr><tr><td><code>bibtex</code></td><td><code>references.bib</code></td><td>Bibliography file (only exports <code>bibtex_entry</code> type objects)</td></tr><tr><td><code>atproto</code></td><td><code>records.json</code></td><td>ATProto-compatible records for federation</td></tr></tbody></table>
+<h3 id="cli-usage">CLI Usage</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Basic export</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> export-project</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">projec</span><span style="color:#E1E4E8">t</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --format</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">forma</span><span style="color:#E1E4E8">t</span><span style="color:#F97583">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># With output directory</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> export-project</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">projec</span><span style="color:#E1E4E8">t</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --format</span><span style="color:#9ECBFF"> json</span><span style="color:#79B8FF"> --output</span><span style="color:#9ECBFF"> dist/data</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Filter by object type</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> export-project</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">projec</span><span style="color:#E1E4E8">t</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --format</span><span style="color:#9ECBFF"> json</span><span style="color:#79B8FF"> --type</span><span style="color:#9ECBFF"> blog_post</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Filter by source</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> export-project</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">projec</span><span style="color:#E1E4E8">t</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --format</span><span style="color:#9ECBFF"> markdown</span><span style="color:#79B8FF"> --source</span><span style="color:#9ECBFF"> local-notes</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># BibTeX: only export cited references</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> export-project</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">projec</span><span style="color:#E1E4E8">t</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --format</span><span style="color:#9ECBFF"> bibtex</span><span style="color:#79B8FF"> --detect-citations</span></span>
+<span class="line"></span></code></pre>
+<h3 id="export-recipes-yaml">Export Recipes (YAML)</h3>
+<p>Define named export configurations in your project file:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#85E89D">recipes</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">  - </span><span style="color:#85E89D">name</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">public-json</span></span>
+<span class="line"><span style="color:#85E89D">    description</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">JSON bundle for website consumption</span></span>
+<span class="line"><span style="color:#85E89D">    sourceIds</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">      - </span><span style="color:#9ECBFF">local-notes</span></span>
+<span class="line"><span style="color:#85E89D">    steps</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">      - </span><span style="color:#85E89D">format</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">json</span></span>
+<span class="line"><span style="color:#85E89D">        outputDir</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">dist/export/recipes/public/json</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">  - </span><span style="color:#85E89D">name</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">bibliography</span></span>
+<span class="line"><span style="color:#85E89D">    steps</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">      - </span><span style="color:#85E89D">format</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">bibtex</span></span>
+<span class="line"><span style="color:#85E89D">        outputDir</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">dist/export/refs</span></span>
+<span class="line"></span></code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Field</th><th>Description</th></tr></thead><tbody><tr><td><code>name</code></td><td>Recipe identifier</td></tr><tr><td><code>description</code></td><td>Human-readable description</td></tr><tr><td><code>sourceIds</code></td><td>Limit to specific sources (optional)</td></tr><tr><td><code>steps</code></td><td>List of export steps</td></tr><tr><td><code>steps[].format</code></td><td>Export format</td></tr><tr><td><code>steps[].outputDir</code></td><td>Output directory</td></tr></tbody></table>
+<h3 id="export-in-build-pipeline">Export in Build Pipeline</h3>
+<p>Use <code>preRender</code> CLI steps to run exports before building:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#85E89D">build</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">  websiteDir</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">my-blog</span></span>
+<span class="line"><span style="color:#85E89D">  type</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">astro</span></span>
+<span class="line"><span style="color:#85E89D">  preRender</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">    - </span><span style="color:#85E89D">type</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">cli</span></span>
+<span class="line"><span style="color:#85E89D">      command</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">export-project my-project --format json</span></span>
+<span class="line"><span style="color:#85E89D">      outputDir</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">src/data</span></span>
+<span class="line"></span></code></pre>
+<p>This runs the export, placing <code>objects.json</code> in <code>src/data/</code> before Astro builds. Your site can then import this data.</p>
+<h3 id="default-output-directory">Default Output Directory</h3>
+<p>Without <code>--output</code>, exports go to: <code>dist/export/{project}/{format}/</code></p>
+<h2 id="build-configuration">Build Configuration</h2>
+<p>Each project can define how its website is built. See <code>packages/core/src/types.ts</code> for <code>BuildConfig</code> interface.</p>
+<p><strong>Example:</strong> <code>projects/data-leverage-blogs.yaml</code> shows a Quarto build with rsync and CLI preRender steps.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Field</th><th>Description</th></tr></thead><tbody><tr><td><code>websiteDir</code></td><td>Directory in <code>websites/</code> folder</td></tr><tr><td><code>type</code></td><td>Build type: <code>astro</code> | <code>quarto</code> | <code>custom</code></td></tr><tr><td><code>preRender</code></td><td>Optional steps before main build</td></tr></tbody></table>
+<h3 id="build-types">Build Types</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Type</th><th>Build Command</th></tr></thead><tbody><tr><td><code>astro</code></td><td><code>npm install</code> (if needed) + <code>npm run build</code></td></tr><tr><td><code>quarto</code></td><td><code>quarto render</code></td></tr><tr><td><code>custom</code></td><td>Only runs preRender steps</td></tr></tbody></table>
+<h3 id="prerender-step-types">PreRender Step Types</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Type</th><th>Description</th><th>Required Fields</th></tr></thead><tbody><tr><td><code>rsync</code></td><td>Sync files from source to destination</td><td><code>src</code>, <code>dst</code>, <code>include</code> (optional)</td></tr><tr><td><code>cli</code></td><td>Run extenote CLI command</td><td><code>command</code>, <code>outputDir</code> (optional)</td></tr><tr><td><code>copy</code></td><td>Copy a single file</td><td><code>src</code>, <code>dst</code></td></tr><tr><td><code>shell</code></td><td>Run arbitrary shell command</td><td><code>command</code></td></tr><tr><td><code>network</code></td><td>Generate discussions page &#x26; related projects</td><td><code>outputFormat</code> (optional)</td></tr></tbody></table>
+<h3 id="network-step">Network Step</h3>
+<p>The <code>network</code> step generates a discussions/network page for your static site, connecting it to discussions and related projects in the extenote ecosystem.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Field</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>outputFormat</code></td><td><code>quarto</code></td><td>Output format: <code>quarto</code>, <code>astro</code>, or <code>both</code></td></tr><tr><td><code>addToNavbar</code></td><td><code>true</code></td><td>For Quarto: add discussions page to navbar</td></tr><tr><td><code>includeProjectLinks</code></td><td><code>true</code></td><td>For Quarto: include the “Project Links” section</td></tr><tr><td><code>relatedProjects</code></td><td><code>[]</code></td><td>Additional project names to include</td></tr><tr><td><code>excludeProjects</code></td><td><code>[]</code></td><td>Projects to exclude from auto-discovery</td></tr></tbody></table>
+<p><strong>Auto-discovery:</strong> Related projects are automatically discovered from your <code>includes</code> list.</p>
+<p><strong>Example:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#85E89D">build</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">  websiteDir</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">my-blog-quarto</span></span>
+<span class="line"><span style="color:#85E89D">  type</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">quarto</span></span>
+<span class="line"><span style="color:#85E89D">  preRender</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">    - </span><span style="color:#85E89D">type</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">rsync</span></span>
+<span class="line"><span style="color:#85E89D">      src</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">${EXTENOTE_CONTENT_ROOT}/my-blog</span></span>
+<span class="line"><span style="color:#85E89D">      dst</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">posts</span></span>
+<span class="line"><span style="color:#E1E4E8">    - </span><span style="color:#85E89D">type</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">network</span></span>
+<span class="line"><span style="color:#85E89D">      outputFormat</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">quarto</span></span>
+<span class="line"><span style="color:#85E89D">      addToNavbar</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span></span>
+<span class="line"><span style="color:#85E89D">      relatedProjects</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">another-project</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"></span></code></pre>
+<p><strong>Generated output:</strong></p>
+<ul>
+<li><strong>Quarto</strong>: Creates <code>discussions.qmd</code> with discussion links, related projects, and optional project links. Optionally updates <code>_quarto.yml</code> navbar.</li>
+<li><strong>Astro</strong>: Creates <code>src/data/network.json</code> for consumption by footer components.</li>
+</ul>
+<h2 id="deploy-configuration">Deploy Configuration</h2>
+<p>Each project can define how it’s deployed. See <code>packages/core/src/types.ts</code> for <code>DeployConfig</code> interface.</p>
+<p><strong>Example:</strong> <code>projects/data-leverage-blogs.yaml</code> shows Cloudflare Pages deployment.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Field</th><th>Description</th></tr></thead><tbody><tr><td><code>platform</code></td><td>Deploy platform (see table below)</td></tr><tr><td><code>configFile</code></td><td>Platform config file (e.g., <code>wrangler.toml</code>)</td></tr><tr><td><code>outputDir</code></td><td>Build output directory</td></tr><tr><td><code>repo</code></td><td>GitHub Pages: target repository URL</td></tr><tr><td><code>branch</code></td><td>GitHub Pages: target branch (default: <code>gh-pages</code>)</td></tr></tbody></table>
+<h3 id="deploy-platforms">Deploy Platforms</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Platform</th><th>Config File</th><th>Notes</th></tr></thead><tbody><tr><td><code>cloudflare-pages</code></td><td><code>wrangler.toml</code></td><td>Uses <code>wrangler pages deploy</code></td></tr><tr><td><code>github-pages</code></td><td>-</td><td>Uses <code>gh-pages</code> package, requires <code>repo</code></td></tr><tr><td><code>none</code></td><td>-</td><td>No deployment configured</td></tr></tbody></table>
+<h3 id="github-pages-configuration">GitHub Pages Configuration</h3>
+<p>For GitHub Pages, specify the target repository with <code>repo</code> and optionally <code>branch</code> (defaults to <code>gh-pages</code>).</p>
+<p>Note: The website directory needs a <code>package.json</code> file (even a minimal one) for <code>gh-pages</code> to work.</p>
+<h2 id="configuration-defaults">Configuration Defaults</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Setting</th><th>Default</th></tr></thead><tbody><tr><td><code>defaultVisibility</code></td><td><code>"private"</code></td></tr><tr><td><code>visibilityField</code></td><td><code>"visibility"</code></td></tr><tr><td><code>identityField</code></td><td><code>"slug"</code></td></tr><tr><td><code>includes</code></td><td><code>[]</code> (no included projects)</td></tr><tr><td><code>lint.rules.required-visibility</code></td><td><code>"warn"</code></td></tr><tr><td><code>lint.autofix</code></td><td><code>false</code></td></tr><tr><td>Export output</td><td><code>dist/export/{project}/{format}</code></td></tr><tr><td><code>build.type</code></td><td>(required if build configured)</td></tr><tr><td><code>deploy.platform</code></td><td><code>"none"</code></td></tr><tr><td><code>deploy.branch</code></td><td><code>"gh-pages"</code></td></tr></tbody></table>
+<h2 id="semble-sync-configuration">Semble Sync Configuration</h2>
+<p>Sync references bidirectionally with <a href="https://semble.app">Semble</a>, an ATProto-based social knowledge network for researchers. Semble is built on the AT Protocol (the same protocol behind Bluesky). <strong>ATProto sync is still very WIP</strong> and may change.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Field</th><th>Required</th><th>Description</th></tr></thead><tbody><tr><td><code>enabled</code></td><td>Yes</td><td>Enable sync for this project</td></tr><tr><td><code>identifier</code></td><td>Yes</td><td>ATProto handle or DID (e.g., <code>user.bsky.social</code>)</td></tr><tr><td><code>password</code></td><td>No</td><td>App password (or use <code>SEMBLE_APP_PASSWORD</code> env var)</td></tr><tr><td><code>pds</code></td><td>No</td><td>Personal Data Server URL (default: <code>https://bsky.social</code>)</td></tr><tr><td><code>collection</code></td><td>No</td><td>Semble collection name (default: project name, <code>null</code> to disable)</td></tr><tr><td><code>types</code></td><td>No</td><td>Object types to sync (default: <code>["bibtex_entry"]</code>)</td></tr><tr><td><code>publicOnly</code></td><td>No</td><td>Only sync objects with <code>visibility: public</code></td></tr></tbody></table>
+<p><strong>Example:</strong></p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#85E89D">semble</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">  enabled</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span></span>
+<span class="line"><span style="color:#85E89D">  identifier</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">yourhandle.bsky.social</span></span>
+<span class="line"><span style="color:#85E89D">  collection</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">my-research-refs</span><span style="color:#6A737D">  # or null to disable collections</span></span>
+<span class="line"><span style="color:#85E89D">  types</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">"bibtex_entry"</span><span style="color:#E1E4E8">, </span><span style="color:#9ECBFF">"data_license_initiative"</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"><span style="color:#85E89D">  publicOnly</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">false</span></span>
+<span class="line"></span></code></pre>
+<h3 id="collections">Collections</h3>
+<p>By default, synced cards are added to a Semble collection named after your project. This groups your references together in the Semble UI.</p>
+<ul>
+<li><strong>Default behavior</strong>: Cards are added to a collection named <code>&#x3C;project-name></code></li>
+<li><strong>Custom collection</strong>: Set <code>collection: my-custom-name</code></li>
+<li><strong>Disable collections</strong>: Set <code>collection: null</code></li>
+</ul>
+<p>Collections are created automatically if they don’t exist. The collection URI is cached in <code>.semble-sync.json</code> for efficiency.</p>
+<h3 id="cli-commands">CLI Commands</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># List projects with Semble config</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> sync</span><span style="color:#79B8FF"> --list</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># List your Semble collections</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> sync</span><span style="color:#79B8FF"> --list-collections</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Validate configuration</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> sync</span><span style="color:#79B8FF"> --validate</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Dry run (see what would sync)</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> sync</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">projec</span><span style="color:#E1E4E8">t</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --dry-run</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Sync a project (bidirectional)</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> sync</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">projec</span><span style="color:#E1E4E8">t</span><span style="color:#F97583">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Push only (local → Semble)</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> sync</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">projec</span><span style="color:#E1E4E8">t</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --push-only</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Pull only (Semble → local)</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> sync</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">projec</span><span style="color:#E1E4E8">t</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --pull-only</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Force re-sync all objects</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> sync</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">projec</span><span style="color:#E1E4E8">t</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --force</span></span>
+<span class="line"></span></code></pre>
+<h3 id="environment-variables-1">Environment Variables</h3>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Variable</th><th>Description</th></tr></thead><tbody><tr><td><code>SEMBLE_APP_PASSWORD</code></td><td>App password for ATProto authentication</td></tr><tr><td><code>ATPROTO_APP_PASSWORD</code></td><td>Alternative env var name (fallback)</td></tr></tbody></table> </main> </div> <footer class="site-footer" data-astro-cid-sz7xmlte> <div class="footer-content" data-astro-cid-sz7xmlte> <p data-astro-cid-sz7xmlte>Extenote is open source software. Built for researchers, writers, and content creators.</p> </div> <div class="theme-controls" data-astro-cid-sz7xmlte> <div class="theme-toggle" data-astro-cid-sz7xmlte> <span class="toggle-label" data-astro-cid-sz7xmlte>Mode:</span> <button class="toggle-btn" data-mode="light" id="mode-light" data-astro-cid-sz7xmlte>Light</button> <button class="toggle-btn" data-mode="dark" id="mode-dark" data-astro-cid-sz7xmlte>Dark</button> </div> <div class="theme-toggle" data-astro-cid-sz7xmlte> <span class="toggle-label" data-astro-cid-sz7xmlte>Style:</span> <button class="toggle-btn" data-aesthetic="classic" id="aesthetic-classic" data-astro-cid-sz7xmlte>Classic</button> <button class="toggle-btn" data-aesthetic="futuristic" id="aesthetic-futuristic" data-astro-cid-sz7xmlte>Cyber</button> </div> </div> </footer>    <div class="lightbox" id="lightbox" data-astro-cid-uadgga6g> <button class="lightbox-close" aria-label="Close" data-astro-cid-uadgga6g>&times;</button> <img src="" alt="" id="lightbox-img" data-astro-cid-uadgga6g> <div class="lightbox-hint" data-astro-cid-uadgga6g>Click anywhere or press Escape to close</div> </div>   </body></html>

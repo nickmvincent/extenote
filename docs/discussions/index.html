@@ -1,0 +1,177 @@
+<!DOCTYPE html><html lang="en" data-mode="dark" data-aesthetic="classic"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Discussion Plugin System | Extenote</title><meta name="description" content="Extenote documentation: Discussion Plugin System"><meta property="og:type" content="website"><meta property="og:url" content="https://extenote.dev"><meta property="og:title" content="Discussion Plugin System | Extenote"><meta property="og:description" content="Extenote documentation: Discussion Plugin System"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Discussion Plugin System | Extenote"><meta name="twitter:description" content="Extenote documentation: Discussion Plugin System"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet"><script>
+      // Load theme preferences before render to prevent flash
+      (function() {
+        const mode = localStorage.getItem('theme-mode') || 'dark';
+        const aesthetic = localStorage.getItem('theme-aesthetic') || 'classic';
+        document.documentElement.setAttribute('data-mode', mode);
+        document.documentElement.setAttribute('data-aesthetic', aesthetic);
+      })();
+    </script><link rel="stylesheet" href="/extenote/_astro/_slug_.Cf4BF75M.css">
+<link rel="stylesheet" href="/extenote/_astro/_slug_.COSOcpGJ.css"><script type="module" src="/extenote/_astro/hoisted.BEvs-6yx.js"></script></head> <body>   <header class="top-nav"> <div class="brand"> <a href="/extenote">Extenote</a> </div> <div class="nav-ornament"></div> <nav class="nav-links"> <a href="/extenote">home</a> <span class="nav-dot"></span> <a href="/extenote/docs" aria-current="page">docs</a> <span class="nav-dot"></span> <a href="https://github.com/nickmvincent/extenote" target="_blank">github</a> </nav> </header> <div class="docs-layout" data-astro-cid-uadgga6g> <aside class="sidebar" data-astro-cid-uadgga6g> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Getting Started</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/index" class="sidebar-link " data-astro-cid-uadgga6g> Extenote Documentation </a><a href="/extenote/docs/quickstart" class="sidebar-link " data-astro-cid-uadgga6g> Quick Start </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Reference</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/cli" class="sidebar-link " data-astro-cid-uadgga6g> CLI Reference </a><a href="/extenote/docs/configuration" class="sidebar-link " data-astro-cid-uadgga6g> Configuration Reference </a><a href="/extenote/docs/architecture" class="sidebar-link " data-astro-cid-uadgga6g> Architecture Overview </a><a href="/extenote/docs/interfaces" class="sidebar-link " data-astro-cid-uadgga6g> Interface Comparison </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Features</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/web-ui" class="sidebar-link " data-astro-cid-uadgga6g> Web UI Gallery </a><a href="/extenote/docs/tags" class="sidebar-link " data-astro-cid-uadgga6g> Tags </a><a href="/extenote/docs/reference-check" class="sidebar-link " data-astro-cid-uadgga6g> Refcheck </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Other</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/testing" class="sidebar-link " data-astro-cid-uadgga6g> Manual Testing Guide </a><a href="/extenote/docs/cross-project-linking" class="sidebar-link " data-astro-cid-uadgga6g> Cross-Project Linking </a><a href="/extenote/docs/known-issues" class="sidebar-link " data-astro-cid-uadgga6g> Known Issues </a> </nav> </div> </aside> <main class="content" data-astro-cid-uadgga6g> <a href="/extenote/docs" class="back-link" data-astro-cid-uadgga6g>← All Docs</a> <h1 id="discussion-plugin-system">Discussion Plugin System</h1>
+<p>A modular plugin system for creating discussion threads across multiple platforms for extenote content objects. Supports both project-level discussions (one per project) and per-object discussions.</p>
+<blockquote>
+<p><strong>Status:</strong> GitHub Discussions and WhiteWind are fully supported. Leaflet and Google Docs are on the roadmap but not yet implemented.</p>
+</blockquote>
+<h2 id="discussion-vs-network-key-distinction">Discussion vs Network: Key Distinction</h2>
+<p>Extenote separates <strong>discussion management</strong> from <strong>network visibility</strong> into two distinct but complementary systems:</p>
+<h3 id="discussion-system-creating-external-discussions">Discussion System (Creating External Discussions)</h3>
+<p>The <strong>Discussion</strong> system creates and manages discussion threads on external platforms:</p>
+<ul>
+<li><strong>What it does</strong>: Creates discussions on GitHub, Leaflet, WhiteWind, Google Docs, etc.</li>
+<li><strong>When to use</strong>: Run <code>extenote discussions create &#x3C;project></code> to create discussion threads</li>
+<li><strong>Output</strong>: Writes <code>project_discussion</code> objects (markdown files) with links to all created discussions</li>
+<li><strong>Configuration</strong>: The <code>discussion:</code> block in your project YAML</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#6A737D"># Example: Create discussions on GitHub and WhiteWind</span></span>
+<span class="line"><span style="color:#85E89D">discussion</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">  createObjects</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span></span>
+<span class="line"><span style="color:#85E89D">  outputDir</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">${EXTENOTE_CONTENT_ROOT}/discussions</span></span>
+<span class="line"><span style="color:#85E89D">  providers</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">    github</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">      enabled</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span></span>
+<span class="line"><span style="color:#85E89D">      repo</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">user/repo</span></span>
+<span class="line"><span style="color:#85E89D">      category</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">General</span></span>
+<span class="line"><span style="color:#85E89D">    whitewind</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">      enabled</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span></span>
+<span class="line"><span style="color:#85E89D">      identifier</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">user.bsky.social</span></span>
+<span class="line"></span></code></pre>
+<h3 id="network-system-making-discussions-visible">Network System (Making Discussions Visible)</h3>
+<p>The <strong>Network</strong> system makes your discussions discoverable on your static site:</p>
+<ul>
+<li><strong>What it does</strong>: Generates a <code>/discussions</code> page with links to external discussions and related projects</li>
+<li><strong>When to use</strong>: Add a <code>network</code> preRender step to your build config</li>
+<li><strong>Output</strong>:
+<ul>
+<li><strong>Quarto</strong>: Generates <code>discussions.qmd</code> and updates <code>_quarto.yml</code> navbar</li>
+<li><strong>Astro</strong>: Generates <code>src/data/network.json</code> for your components to consume</li>
+</ul>
+</li>
+<li><strong>Configuration</strong>: The <code>network</code> step in your <code>build.preRender</code> array</li>
+</ul>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#6A737D"># Example: Generate a discussions page for your Astro site</span></span>
+<span class="line"><span style="color:#85E89D">includes</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">  - </span><span style="color:#9ECBFF">discussions</span><span style="color:#6A737D">  # Include the discussions project to access discussion objects</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#85E89D">build</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">  type</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">astro</span></span>
+<span class="line"><span style="color:#85E89D">  preRender</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">    - </span><span style="color:#85E89D">type</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">network</span></span>
+<span class="line"><span style="color:#85E89D">      outputFormat</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">astro</span></span>
+<span class="line"></span></code></pre>
+<h3 id="complete-workflow">Complete Workflow</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="plaintext"><code><span class="line"><span>1. Configure discussion providers in project YAML</span></span>
+<span class="line"><span>                    ↓</span></span>
+<span class="line"><span>2. Run: extenote discussions create my-project</span></span>
+<span class="line"><span>   → Creates discussions on GitHub, ATProto, etc.</span></span>
+<span class="line"><span>   → Writes discussion objects to content/discussions/</span></span>
+<span class="line"><span>                    ↓</span></span>
+<span class="line"><span>3. Add network step to build config</span></span>
+<span class="line"><span>                    ↓</span></span>
+<span class="line"><span>4. Run: extenote build my-project</span></span>
+<span class="line"><span>   → Network step reads discussion objects</span></span>
+<span class="line"><span>   → Generates discussions page for your SSG</span></span>
+<span class="line"><span>                    ↓</span></span>
+<span class="line"><span>5. Add nav link to your site's layout pointing to /discussions</span></span>
+<span class="line"><span>   → Users can now find and join your discussions</span></span>
+<span class="line"><span></span></span></code></pre>
+<h2 id="providers">Providers</h2>
+<h3 id="github-discussions-supported">GitHub Discussions (Supported)</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#85E89D">github</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">  enabled</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span></span>
+<span class="line"><span style="color:#85E89D">  repo</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">owner/repo</span></span>
+<span class="line"><span style="color:#85E89D">  category</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">General</span></span>
+<span class="line"><span style="color:#85E89D">  token</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">$GITHUB_TOKEN</span><span style="color:#6A737D">  # or env var</span></span>
+<span class="line"></span></code></pre>
+<h3 id="whitewind-supported">WhiteWind (Supported)</h3>
+<p>Creates markdown blog entries on ATProto using the <code>com.whtwnd.blog.entry</code> lexicon.</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#85E89D">whitewind</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">  enabled</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span></span>
+<span class="line"><span style="color:#85E89D">  identifier</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">user.bsky.social</span></span>
+<span class="line"><span style="color:#85E89D">  password</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">$ATPROTO_APP_PASSWORD</span></span>
+<span class="line"></span></code></pre>
+<h3 id="leaflet-roadmap">Leaflet (Roadmap)</h3>
+<blockquote>
+<p>Not yet implemented. Planned support for creating rich documents on ATProto using the <code>pub.leaflet.document</code> lexicon.</p>
+</blockquote>
+<h3 id="google-docs-roadmap">Google Docs (Roadmap)</h3>
+<blockquote>
+<p>Not yet implemented. Planned support for creating Google Docs with configurable sharing permissions.</p>
+</blockquote>
+<h2 id="cli-commands">CLI Commands</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Create project-level discussion</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#9ECBFF"> discussions</span><span style="color:#9ECBFF"> create</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">projec</span><span style="color:#E1E4E8">t</span><span style="color:#F97583">></span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Dry run - show what would be created</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#9ECBFF"> discussions</span><span style="color:#9ECBFF"> create</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">projec</span><span style="color:#E1E4E8">t</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --dry-run</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Only use specific provider</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#9ECBFF"> discussions</span><span style="color:#9ECBFF"> create</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">projec</span><span style="color:#E1E4E8">t</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --provider</span><span style="color:#9ECBFF"> leaflet</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># List existing discussion links</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#9ECBFF"> discussions</span><span style="color:#9ECBFF"> list</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Validate provider configurations</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#9ECBFF"> discussions</span><span style="color:#9ECBFF"> validate</span></span>
+<span class="line"></span></code></pre>
+<h2 id="discussion-objects">Discussion Objects</h2>
+<p>When <code>createObjects: true</code>, running <code>discussions create</code> generates markdown files:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="markdown"><code><span class="line"><span style="color:#E1E4E8">---</span></span>
+<span class="line"><span style="color:#85E89D">type</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">project_discussion</span></span>
+<span class="line"><span style="color:#85E89D">project</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">my-project</span></span>
+<span class="line"><span style="color:#85E89D">title</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"my-project Discussions"</span></span>
+<span class="line"><span style="color:#85E89D">github_url</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"https://github.com/user/repo/discussions/42"</span></span>
+<span class="line"><span style="color:#85E89D">leaflet_url</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">"https://mysite.leaflet.pub/3abc..."</span></span>
+<span class="line"><span style="color:#85E89D">created_at</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">2024-01-15</span></span>
+<span class="line"><span style="color:#E1E4E8">---</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF;font-weight:bold"># my-project Discussions</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#E1E4E8">Welcome! This is the central discussion space for the </span><span style="color:#E1E4E8;font-weight:bold">**my-project**</span><span style="color:#E1E4E8"> project.</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#79B8FF;font-weight:bold">## Discussion Links</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> [</span><span style="color:#DBEDFF;text-decoration:underline">Discuss on GitHub</span><span style="color:#E1E4E8">](</span><span style="color:#E1E4E8;text-decoration:underline">https://github.com/user/repo/discussions/42</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"><span style="color:#FFAB70">-</span><span style="color:#E1E4E8"> [</span><span style="color:#DBEDFF;text-decoration:underline">Discuss on Leaflet</span><span style="color:#E1E4E8">](</span><span style="color:#E1E4E8;text-decoration:underline">https://mysite.leaflet.pub/3abc...</span><span style="color:#E1E4E8">)</span></span>
+<span class="line"></span></code></pre>
+<h2 id="network-step">Network Step</h2>
+<p>The <code>network</code> preRender step generates a discussions page for your static site:</p>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="yaml"><code><span class="line"><span style="color:#85E89D">build</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#85E89D">  websiteDir</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">my-site-quarto</span></span>
+<span class="line"><span style="color:#85E89D">  type</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">quarto</span></span>
+<span class="line"><span style="color:#85E89D">  preRender</span><span style="color:#E1E4E8">:</span></span>
+<span class="line"><span style="color:#E1E4E8">    - </span><span style="color:#85E89D">type</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">network</span></span>
+<span class="line"><span style="color:#85E89D">      outputFormat</span><span style="color:#E1E4E8">: </span><span style="color:#9ECBFF">quarto</span></span>
+<span class="line"><span style="color:#85E89D">      addToNavbar</span><span style="color:#E1E4E8">: </span><span style="color:#79B8FF">true</span></span>
+<span class="line"><span style="color:#85E89D">      relatedProjects</span><span style="color:#E1E4E8">: [</span><span style="color:#9ECBFF">other-project</span><span style="color:#E1E4E8">]</span></span>
+<span class="line"></span></code></pre>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Option</th><th>Default</th><th>Description</th></tr></thead><tbody><tr><td><code>outputFormat</code></td><td><code>quarto</code></td><td><code>quarto</code>, <code>astro</code>, or <code>both</code></td></tr><tr><td><code>addToNavbar</code></td><td><code>true</code></td><td>Update <code>_quarto.yml</code> navbar</td></tr><tr><td><code>relatedProjects</code></td><td><code>[]</code></td><td>Additional projects to link</td></tr><tr><td><code>excludeProjects</code></td><td><code>[]</code></td><td>Projects to exclude</td></tr></tbody></table> </main> </div> <footer class="site-footer" data-astro-cid-sz7xmlte> <div class="footer-content" data-astro-cid-sz7xmlte> <p data-astro-cid-sz7xmlte>Extenote is open source software. Built for researchers, writers, and content creators.</p> </div> <div class="theme-controls" data-astro-cid-sz7xmlte> <div class="theme-toggle" data-astro-cid-sz7xmlte> <span class="toggle-label" data-astro-cid-sz7xmlte>Mode:</span> <button class="toggle-btn" data-mode="light" id="mode-light" data-astro-cid-sz7xmlte>Light</button> <button class="toggle-btn" data-mode="dark" id="mode-dark" data-astro-cid-sz7xmlte>Dark</button> </div> <div class="theme-toggle" data-astro-cid-sz7xmlte> <span class="toggle-label" data-astro-cid-sz7xmlte>Style:</span> <button class="toggle-btn" data-aesthetic="classic" id="aesthetic-classic" data-astro-cid-sz7xmlte>Classic</button> <button class="toggle-btn" data-aesthetic="futuristic" id="aesthetic-futuristic" data-astro-cid-sz7xmlte>Cyber</button> </div> </div> </footer>    <div class="lightbox" id="lightbox" data-astro-cid-uadgga6g> <button class="lightbox-close" aria-label="Close" data-astro-cid-uadgga6g>&times;</button> <img src="" alt="" id="lightbox-img" data-astro-cid-uadgga6g> <div class="lightbox-hint" data-astro-cid-uadgga6g>Click anywhere or press Escape to close</div> </div>   </body></html>

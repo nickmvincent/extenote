@@ -1,0 +1,132 @@
+<!DOCTYPE html><html lang="en" data-mode="dark" data-aesthetic="classic"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>FAQ | Extenote</title><meta name="description" content="Extenote documentation: FAQ"><meta property="og:type" content="website"><meta property="og:url" content="https://extenote.dev"><meta property="og:title" content="FAQ | Extenote"><meta property="og:description" content="Extenote documentation: FAQ"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="FAQ | Extenote"><meta name="twitter:description" content="Extenote documentation: FAQ"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet"><script>
+      // Load theme preferences before render to prevent flash
+      (function() {
+        const mode = localStorage.getItem('theme-mode') || 'dark';
+        const aesthetic = localStorage.getItem('theme-aesthetic') || 'classic';
+        document.documentElement.setAttribute('data-mode', mode);
+        document.documentElement.setAttribute('data-aesthetic', aesthetic);
+      })();
+    </script><link rel="stylesheet" href="/extenote/_astro/_slug_.Cf4BF75M.css">
+<link rel="stylesheet" href="/extenote/_astro/_slug_.COSOcpGJ.css"><script type="module" src="/extenote/_astro/hoisted.BEvs-6yx.js"></script></head> <body>   <header class="top-nav"> <div class="brand"> <a href="/extenote">Extenote</a> </div> <div class="nav-ornament"></div> <nav class="nav-links"> <a href="/extenote">home</a> <span class="nav-dot"></span> <a href="/extenote/docs" aria-current="page">docs</a> <span class="nav-dot"></span> <a href="https://github.com/nickmvincent/extenote" target="_blank">github</a> </nav> </header> <div class="docs-layout" data-astro-cid-uadgga6g> <aside class="sidebar" data-astro-cid-uadgga6g> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Getting Started</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/index" class="sidebar-link " data-astro-cid-uadgga6g> Extenote Documentation </a><a href="/extenote/docs/quickstart" class="sidebar-link " data-astro-cid-uadgga6g> Quick Start </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Reference</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/cli" class="sidebar-link " data-astro-cid-uadgga6g> CLI Reference </a><a href="/extenote/docs/configuration" class="sidebar-link " data-astro-cid-uadgga6g> Configuration Reference </a><a href="/extenote/docs/architecture" class="sidebar-link " data-astro-cid-uadgga6g> Architecture Overview </a><a href="/extenote/docs/interfaces" class="sidebar-link " data-astro-cid-uadgga6g> Interface Comparison </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Features</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/web-ui" class="sidebar-link " data-astro-cid-uadgga6g> Web UI Gallery </a><a href="/extenote/docs/tags" class="sidebar-link " data-astro-cid-uadgga6g> Tags </a><a href="/extenote/docs/reference-check" class="sidebar-link " data-astro-cid-uadgga6g> Refcheck </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Other</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/testing" class="sidebar-link " data-astro-cid-uadgga6g> Manual Testing Guide </a><a href="/extenote/docs/cross-project-linking" class="sidebar-link " data-astro-cid-uadgga6g> Cross-Project Linking </a><a href="/extenote/docs/known-issues" class="sidebar-link " data-astro-cid-uadgga6g> Known Issues </a> </nav> </div> </aside> <main class="content" data-astro-cid-uadgga6g> <a href="/extenote/docs" class="back-link" data-astro-cid-uadgga6g>← All Docs</a> <h1 id="frequently-asked-questions">Frequently Asked Questions</h1>
+<h2 id="general">General</h2>
+<h3 id="what-does-extenote-mean">What does “Extenote” mean?</h3>
+<p><strong>Exte</strong>rnalized <strong>Note</strong>s — notes that live outside any particular institution, laptop, or software. The core idea is that your content should be more durable than your current job, device, or tooling.</p>
+<h3 id="who-is-extenote-for">Who is Extenote for?</h3>
+<p>Extenote is designed for people who:</p>
+<ul>
+<li>Want structured, schema-validated content without vendor lock-in</li>
+<li>Publish to multiple outputs (personal site, blog, bibliography, federated platforms)</li>
+<li>Value plain markdown files over proprietary formats</li>
+<li>Like working with AI/LLMs and want content that’s easy to process programmatically</li>
+</ul>
+<p>Common users include academics, technical bloggers, and knowledge workers who want more structure than a folder of markdown files but less lock-in than Notion or Roam.</p>
+<h3 id="is-extenote-a-note-taking-app">Is Extenote a note-taking app?</h3>
+<p>No. Extenote is a <strong>content management layer</strong> — it validates, organizes, and exports your markdown files. You write and edit markdown in whatever editor you prefer (VS Code, Obsidian, vim, etc.). Extenote provides the structure, validation, and publishing pipeline.</p>
+<hr>
+<h2 id="comparison-with-other-tools">Comparison with Other Tools</h2>
+<h3 id="how-does-extenote-relate-to-obsidian">How does Extenote relate to Obsidian?</h3>
+<p>They’re complementary. Obsidian is an excellent markdown editor with a plugin ecosystem. Extenote is a validation and publishing layer. You can:</p>
+<ul>
+<li>Edit your vault in Obsidian</li>
+<li>Use Extenote to validate schemas, check references, and build/deploy websites</li>
+</ul>
+<p>Extenote doesn’t replace Obsidian’s editing experience — it adds structure and export capabilities on top of any markdown vault.</p>
+<h3 id="how-does-extenote-relate-to-zotero">How does Extenote relate to Zotero?</h3>
+<p>Extenote’s bibliography features (refcheck, clipper, bibtex export) overlap with reference managers like Zotero. The key differences:</p>
+<ul>
+<li>Extenote stores references as markdown files you control (not a database)</li>
+<li>Refcheck verifies metadata against multiple sources (DBLP, OpenAlex, Crossref, Semantic Scholar)</li>
+<li>References integrate with the rest of your content vault</li>
+</ul>
+<p>You could use both: Zotero for PDF management and quick capture, Extenote for the canonical bibliography that powers your websites.</p>
+<h3 id="why-not-just-use-astroquarto-directly">Why not just use Astro/Quarto directly?</h3>
+<p>You can! Extenote doesn’t replace static site generators — it <strong>wraps</strong> them. The value is:</p>
+<ul>
+<li><strong>Consistent workflow</strong>: Same <code>build</code> and <code>deploy</code> commands across all your sites</li>
+<li><strong>Shared content</strong>: Multiple sites can include the same <code>shared-references</code> vault</li>
+<li><strong>Future-proofing</strong>: When a new SSG gets popular, add it as a build target without restructuring your content</li>
+<li><strong>Validation</strong>: Catch schema errors before they break builds</li>
+</ul>
+<p>If you have one simple blog, plain Astro might be easier. If you have multiple sites sharing content, Extenote provides the orchestration layer.</p>
+<h3 id="how-is-this-different-from-a-headless-cms">How is this different from a headless CMS?</h3>
+<p>Headless CMSs (Contentful, Sanity, Strapi) store content in databases and expose APIs. Extenote keeps everything in markdown files on your filesystem. This means:</p>
+<ul>
+<li>No hosting costs or API limits</li>
+<li>Full git history for all content</li>
+<li>Works offline</li>
+<li>No vendor dependency</li>
+</ul>
+<p>The tradeoff is you need to be comfortable with files and command-line tools.</p>
+<hr>
+<h2 id="concepts">Concepts</h2>
+<h3 id="whats-the-difference-between-a-vault-and-a-project">What’s the difference between a “vault” and a “project”?</h3>
+<p>A <strong>vault</strong> is a directory of markdown files — the actual content.</p>
+<p>A <strong>project</strong> is a configuration (YAML file) that defines:</p>
+<ul>
+<li>Which vaults/directories to read from (<code>sources</code>)</li>
+<li>What schemas apply to the content</li>
+<li>Where to publish (build/deploy settings)</li>
+<li>Other projects to include (e.g., <code>shared-references</code>)</li>
+</ul>
+<p>Multiple projects can share the same vault. For example, several blog projects might all include <code>shared-references</code> for citations.</p>
+<h3 id="why-are-markdown-files-called-objects">Why are markdown files called “objects”?</h3>
+<p>Because they can be anything — blog posts, bibliography entries, CV items, todo tasks, book chapters. “Objects” is intentionally generic. If you prefer to think of them as “notes” or “entries,” that’s fine too.</p>
+<h3 id="whats-a-schema">What’s a schema?</h3>
+<p>A schema defines the structure of an object type. For example, a <code>blog_post</code> schema might require:</p>
+<ul>
+<li><code>title</code> (string)</li>
+<li><code>date</code> (date)</li>
+<li><code>visibility</code> (public/private/unlisted)</li>
+<li><code>tags</code> (array of strings)</li>
+</ul>
+<p>Schemas live in <code>schemas/*.yaml</code>. When you create or edit content, Extenote validates frontmatter against the schema and reports issues.</p>
+<hr>
+<h2 id="features">Features</h2>
+<h3 id="what-is-refcheck">What is refcheck?</h3>
+<p>Refcheck verifies your bibliographic entries against external databases (DBLP, Semantic Scholar, OpenAlex, Crossref). It:</p>
+<ul>
+<li>Searches for your paper by DOI or title</li>
+<li>Compares local metadata against the remote source</li>
+<li>Reports mismatches (wrong year, misspelled author, etc.)</li>
+<li>Stores results in <code>check_log</code> frontmatter for transparency</li>
+</ul>
+<p>This catches errors like hallucinated citations, outdated preprint metadata, and typos.</p>
+<h3 id="whats-the-browser-clipper">What’s the browser clipper?</h3>
+<p>A browser extension that captures references from any webpage. When you’re reading a paper, click the clipper to:</p>
+<ul>
+<li>Search DBLP/Semantic Scholar for the paper</li>
+<li>Preview and edit the metadata</li>
+<li>Save directly to your vault as a <code>bibtex_entry</code></li>
+</ul>
+<p>It’s the fastest way to build a bibliography while browsing.</p>
+<h3 id="what-is-sembleatproto-sync">What is Semble/ATProto sync?</h3>
+<p><a href="https://semble.app">Semble</a> is an ATProto-based research network. Extenote can sync your references bidirectionally with Semble, making your bibliography visible on the federated social web.</p>
+<p>ATProto (the protocol behind Bluesky) is one of several sync targets — alongside git repos and static sites. The goal is to have your content exist in multiple places, not locked to any single platform.</p>
+<hr>
+<h2 id="technical">Technical</h2>
+<h3 id="why-bun-instead-of-node">Why Bun instead of Node?</h3>
+<p>Performance and developer experience. Bun is faster for the TypeScript toolchain and has built-in test runner and bundler. The codebase uses standard Node APIs, so porting to Node would be straightforward if needed.</p>
+<h3 id="can-i-use-extenote-with-an-existing-markdown-vault">Can I use Extenote with an existing markdown vault?</h3>
+<p>Yes. Point <code>EXTENOTE_CONTENT_ROOT</code> at your content directory. You’ll need to:</p>
+<ol>
+<li>Add frontmatter with <code>type</code> fields to your markdown files</li>
+<li>Create schemas that match your content structure</li>
+<li>Create a project config</li>
+</ol>
+<p>Start with <code>bun run cli -- status</code> to see what Extenote finds.</p>
+<h3 id="how-do-i-add-a-new-static-site-generator">How do I add a new static site generator?</h3>
+<p>Add a new <code>build.type</code> in your project config. Currently supported:</p>
+<ul>
+<li><code>astro</code> — runs <code>npm install &#x26;&#x26; npm run build</code></li>
+<li><code>quarto</code> — runs <code>quarto render</code></li>
+<li><code>custom</code> — only runs preRender steps (you handle the build)</li>
+</ul>
+<p>For a new SSG, you’d add a case to the build logic in <code>packages/core/src/build.ts</code>.</p>
+<hr>
+<h2 id="roadmap">Roadmap</h2>
+<h3 id="will-there-be-an-obsidian-plugin">Will there be an Obsidian plugin?</h3>
+<p>Maybe. It’s on the roadmap but not a high priority. The current workflow (edit in any editor, run CLI for validation/build) works well.</p>
+<h3 id="will-there-be-a-vs-code-extension">Will there be a VS Code extension?</h3>
+<p>Same answer — possible but not prioritized. Schema autocomplete and real-time validation would be nice, but the CLI catches most issues.</p>
+<h3 id="is-the-tui-going-to-be-feature-complete">Is the TUI going to be feature-complete?</h3>
+<p>The TUI is for people who like terminal interfaces. It will stay useful but probably won’t have 100% feature parity with the Web UI. The CLI is the most complete interface.</p> </main> </div> <footer class="site-footer" data-astro-cid-sz7xmlte> <div class="footer-content" data-astro-cid-sz7xmlte> <p data-astro-cid-sz7xmlte>Extenote is open source software. Built for researchers, writers, and content creators.</p> </div> <div class="theme-controls" data-astro-cid-sz7xmlte> <div class="theme-toggle" data-astro-cid-sz7xmlte> <span class="toggle-label" data-astro-cid-sz7xmlte>Mode:</span> <button class="toggle-btn" data-mode="light" id="mode-light" data-astro-cid-sz7xmlte>Light</button> <button class="toggle-btn" data-mode="dark" id="mode-dark" data-astro-cid-sz7xmlte>Dark</button> </div> <div class="theme-toggle" data-astro-cid-sz7xmlte> <span class="toggle-label" data-astro-cid-sz7xmlte>Style:</span> <button class="toggle-btn" data-aesthetic="classic" id="aesthetic-classic" data-astro-cid-sz7xmlte>Classic</button> <button class="toggle-btn" data-aesthetic="futuristic" id="aesthetic-futuristic" data-astro-cid-sz7xmlte>Cyber</button> </div> </div> </footer>    <div class="lightbox" id="lightbox" data-astro-cid-uadgga6g> <button class="lightbox-close" aria-label="Close" data-astro-cid-uadgga6g>&times;</button> <img src="" alt="" id="lightbox-img" data-astro-cid-uadgga6g> <div class="lightbox-hint" data-astro-cid-uadgga6g>Click anywhere or press Escape to close</div> </div>   </body></html>

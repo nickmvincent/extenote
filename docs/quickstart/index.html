@@ -1,0 +1,122 @@
+<!DOCTYPE html><html lang="en" data-mode="dark" data-aesthetic="classic"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Quick Start | Extenote</title><meta name="description" content="Extenote documentation: Quick Start"><meta property="og:type" content="website"><meta property="og:url" content="https://extenote.dev"><meta property="og:title" content="Quick Start | Extenote"><meta property="og:description" content="Extenote documentation: Quick Start"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Quick Start | Extenote"><meta name="twitter:description" content="Extenote documentation: Quick Start"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=JetBrains+Mono:wght@400;500;600;700&family=Orbitron:wght@400;500;600;700&display=swap" rel="stylesheet"><script>
+      // Load theme preferences before render to prevent flash
+      (function() {
+        const mode = localStorage.getItem('theme-mode') || 'dark';
+        const aesthetic = localStorage.getItem('theme-aesthetic') || 'classic';
+        document.documentElement.setAttribute('data-mode', mode);
+        document.documentElement.setAttribute('data-aesthetic', aesthetic);
+      })();
+    </script><link rel="stylesheet" href="/extenote/_astro/_slug_.Cf4BF75M.css">
+<link rel="stylesheet" href="/extenote/_astro/_slug_.COSOcpGJ.css"><script type="module" src="/extenote/_astro/hoisted.BEvs-6yx.js"></script></head> <body>   <header class="top-nav"> <div class="brand"> <a href="/extenote">Extenote</a> </div> <div class="nav-ornament"></div> <nav class="nav-links"> <a href="/extenote">home</a> <span class="nav-dot"></span> <a href="/extenote/docs" aria-current="page">docs</a> <span class="nav-dot"></span> <a href="https://github.com/nickmvincent/extenote" target="_blank">github</a> </nav> </header> <div class="docs-layout" data-astro-cid-uadgga6g> <aside class="sidebar" data-astro-cid-uadgga6g> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Getting Started</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/index" class="sidebar-link " data-astro-cid-uadgga6g> Extenote Documentation </a><a href="/extenote/docs/quickstart" class="sidebar-link active" data-astro-cid-uadgga6g> Quick Start </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Reference</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/cli" class="sidebar-link " data-astro-cid-uadgga6g> CLI Reference </a><a href="/extenote/docs/configuration" class="sidebar-link " data-astro-cid-uadgga6g> Configuration Reference </a><a href="/extenote/docs/architecture" class="sidebar-link " data-astro-cid-uadgga6g> Architecture Overview </a><a href="/extenote/docs/interfaces" class="sidebar-link " data-astro-cid-uadgga6g> Interface Comparison </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Features</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/web-ui" class="sidebar-link " data-astro-cid-uadgga6g> Web UI Gallery </a><a href="/extenote/docs/tags" class="sidebar-link " data-astro-cid-uadgga6g> Tags </a><a href="/extenote/docs/reference-check" class="sidebar-link " data-astro-cid-uadgga6g> Refcheck </a> </nav> </div> <div class="sidebar-section" data-astro-cid-uadgga6g> <div class="sidebar-title" data-astro-cid-uadgga6g>Other</div> <nav class="sidebar-links" data-astro-cid-uadgga6g> <a href="/extenote/docs/testing" class="sidebar-link " data-astro-cid-uadgga6g> Manual Testing Guide </a><a href="/extenote/docs/cross-project-linking" class="sidebar-link " data-astro-cid-uadgga6g> Cross-Project Linking </a><a href="/extenote/docs/known-issues" class="sidebar-link " data-astro-cid-uadgga6g> Known Issues </a> </nav> </div> </aside> <main class="content" data-astro-cid-uadgga6g> <a href="/extenote/docs" class="back-link" data-astro-cid-uadgga6g>← All Docs</a> <h1 id="quick-start">Quick Start</h1>
+<h2 id="setup">Setup</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Clone and install</span></span>
+<span class="line"><span style="color:#B392F0">git</span><span style="color:#9ECBFF"> clone</span><span style="color:#9ECBFF"> git@github.com:you/extenote.git</span></span>
+<span class="line"><span style="color:#B392F0">git</span><span style="color:#9ECBFF"> clone</span><span style="color:#9ECBFF"> git@github.com:you/extenote-pub.git</span></span>
+<span class="line"><span style="color:#79B8FF">cd</span><span style="color:#9ECBFF"> extenote</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> install</span><span style="color:#E1E4E8"> &#x26;&#x26; </span><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> build</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Configure environment</span></span>
+<span class="line"><span style="color:#B392F0">cat</span><span style="color:#F97583"> ></span><span style="color:#9ECBFF"> .env</span><span style="color:#F97583"> &#x3C;&#x3C;</span><span style="color:#9ECBFF"> EOF</span></span>
+<span class="line"><span style="color:#9ECBFF">EXTENOTE_CONTENT_ROOT=../extenote-pub/content</span></span>
+<span class="line"><span style="color:#9ECBFF">EOF</span></span>
+<span class="line"></span></code></pre>
+<h2 id="basic-workflow">Basic Workflow</h2>
+<blockquote>
+<p><strong>Note:</strong> Commands use <code>bun run cli -- &#x3C;command></code> when running from source. The <a href="/extenote/docs/cli">CLI Reference</a> uses <code>extenote &#x3C;command></code> for brevity—these are equivalent. You can create a shell alias: <code>alias extenote="bun run cli --"</code></p>
+</blockquote>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># 1. Check vault status</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> status</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> issues</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 2. Create content</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> create</span><span style="color:#9ECBFF"> blog_post</span><span style="color:#9ECBFF"> my-post</span><span style="color:#79B8FF"> --title</span><span style="color:#9ECBFF"> "My Post"</span><span style="color:#79B8FF"> --visibility</span><span style="color:#9ECBFF"> public</span></span>
+<span class="line"><span style="color:#6A737D"># Or interactive: bun run cli -- creator</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 3. Export (optional, standalone)</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> export-project</span><span style="color:#9ECBFF"> personal-website</span><span style="color:#79B8FF"> --format</span><span style="color:#9ECBFF"> json</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># 4. Build &#x26; deploy website</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> build</span><span style="color:#9ECBFF"> personal-website</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> deploy</span><span style="color:#9ECBFF"> personal-website</span></span>
+<span class="line"></span></code></pre>
+<p><strong>Export → Build → Deploy</strong>: Export generates data files, Build compiles websites, Deploy publishes them. See <a href="/extenote/docs/configuration#export-configuration">CONFIGURATION.md</a> for details.</p>
+<h2 id="three-interfaces">Three Interfaces</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> status</span><span style="color:#6A737D">    # CLI</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> tui</span><span style="color:#6A737D">              # Terminal UI (vim-style keys)</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> web</span><span style="color:#6A737D">              # Web UI at localhost:3000</span></span>
+<span class="line"></span></code></pre>
+<h2 id="clipper--refcheck-optional">Clipper + Refcheck (Optional)</h2>
+<p>The browser clipper extension is the fastest way to capture references from the web. Clip a paper, save it as a <code>bibtex_entry</code>, then run refcheck to validate and fill gaps.</p>
+<p>See <code>extensions/clipper/README.md</code> for installation and usage.</p>
+<h2 id="command-reference">Command Reference</h2>
+<h3 id="status--issues">Status &#x26; Issues</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> status</span><span style="color:#6A737D">                    # Vault summary</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> issues</span><span style="color:#79B8FF"> --limit</span><span style="color:#79B8FF"> 20</span><span style="color:#6A737D">         # Validation issues</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> guide</span><span style="color:#79B8FF"> --project</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">nam</span><span style="color:#E1E4E8">e</span><span style="color:#F97583">></span><span style="color:#6A737D">    # Available schemas &#x26; commands</span></span>
+<span class="line"></span></code></pre>
+<h3 id="content-creation">Content Creation</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> create</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">schem</span><span style="color:#E1E4E8">a</span><span style="color:#F97583">></span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">slu</span><span style="color:#E1E4E8">g</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --title</span><span style="color:#9ECBFF"> "..."</span><span style="color:#79B8FF"> --visibility</span><span style="color:#9ECBFF"> public</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> creator</span><span style="color:#6A737D">                   # Interactive wizard</span></span>
+<span class="line"></span></code></pre>
+<h3 id="export">Export</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> export-project</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">projec</span><span style="color:#E1E4E8">t</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --format</span><span style="color:#9ECBFF"> json</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> export-project</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">projec</span><span style="color:#E1E4E8">t</span><span style="color:#F97583">></span><span style="color:#79B8FF"> --format</span><span style="color:#9ECBFF"> bibtex</span><span style="color:#79B8FF"> --detect-citations</span></span>
+<span class="line"></span></code></pre>
+<p>Formats: <code>json</code>, <code>markdown</code>, <code>html</code>, <code>atproto</code>, <code>bibtex</code></p>
+<h3 id="build--deploy">Build &#x26; Deploy</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> build</span><span style="color:#79B8FF"> --list</span><span style="color:#6A737D">              # List buildable projects</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> build</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">projec</span><span style="color:#E1E4E8">t</span><span style="color:#F97583">></span><span style="color:#6A737D">           # Build single project</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> build</span><span style="color:#9ECBFF"> all</span><span style="color:#79B8FF"> --dry-run</span><span style="color:#6A737D">       # Preview steps</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> deploy</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">projec</span><span style="color:#E1E4E8">t</span><span style="color:#F97583">></span><span style="color:#6A737D">          # Deploy to configured platform</span></span>
+<span class="line"></span></code></pre>
+<h3 id="discussions">Discussions</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> discussions</span><span style="color:#9ECBFF"> validate</span><span style="color:#6A737D">         # Check provider config</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> discussions</span><span style="color:#9ECBFF"> create</span><span style="color:#F97583"> &#x3C;</span><span style="color:#9ECBFF">projec</span><span style="color:#E1E4E8">t</span><span style="color:#F97583">></span><span style="color:#6A737D"> # Create discussion threads</span></span>
+<span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> discussions</span><span style="color:#9ECBFF"> list</span><span style="color:#6A737D">             # List existing links</span></span>
+<span class="line"></span></code></pre>
+<h3 id="refcheck">Refcheck</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#B392F0">bun</span><span style="color:#9ECBFF"> run</span><span style="color:#9ECBFF"> cli</span><span style="color:#79B8FF"> --</span><span style="color:#9ECBFF"> refcheck</span><span style="color:#9ECBFF"> shared-references</span><span style="color:#79B8FF"> --dry-run</span></span>
+<span class="line"></span></code></pre>
+<h2 id="tui-keybindings">TUI Keybindings</h2>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<table><thead><tr><th>Key</th><th>Action</th></tr></thead><tbody><tr><td><code>d</code></td><td>Dashboard</td></tr><tr><td><code>i</code></td><td>Issues</td></tr><tr><td><code>c</code></td><td>Create</td></tr><tr><td><code>e</code></td><td>Export</td></tr><tr><td><code>r</code></td><td>Reload</td></tr><tr><td><code>q</code></td><td>Quit</td></tr></tbody></table>
+<p>Issues page: <code>1-4</code> filter by severity, <code>n/p</code> paginate</p>
+<h2 id="more-documentation">More Documentation</h2>
+<ul>
+<li><a href="/extenote/docs/configuration">CONFIGURATION.md</a> - Project and schema configuration</li>
+<li><a href="/extenote/docs/architecture">ARCHITECTURE.md</a> - System architecture, key concepts</li>
+<li><a href="/extenote/docs/faq">FAQ.md</a> - Frequently asked questions</li>
+<li><a href="/extenote/docs/known-issues">KNOWN_ISSUES.md</a> - Limitations and workarounds</li>
+</ul> </main> </div> <footer class="site-footer" data-astro-cid-sz7xmlte> <div class="footer-content" data-astro-cid-sz7xmlte> <p data-astro-cid-sz7xmlte>Extenote is open source software. Built for researchers, writers, and content creators.</p> </div> <div class="theme-controls" data-astro-cid-sz7xmlte> <div class="theme-toggle" data-astro-cid-sz7xmlte> <span class="toggle-label" data-astro-cid-sz7xmlte>Mode:</span> <button class="toggle-btn" data-mode="light" id="mode-light" data-astro-cid-sz7xmlte>Light</button> <button class="toggle-btn" data-mode="dark" id="mode-dark" data-astro-cid-sz7xmlte>Dark</button> </div> <div class="theme-toggle" data-astro-cid-sz7xmlte> <span class="toggle-label" data-astro-cid-sz7xmlte>Style:</span> <button class="toggle-btn" data-aesthetic="classic" id="aesthetic-classic" data-astro-cid-sz7xmlte>Classic</button> <button class="toggle-btn" data-aesthetic="futuristic" id="aesthetic-futuristic" data-astro-cid-sz7xmlte>Cyber</button> </div> </div> </footer>    <div class="lightbox" id="lightbox" data-astro-cid-uadgga6g> <button class="lightbox-close" aria-label="Close" data-astro-cid-uadgga6g>&times;</button> <img src="" alt="" id="lightbox-img" data-astro-cid-uadgga6g> <div class="lightbox-hint" data-astro-cid-uadgga6g>Click anywhere or press Escape to close</div> </div>   </body></html>
