@@ -1,5 +1,5 @@
 import { json, buildHeaders, resolveProjectRoot, API_PORT, API_HOST } from './server/utils.js'
-import { CACHE_ENABLED, CACHE_TTL } from './server/cache.js'
+import { CACHE_ENABLED, CACHE_TTL, PUBLIC_ONLY } from './server/cache.js'
 import {
   handleVault,
   handleReload,
@@ -32,6 +32,9 @@ const serverRoot = resolveProjectRoot()
 
 console.log(`Extenote API server starting on http://${API_HOST}:${API_PORT}`)
 console.log(`  Cache: ${CACHE_ENABLED ? `enabled (TTL: ${CACHE_TTL}ms)` : 'disabled'}`)
+if (PUBLIC_ONLY) {
+  console.log(`  Mode: PUBLIC_ONLY (private content filtered out)`)
+}
 
 Bun.serve({
   hostname: API_HOST,

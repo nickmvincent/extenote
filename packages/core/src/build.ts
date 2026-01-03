@@ -435,6 +435,9 @@ export async function deployProject(
           }
         }
 
+        // Increase git http buffer to handle large pushes (prevents HTTP 400 errors)
+        await runCommand("git", ["config", "--global", "http.postBuffer", "524288000"], projectDir, false);
+
         // Build gh-pages args
         const ghPagesArgs = ["-d", deployDir, "-b", branch];
         if (deploy.repo) {

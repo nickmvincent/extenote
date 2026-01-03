@@ -1,5 +1,8 @@
 import { loadVault, loadConfig, loadSchemas, computeAllCrossRefs, loadSettings, DEFAULT_CACHE_TTL, type VaultState, type ExtenoteConfig, type LoadedSchema, type ObjectCrossRefs, type VaultObject } from '@extenote/core'
 
+// Public-only mode - filters out private content for screenshots/demos
+export const PUBLIC_ONLY = process.env.EXTENOTE_PUBLIC_ONLY === 'true'
+
 // Cached settings - reload only when explicitly requested or on first access
 let cachedSettings: ReturnType<typeof loadSettings> | null = null
 let settingsTimestamp = 0
@@ -85,18 +88,50 @@ export async function loadVaultBundle(cwd: string, forceReload = false): Promise
       const { config, schemas } = await loadConfigAndSchemas(cwd)
       const fullVault = await loadVault({ cwd })
 
+      // Filter out private content if PUBLIC_ONLY mode is enabled
+      let filteredObjects = fullVault.objects
+      let filteredIssues = fullVault.issues
+
+      if (PUBLIC_ONLY) {
+        // Filter out private objects and objects from private projects
+        filteredObjects = fullVault.objects.filter(obj => {
+          // Exclude objects with private visibility
+          if (obj.visibility === 'private') return false
+          // Exclude objects from projects containing "private" in name
+          if (obj.project?.toLowerCase().includes('private')) return false
+          return true
+        })
+
+        // Filter issues to only include those for remaining objects
+        const remainingPaths = new Set(filteredObjects.map(o => o.relativePath))
+        filteredIssues = fullVault.issues.filter(issue =>
+          remainingPaths.has(issue.filePath)
+        )
+      }
+
+      // Filter config to hide private projects if PUBLIC_ONLY mode
+      let filteredConfig = config
+      if (PUBLIC_ONLY && filteredConfig.projectProfiles) {
+        filteredConfig = {
+          ...filteredConfig,
+          projectProfiles: filteredConfig.projectProfiles.filter(
+            p => !p.name.toLowerCase().includes('private')
+          ),
+        }
+      }
+
       // Strip body from objects to save memory - bodies are loaded on-demand
       const cachedVault: CachedVaultState = {
-        objects: fullVault.objects.map(({ body, ...rest }) => rest),
-        config: fullVault.config,
-        issues: fullVault.issues,
+        objects: filteredObjects.map(({ body, ...rest }) => rest),
+        config: filteredConfig,
+        issues: filteredIssues,
       }
 
       // Invalidate cross-refs cache when vault reloads
       crossRefsCache = null
       crossRefsCacheTimestamp = 0
 
-      const bundle: CachedBundle = { vault: cachedVault, config, schemas, timestamp: Date.now() }
+      const bundle: CachedBundle = { vault: cachedVault, config: filteredConfig, schemas, timestamp: Date.now() }
       cachedBundle = bundle
       return bundle
     } finally {
