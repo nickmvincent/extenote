@@ -1,6 +1,6 @@
 # Extenote
 
-📖 **[Documentation](https://nickmvincent.github.io/extenote/)** · 🖼️ **[Screenshot Gallery](https://nickmvincent.github.io/extenote/docs/web-ui)** · 🚀 **[Quickstart](https://nickmvincent.github.io/extenote/docs/quickstart)**
+📖 **[Documentation](https://nickmvincent.github.io/extenote/)** · 🖼️ **[Screenshot Gallery](https://nickmvincent.github.io/extenote/docs/web-ui)** · 🚀 **[Quickstart](https://nickmvincent.github.io/extenote/docs/quickstart)** · 🌐 **[Projects](https://shared-references.pages.dev/projects/)**
 
 ---
 
