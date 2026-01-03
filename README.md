@@ -1,15 +1,21 @@
 # Extenote
 
-
-Hello! This is a short note from Nick, who worked on the first version of Extenote (heavily using Claude Code, in December 2025 during a period of strong coding agent hype). This a system that was in part inspired by an interest in really pushing recent coding models to their limit (so I can learn for myself, to inform benchmarking work, etc.), but also meant to be something I really want to use (and have been using!). I've made half-hearted attempts to build similar systems throughout the years (ad hoc static site generators, various schemes for trying to get all the content I'm interested in into plaintext documents, etc.). When you let an LLM touch the code and docs so much, it feels important to also write a pure-human note up front.
-
-It combines some features of tools like Obsidian to manage Markdown data, browser extensions to track paper reading, and static site generators to publish content. The goal is to have a system that can manage structured notes and bibliographies in Markdown, validate them, and export them to various formats, all while being robust enough to outlive any single tool or platform. And furthemore, my hope is that by forcing me to get much of my data in plaintext (with structure/schemas), it will be more future-proof and portable, and more useful for integrating with AI systems (while guarding against some failure modes of AI). 
-
-This is of course also related to supporting data labor and the pooling of data :).
-
-That said, there are a lot features here -- a lot of docs (the docs themselves are managed as an Extenote project!), a lot of code (and most of now generated or edited by LLMs, in particular Claude Code + Opus 4.5 as of Dec 2025). I have touched almost every section of the code and content manually, and I'm pretty sure there's no truly egregious slop (and on a meta note, one of the "features" of Extenote is a tool + workflow to guard against hallucination and more banal metadata issues with references). Please do reach out if you're interested in this project.
-
 📖 **[Documentation](https://nickmvincent.github.io/extenote/)** · 🖼️ **[Screenshot Gallery](https://nickmvincent.github.io/extenote/docs/web-ui)** · 🚀 **[Quickstart](https://nickmvincent.github.io/extenote/docs/quickstart)**
+
+---
+
+Hello! This is a short note from Nick, who worked on the first version of Extenote (heavily using Claude Code, in December 2025 during a period of strong coding agent hype). This a system that was in part inspired by an interest in really pushing recent coding models to their limit (so I can learn for myself, to inform benchmarking work, etc.), but also meant to be something I really want to use (and have been using!).
+
+Like many, I've made half-hearted attempts to build similar systems throughout the years (ad hoc static site generators, various schemes for trying to get all the content I'm interested in into plaintext documents, etc.).
+
+The goal is to have a system that can manage structured notes and bibliographies in Markdown, validate them, and export them to various formats (including static sites), all while being robust enough to outlive any single tool or platform. And furthemore, my hope is that by forcing me to get much of my data in plaintext (with structure/schemas), it will be more future-proof and portable, and potentially more useful for integrating with AI systems (while guarding against some failure modes of AI). This is of course also related to supporting data labor and the pooling of data :).
+
+There are a lot features here -- a lot of docs (the docs themselves are managed as an Extenote project!), a lot of code (and most of it now generated or edited by LLMs, in particular Claude Code + Opus 4.5 as of Dec 2025). 
+
+I have touched almost every section of the code and content manually, and I'm pretty sure there's no truly egregious slop, though there's certainly some LLM twang in some of the docs that I still would like to clean-up (though Opus 4.5 is not too bad on this front. On a meta note, one of the "features" of Extenote is a tool + workflow to guard against hallucination and more banal metadata issues with references).
+
+Please do reach out if you're interested in this project.
+
 
 <p align="center">
   <img src="https://nickmvincent.github.io/extenote/screenshots/01-dashboard.png" alt="Dashboard" width="600" />
