@@ -17,20 +17,28 @@ I have touched almost every section of the code and content manually, and I'm pr
 Please do reach out if you're interested in this project.
 
 
-<p align="center">
-  <img src="https://nickmvincent.github.io/extenote/screenshots/01-dashboard.png" alt="Dashboard" width="600" />
-</p>
+| Dashboard | Tags | Review |
+|-----------|------|--------|
+| ![Dashboard](screenshots/dashboard.png) | ![Tags](screenshots/tags.png) | ![Review](screenshots/review.png) |
+
+| Reference Check | Websites |
+|-----------------|----------|
+| ![Refcheck](screenshots/refcheck.png) | ![Websites](screenshots/websites.png) |
 
 <details>
-<summary>More screenshots</summary>
+<summary>More screenshots (from docs, auto-updated)</summary>
 
-| Search | Graph View |
-|--------|------------|
-| ![Search](https://nickmvincent.github.io/extenote/screenshots/04-search-with-query.png) | ![Graph](https://nickmvincent.github.io/extenote/screenshots/05-graph-default.png) |
+| Dashboard | Search |
+|-----------|--------|
+| ![Dashboard](https://nickmvincent.github.io/extenote/screenshots/01-dashboard.png) | ![Search](https://nickmvincent.github.io/extenote/screenshots/04-search-with-query.png) |
 
-| Tags | Review Queue |
-|------|--------------|
-| ![Tags](https://nickmvincent.github.io/extenote/screenshots/07-tags.png) | ![Review](https://nickmvincent.github.io/extenote/screenshots/18-review.png) |
+| Graph View | Tags |
+|------------|------|
+| ![Graph](https://nickmvincent.github.io/extenote/screenshots/05-graph-default.png) | ![Tags](https://nickmvincent.github.io/extenote/screenshots/07-tags.png) |
+
+| Review Queue | Export |
+|--------------|--------|
+| ![Review](https://nickmvincent.github.io/extenote/screenshots/18-review.png) | ![Export](https://nickmvincent.github.io/extenote/screenshots/11-export.png) |
 
 </details>
 
