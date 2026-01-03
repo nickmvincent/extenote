@@ -9,7 +9,24 @@ This is of course also related to supporting data labor and the pooling of data 
 
 That said, there are a lot features here -- a lot of docs (the docs themselves are managed as an Extenote project!), a lot of code (and most of now generated or edited by LLMs, in particular Claude Code + Opus 4.5 as of Dec 2025). I have touched almost every section of the code and content manually, and I'm pretty sure there's no truly egregious slop (and on a meta note, one of the "features" of Extenote is a tool + workflow to guard against hallucination and more banal metadata issues with references). Please do reach out if you're interested in this project.
 
-I'll be recording a demo video soon, and have a big gallery of screenshots in the doc.
+📖 **[Documentation](https://nickmvincent.github.io/extenote/)** · 🖼️ **[Screenshot Gallery](https://nickmvincent.github.io/extenote/docs/web-ui)** · 🚀 **[Quickstart](https://nickmvincent.github.io/extenote/docs/quickstart)**
+
+<p align="center">
+  <img src="https://nickmvincent.github.io/extenote/screenshots/01-dashboard.png" alt="Dashboard" width="600" />
+</p>
+
+<details>
+<summary>More screenshots</summary>
+
+| Search | Graph View |
+|--------|------------|
+| ![Search](https://nickmvincent.github.io/extenote/screenshots/04-search-with-query.png) | ![Graph](https://nickmvincent.github.io/extenote/screenshots/05-graph-default.png) |
+
+| Tags | Review Queue |
+|------|--------------|
+| ![Tags](https://nickmvincent.github.io/extenote/screenshots/07-tags.png) | ![Review](https://nickmvincent.github.io/extenote/screenshots/18-review.png) |
+
+</details>
 
 I currently have 10 distinct projects "managed" with Extenote. See e.g.
 - nickmvincent.com (personal website)
@@ -67,27 +84,27 @@ bun run cli -- status   # or: bun run tui / bun run web
 
 ## Documentation
 
-**For coding agents and LLMs:** Documentation is located at `../extenote-pub/content/extenote-docs/`. Key files:
+Full documentation is available at **[nickmvincent.github.io/extenote](https://nickmvincent.github.io/extenote/)**.
 
-| Document | Path | Purpose |
-|----------|------|---------|
-| Quick Start | `extenote-docs/quickstart.md` | Setup, workflow, command reference |
-| Configuration | `extenote-docs/configuration.md` | Project and schema YAML configuration |
-| CLI Reference | `extenote-docs/cli.md` | Complete CLI command reference |
-| Web UI | `extenote-docs/web-ui.md` | Web interface guide |
-| Architecture | `extenote-docs/architecture.md` | System architecture, key concepts |
-| Interfaces | `extenote-docs/interfaces.md` | CLI vs TUI vs Web comparison |
-| FAQ | `extenote-docs/faq.md` | Frequently asked questions |
-| Reference Check | `extenote-docs/reference-check.md` | Bibliographic verification (DBLP, OpenAlex) |
-| Clipper | `extenote-docs/clipper.md` | Browser extension for reference validation |
-| Tags | `extenote-docs/tags.md` | Tag management and hierarchies |
-| Cross-Project Linking | `extenote-docs/cross-project-linking.md` | Linking objects between projects |
-| Computed Data | `extenote-docs/computed-data.md` | Derived data (cited_in, cross_refs) |
-| Discussions | `extenote-docs/discussions.md` | Discussion plugins (GitHub, ATProto) |
-| Testing | `extenote-docs/testing.md` | Manual testing guide |
-| Known Issues | `extenote-docs/known-issues.md` | Limitations and workarounds |
+**For coding agents and LLMs:** Documentation source is at `../extenote-pub/content/extenote-docs/`. Key files:
 
-The docs are also served as a website at `../extenote-pub/websites/extenote-docs-astro/`.
+| Document | Purpose |
+|----------|---------|
+| [Quickstart](https://nickmvincent.github.io/extenote/docs/quickstart) | Setup, workflow, command reference |
+| [Configuration](https://nickmvincent.github.io/extenote/docs/configuration) | Project and schema YAML configuration |
+| [CLI Reference](https://nickmvincent.github.io/extenote/docs/cli) | Complete CLI command reference |
+| [Web UI Gallery](https://nickmvincent.github.io/extenote/docs/web-ui) | Web interface screenshots and guide |
+| [Architecture](https://nickmvincent.github.io/extenote/docs/architecture) | System architecture, key concepts |
+| [Interfaces](https://nickmvincent.github.io/extenote/docs/interfaces) | CLI vs TUI vs Web comparison |
+| [FAQ](https://nickmvincent.github.io/extenote/docs/faq) | Frequently asked questions |
+| [Reference Check](https://nickmvincent.github.io/extenote/docs/reference-check) | Bibliographic verification (DBLP, OpenAlex) |
+| [Clipper](https://nickmvincent.github.io/extenote/docs/clipper) | Browser extension for reference validation |
+| [Tags](https://nickmvincent.github.io/extenote/docs/tags) | Tag management and hierarchies |
+| [Cross-Project Linking](https://nickmvincent.github.io/extenote/docs/cross-project-linking) | Linking objects between projects |
+| [Computed Data](https://nickmvincent.github.io/extenote/docs/computed-data) | Derived data (cited_in, cross_refs) |
+| [Discussions](https://nickmvincent.github.io/extenote/docs/discussions) | Discussion plugins (GitHub, ATProto) |
+| [Testing](https://nickmvincent.github.io/extenote/docs/testing) | Manual testing guide |
+| [Known Issues](https://nickmvincent.github.io/extenote/docs/known-issues) | Limitations and workarounds |
 
 **Project Meta-Docs:**
 
@@ -114,7 +131,7 @@ Project configs live in `projects/*.yaml` and schema definitions in `schemas/*.y
 - Build configuration (Astro, Quarto, or custom)
 - Deploy configuration (Cloudflare Pages, GitHub Pages, Vercel, Netlify)
 
-See the [Configuration docs](../extenote-pub/content/extenote-docs/configuration.md) for the full reference.
+See the [Configuration docs](https://nickmvincent.github.io/extenote/docs/configuration) for the full reference.
 
 ### Content Repos
 
@@ -174,4 +191,4 @@ semble:
   publicOnly: true
 ```
 
-See the [Configuration docs](../extenote-pub/content/extenote-docs/configuration.md) for the full Semble configuration reference.
+See the [Configuration docs](https://nickmvincent.github.io/extenote/docs/configuration) for the full Semble configuration reference.
