@@ -1352,7 +1352,8 @@ function generateBookmarkSlug(url: string): string {
   const platform = detectPlatform(url);
   const now = new Date();
   const dateStr = now.toISOString().slice(0, 10);
-  const timeStr = now.toISOString().slice(11, 16).replace(":", "");
+  // Include seconds (HHMMSS) for better uniqueness
+  const timeStr = now.toISOString().slice(11, 19).replace(/:/g, "");
 
   // Try to extract post ID from URL
   let postId = "";
