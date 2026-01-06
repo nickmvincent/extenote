@@ -103,6 +103,16 @@ ERROR CSCW 2026 Review.md - Missing type in frontmatter
 - Broken link detection (internal + external)
 - Bulk accept/reject mismatches in refcheck UI
 
+**Clipper enhancements:**
+- Extract author/username from social URLs (x.com/username/...)
+- Auto-tags by platform (social, news, etc.)
+- One-click quick save mode (skip form, use defaults)
+- Capture selected text as quote in body
+- Extract post content from social platforms via content script
+- Thread detection for X/Bluesky (offer to capture parent/thread)
+- Archive.org integration for link rot protection
+- Read/unread status field for reading queue workflow
+
 **Medium-term:**
 - Plugin system for custom validators
 - Vault caching in core (shared by all interfaces)
