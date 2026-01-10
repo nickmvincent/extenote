@@ -2,6 +2,52 @@ export * from "./types.js";
 export * from "./constants.js";
 export * from "./settings.js";
 export * from "./errors.js";
+
+// Logging exports
+export {
+  getLogger,
+  createLogger,
+  configureLogger,
+  resetLogger,
+  generateRequestId,
+} from "./logger.js";
+export type {
+  Logger,
+  LogLevel,
+  LogContext,
+  LogEntry,
+  LoggerConfig,
+} from "./logger.js";
+
+// HTTP utilities exports
+export {
+  HttpClient,
+  getHttpClient,
+  resetHttpClient,
+  createHttpClient,
+  RateLimiter,
+  CircuitBreaker,
+  calculateRetryDelay,
+  parseRateLimitHeaders,
+  isRetryableError,
+  withRetry,
+  DEFAULT_PROVIDER_CONFIGS,
+  RateLimitError,
+  CircuitOpenError,
+  HttpTimeoutError,
+  HttpError,
+} from "./http/index.js";
+export type {
+  ProviderConfig,
+  HttpRequestOptions,
+  HttpResponse,
+  RateLimitInfo,
+  CircuitState,
+  CircuitBreakerState,
+  HttpClientOptions,
+  CircuitBreakerConfig,
+  RetryOptions,
+} from "./http/index.js";
 export { loadConfig, buildSourceIdToProject, BuildConfigError } from "./config.js";
 export { loadSchemas } from "./schemas.js";
 export { loadVault } from "./vault.js";
@@ -173,3 +219,16 @@ export {
   resolveVisibilityDefaults,
 } from "./createObject.js";
 export type { CreateObjectOptions, CreatePlan } from "./createObject.js";
+
+// Search exports
+export {
+  SearchIndex,
+  createSearchIndex,
+  createEmptySearchIndex,
+} from "./search.js";
+export type {
+  SearchOptions,
+  SearchResult,
+  SearchIndexStats,
+  SearchIndexState,
+} from "./search.js";

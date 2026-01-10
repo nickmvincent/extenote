@@ -25,7 +25,13 @@ import {
   handleGetSettings,
   handleSaveSettings,
   handleResetSettings,
+  handleSearch,
+  handleSearchSuggest,
+  handleSearchStats,
+  handleSearchRebuild,
 } from './server/handlers/index.js'
+import { formatErrorResponse, ApiError } from './server/api/errors.js'
+import { getOpenAPISpec, getSwaggerUIHtml } from './server/api/openapi.js'
 import type { TagMutation, TaxonomyViolation, ExtenoteSettings } from '@extenote/core'
 
 const serverRoot = resolveProjectRoot()
@@ -62,6 +68,18 @@ Bun.serve({
 
       if (url.pathname === '/api/cache/status') {
         return handleCacheStatus(headers)
+      }
+
+      // OpenAPI documentation endpoints
+      if (url.pathname === '/api/openapi.json') {
+        return json(getOpenAPISpec(), 200, headers)
+      }
+
+      if (url.pathname === '/api/docs') {
+        return new Response(getSwaggerUIHtml(), {
+          status: 200,
+          headers: { ...headers, 'Content-Type': 'text/html' },
+        })
       }
 
       if (url.pathname === '/api/computed-data') {
@@ -135,6 +153,23 @@ Bun.serve({
         return handleRefcheckStats(cwd, project, headers)
       }
 
+      // Search endpoints
+      if (url.pathname === '/api/search') {
+        return handleSearch(cwd, url, headers)
+      }
+
+      if (url.pathname === '/api/search/suggest') {
+        return handleSearchSuggest(cwd, url, headers)
+      }
+
+      if (url.pathname === '/api/search/stats') {
+        return handleSearchStats(cwd, headers)
+      }
+
+      if (url.pathname === '/api/search/rebuild' && req.method === 'POST') {
+        return handleSearchRebuild(cwd, headers)
+      }
+
       // Object endpoints
       if (url.pathname === '/api/object') {
         const pathParam = url.searchParams.get('path')
@@ -178,10 +213,11 @@ Bun.serve({
         return handleResetSettings(cwd, body, headers)
       }
 
-      return new Response('Not found', { status: 404, headers })
+      return json({ error: 'Not found', code: 'NOT_FOUND' }, 404, headers)
     } catch (error) {
       console.error('API Error:', error)
-      return json({ error: error instanceof Error ? error.message : 'Unknown error' }, 500, headers)
+      const { body, status } = formatErrorResponse(error)
+      return json(body, status, headers)
     }
   },
 })

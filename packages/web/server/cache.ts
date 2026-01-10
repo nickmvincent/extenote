@@ -1,4 +1,4 @@
-import { loadVault, loadConfig, loadSchemas, computeAllCrossRefs, loadSettings, DEFAULT_CACHE_TTL, type VaultState, type ExtenoteConfig, type LoadedSchema, type ObjectCrossRefs, type VaultObject } from '@extenote/core'
+import { loadVault, loadConfig, loadSchemas, computeAllCrossRefs, loadSettings, DEFAULT_CACHE_TTL, SearchIndex, createSearchIndex, type VaultState, type ExtenoteConfig, type LoadedSchema, type ObjectCrossRefs, type VaultObject } from '@extenote/core'
 
 // Public-only mode - filters out private content for screenshots/demos
 export const PUBLIC_ONLY = process.env.EXTENOTE_PUBLIC_ONLY === 'true'
@@ -49,6 +49,10 @@ export interface CachedBundle {
 // Lazy cross-refs cache - computed on demand, not at load time
 let crossRefsCache: Map<string, ObjectCrossRefs> | null = null
 let crossRefsCacheTimestamp = 0
+
+// Search index cache - built on demand for full-text search
+let searchIndexCache: SearchIndex | null = null
+let searchIndexTimestamp = 0
 
 let cachedBundle: CachedBundle | null = null
 let cacheLoadPromise: Promise<CachedBundle> | null = null
@@ -128,9 +132,11 @@ export async function loadVaultBundle(cwd: string, forceReload = false): Promise
         issues: filteredIssues,
       }
 
-      // Invalidate cross-refs cache when vault reloads
+      // Invalidate cross-refs and search index cache when vault reloads
       crossRefsCache = null
       crossRefsCacheTimestamp = 0
+      searchIndexCache = null
+      searchIndexTimestamp = 0
 
       const bundle: CachedBundle = { vault: cachedVault, config: filteredConfig, schemas, timestamp: Date.now() }
       cachedBundle = bundle
@@ -151,6 +157,8 @@ export function invalidateVaultCache() {
   cachedBundle = null
   crossRefsCache = null
   crossRefsCacheTimestamp = 0
+  searchIndexCache = null
+  searchIndexTimestamp = 0
 }
 
 /**
@@ -200,4 +208,44 @@ export function getCacheStatus() {
     isStale: age !== null && age >= CACHE_TTL,
     objectCount: cachedBundle?.vault.objects.length ?? null,
   }
+}
+
+/**
+ * Get search index lazily - only built when first requested.
+ * Uses cached vault objects, loads full vault only if needed for body content.
+ */
+export async function getSearchIndex(cwd: string): Promise<SearchIndex> {
+  const now = Date.now()
+
+  // Return cached index if still valid
+  if (searchIndexCache && now - searchIndexTimestamp < CACHE_TTL) {
+    return searchIndexCache
+  }
+
+  // Need to load full vault with bodies to build search index
+  const fullVault = await loadVault({ cwd })
+
+  // Apply PUBLIC_ONLY filter if enabled
+  let objectsToIndex = fullVault.objects
+  if (PUBLIC_ONLY) {
+    objectsToIndex = fullVault.objects.filter(obj => {
+      if (obj.visibility === 'private') return false
+      if (obj.project?.toLowerCase().includes('private')) return false
+      return true
+    })
+  }
+
+  searchIndexCache = createSearchIndex(objectsToIndex)
+  searchIndexTimestamp = now
+
+  return searchIndexCache
+}
+
+/**
+ * Invalidate search index cache.
+ * Call this to force a rebuild on next search request.
+ */
+export function invalidateSearchIndex() {
+  searchIndexCache = null
+  searchIndexTimestamp = 0
 }

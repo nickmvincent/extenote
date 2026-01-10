@@ -45,11 +45,29 @@ export const DEFAULT_WEB_ORIGINS = 'http://localhost:3000,http://127.0.0.1:3000'
 // API Rate Limiting
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** Default delay between API requests in milliseconds */
+/** Default delay between API requests in milliseconds (legacy, prefer http module) */
 export const DEFAULT_RATE_LIMIT_DELAY = 250
 
 /** Maximum results to request from external APIs */
 export const DEFAULT_API_MAX_RESULTS = 5
+
+/** Default request timeout in milliseconds */
+export const DEFAULT_HTTP_TIMEOUT = 30_000
+
+/** Default initial retry delay in milliseconds */
+export const DEFAULT_RETRY_INITIAL_DELAY = 100
+
+/** Default maximum retry delay in milliseconds */
+export const DEFAULT_RETRY_MAX_DELAY = 10_000
+
+/** Default maximum number of retries */
+export const DEFAULT_MAX_RETRIES = 3
+
+/** Default circuit breaker failure threshold */
+export const DEFAULT_CIRCUIT_FAILURE_THRESHOLD = 5
+
+/** Default circuit breaker reset timeout in milliseconds */
+export const DEFAULT_CIRCUIT_RESET_TIMEOUT = 30_000
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Paths and Directories

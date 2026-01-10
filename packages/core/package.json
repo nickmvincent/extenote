@@ -27,6 +27,7 @@
     "fast-glob": "^3.3.2",
     "gray-matter": "^4.0.3",
     "js-yaml": "^4.1.0",
+    "minisearch": "^7.1.0",
     "picocolors": "^1.0.0",
     "typescript": "^5.5.4"
   },
