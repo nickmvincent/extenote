@@ -23,8 +23,8 @@ export function generateQuartoDiscussionsPage(
     lines.push("## Join the Discussion");
     lines.push("");
     for (const d of data.discussions) {
-      const label = (d as any).label ?? formatProviderName(d.provider);
-      const description = (d as any).description;
+      const label = d.label ?? formatProviderName(d.provider);
+      const description = d.description;
       lines.push(`- [${label}](${d.url})${description ? ` — ${description}` : ""}`);
     }
     lines.push("");

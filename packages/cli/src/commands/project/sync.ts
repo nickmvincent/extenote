@@ -8,7 +8,7 @@ import {
   listCollections,
   type SembleConfig
 } from "@extenote/core";
-import { cliContext, withAction, type ProjectProfile } from "./utils.js";
+import { cliContext, withAction, type ProjectProfile } from "../utils.js";
 
 export function registerSyncCommand(program: Command) {
   program

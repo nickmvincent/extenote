@@ -11,7 +11,7 @@ import {
   updateSourceFrontmatter,
   DiscussionPluginRegistry
 } from "@extenote/core";
-import { cliContext, withAction } from "./utils.js";
+import { cliContext, withAction } from "../utils.js";
 
 export function registerDiscussionsCommand(program: Command) {
   const discussionsCmd = program

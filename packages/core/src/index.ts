@@ -1,6 +1,7 @@
 export * from "./types.js";
 export * from "./constants.js";
 export * from "./settings.js";
+export * from "./errors.js";
 export { loadConfig, buildSourceIdToProject, BuildConfigError } from "./config.js";
 export { loadSchemas } from "./schemas.js";
 export { loadVault } from "./vault.js";

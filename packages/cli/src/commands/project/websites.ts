@@ -1,7 +1,7 @@
 import { Command } from "commander";
 import pc from "picocolors";
 import { loadConfig, getProjectWebsites } from "@extenote/core";
-import { cliContext, withAction, formatPlatformLabel } from "./utils.js";
+import { cliContext, withAction, formatPlatformLabel } from "../utils.js";
 
 export function registerWebsitesCommand(program: Command) {
   program

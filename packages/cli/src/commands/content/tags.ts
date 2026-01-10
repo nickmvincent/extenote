@@ -9,8 +9,8 @@ import {
   applyTagMutation,
   type TagMutation
 } from "@extenote/core";
-import { createBackup } from "../backup.js";
-import { cliContext, withAction } from "./utils.js";
+import { createBackup } from "../../backup.js";
+import { cliContext, withAction } from "../utils.js";
 
 export function registerTagsCommand(program: Command) {
   const tagsCommand = program

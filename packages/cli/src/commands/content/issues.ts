@@ -1,7 +1,7 @@
 import { Command } from "commander";
 import pc from "picocolors";
 import { loadVault } from "@extenote/core";
-import { cliContext, withAction, severityWeight, printIssue } from "./utils.js";
+import { cliContext, withAction, severityWeight, printIssue } from "../utils.js";
 
 export function registerIssuesCommand(program: Command) {
   program

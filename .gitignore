@@ -2,6 +2,7 @@
 
 content-to-base-templates-on/
 content/
+!packages/**/content/
 node_modules/
 
 # Backup directory (may contain private content from other repos)

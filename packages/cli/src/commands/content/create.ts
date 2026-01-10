@@ -2,8 +2,8 @@ import path from "path";
 import { Command } from "commander";
 import pc from "picocolors";
 import { loadConfig, loadSchemas, createMarkdownObject, selectSchemaProject } from "@extenote/core";
-import { launchCreatorWizard } from "../creatorWizard.js";
-import { cliContext, withAction } from "./utils.js";
+import { launchCreatorWizard } from "../../creatorWizard.js";
+import { cliContext, withAction } from "../utils.js";
 
 export function registerCreateCommand(program: Command) {
   program

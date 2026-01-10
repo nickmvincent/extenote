@@ -2,8 +2,8 @@ import path from "path";
 import { Command } from "commander";
 import pc from "picocolors";
 import { loadVault, lintObjects } from "@extenote/core";
-import { createBackup } from "../backup.js";
-import { cliContext, withAction, printIssue } from "./utils.js";
+import { createBackup } from "../../backup.js";
+import { cliContext, withAction, printIssue } from "../utils.js";
 
 export function registerLintCommand(program: Command) {
   program

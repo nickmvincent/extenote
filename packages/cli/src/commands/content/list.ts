@@ -1,7 +1,7 @@
 import { Command } from "commander";
 import pc from "picocolors";
 import { loadVault, objectBelongsToProject } from "@extenote/core";
-import { cliContext, withAction } from "./utils.js";
+import { cliContext, withAction } from "../utils.js";
 
 export function registerListCommand(program: Command) {
   program

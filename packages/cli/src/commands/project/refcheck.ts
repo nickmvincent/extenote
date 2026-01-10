@@ -8,7 +8,7 @@ import {
   getAvailableProviders,
   type CheckReport
 } from "@extenote/core";
-import { cliContext, withAction } from "./utils.js";
+import { cliContext, withAction } from "../utils.js";
 
 interface RefcheckOptions {
   listProviders?: boolean;

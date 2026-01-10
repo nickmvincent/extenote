@@ -2,7 +2,7 @@ import path from "path";
 import { Command } from "commander";
 import pc from "picocolors";
 import { loadVault, loadSettings, DEFAULT_EDITOR } from "@extenote/core";
-import { cliContext, withAction } from "./utils.js";
+import { cliContext, withAction } from "../utils.js";
 
 export function registerEditCommand(program: Command) {
   program

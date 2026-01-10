@@ -2,7 +2,7 @@ import path from "path";
 import { Command } from "commander";
 import pc from "picocolors";
 import { loadVault, exportContent, objectBelongsToProject, detectCitedReferences } from "@extenote/core";
-import { cliContext, withAction } from "./utils.js";
+import { cliContext, withAction } from "../utils.js";
 
 export function registerExportCommand(program: Command) {
   program

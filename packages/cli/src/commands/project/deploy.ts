@@ -2,7 +2,7 @@ import path from "path";
 import { Command } from "commander";
 import pc from "picocolors";
 import { loadConfig, deployProject, printResultSummary, type DeployableProject } from "@extenote/core";
-import { cliContext, withAction, coloredLog, type ProjectProfile } from "./utils.js";
+import { cliContext, withAction, coloredLog, type ProjectProfile } from "../utils.js";
 
 export function registerDeployCommand(program: Command) {
   program

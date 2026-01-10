@@ -226,6 +226,8 @@ export interface NetworkData {
     provider: string;
     url: string;
     title?: string;
+    label?: string;
+    description?: string;
   }>;
   generatedAt: string;
 }

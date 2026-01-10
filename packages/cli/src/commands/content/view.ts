@@ -2,7 +2,7 @@ import path from "path";
 import { Command } from "commander";
 import pc from "picocolors";
 import { loadVault } from "@extenote/core";
-import { cliContext, withAction, printIssue } from "./utils.js";
+import { cliContext, withAction, printIssue } from "../utils.js";
 
 export function registerViewCommand(program: Command) {
   program

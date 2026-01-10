@@ -2,7 +2,7 @@ import fs from "fs";
 import { Command } from "commander";
 import pc from "picocolors";
 import { loadVault, computeCitedIn, parseMarkdown, stringifyMarkdown } from "@extenote/core";
-import { cliContext, withAction } from "./utils.js";
+import { cliContext, withAction } from "../utils.js";
 
 export function registerSyncCitationsCommand(program: Command) {
   program
