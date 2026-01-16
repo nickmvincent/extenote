@@ -40,6 +40,9 @@ compatibility:
 build:
   websiteDir: cb4i
   type: astro
+  preRender:
+    - type: network
+      outputFormat: astro
 
 # ─── Deployment Configuration ─────────────────────────────────────────────────
 deploy:

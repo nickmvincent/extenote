@@ -1,5 +1,5 @@
 import type { ExtenoteConfig, VaultObject, NetworkData } from "../../types.js";
-import { formatProjectTitle, getProjectWebsite } from "../../websites.js";
+import { formatProjectTitle, getProjectWebsite, getProjectWebsites } from "../../websites.js";
 
 export interface GenerateNetworkOptions {
   projectName: string;
@@ -106,11 +106,22 @@ export async function generateNetworkData(options: GenerateNetworkOptions): Prom
     website: projectWebsite?.url ?? undefined,
   };
 
+  // Get all deployed projects for network footer navigation
+  // Excludes the current project and projects without URLs
+  const allProjectsData = getProjectWebsites(config)
+    .filter(p => p.name !== projectName && p.url)
+    .map(p => ({
+      name: p.name,
+      title: p.title,
+      website: p.url!,
+    }));
+
   return {
     projectName,
     projectTitle: formatProjectTitle(projectName),
     links,
     relatedProjects: relatedProjectsData,
+    allProjects: allProjectsData,
     discussions,
     generatedAt: new Date().toISOString(),
   };

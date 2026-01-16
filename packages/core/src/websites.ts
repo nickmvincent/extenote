@@ -45,9 +45,8 @@ export function inferWebsiteUrl(profile: ProjectProfile): string | null {
       break;
     }
     case "cloudflare-pages": {
-      // Use project name as subdomain (remove hyphens for Cloudflare project name)
-      const projectName = profile.name.replace(/-/g, "");
-      return `https://${projectName}.pages.dev`;
+      // Use project name as subdomain (Cloudflare Pages allows hyphens)
+      return `https://${profile.name}.pages.dev`;
     }
     case "vercel": {
       return `https://${profile.name}.vercel.app`;

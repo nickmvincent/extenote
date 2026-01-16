@@ -36,6 +36,9 @@ compatibility:
 build:
   websiteDir: extenote-docs-astro
   type: astro
+  preRender:
+    - type: network
+      outputFormat: astro
 
 # ─── Deployment Configuration ─────────────────────────────────────────────────
 deploy:

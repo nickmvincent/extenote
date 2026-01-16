@@ -56,12 +56,12 @@ describe("inferWebsiteUrl", () => {
     expect(inferWebsiteUrl(profile)).toBeNull();
   });
 
-  it("infers cloudflare-pages URL with hyphens removed", () => {
+  it("infers cloudflare-pages URL preserving hyphens", () => {
     const profile: ProjectProfile = {
       name: "my-cool-project",
       deploy: { platform: "cloudflare-pages" },
     };
-    expect(inferWebsiteUrl(profile)).toBe("https://mycoolproject.pages.dev");
+    expect(inferWebsiteUrl(profile)).toBe("https://my-cool-project.pages.dev");
   });
 
   it("infers vercel URL", () => {

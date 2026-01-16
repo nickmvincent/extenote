@@ -216,11 +216,18 @@ export interface NetworkData {
     github?: string;
     website?: string;
   };
+  /** Content-related projects (citations, includes) */
   relatedProjects: Array<{
     name: string;
     title?: string;
     description?: string;
     website?: string;
+  }>;
+  /** All deployed projects in the network (for footer navigation) */
+  allProjects: Array<{
+    name: string;
+    title: string;
+    website: string;
   }>;
   discussions: Array<{
     provider: string;
