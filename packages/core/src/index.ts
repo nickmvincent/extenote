@@ -2,6 +2,13 @@ export * from "./types.js";
 export * from "./constants.js";
 export * from "./settings.js";
 export * from "./errors.js";
+export {
+  createBackup,
+  undoLastOperation,
+  listBackups,
+  restoreBackup,
+  type BackupManifest,
+} from "./backup.js";
 
 // Logging exports
 export {

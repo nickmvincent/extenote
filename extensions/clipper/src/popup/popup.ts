@@ -9,17 +9,18 @@
  * 5. User edits if needed, then saves
  */
 
-import { extractSearchHint, type SearchHint } from "../lib/search-hint";
+import { extractSearchHint, parseSocialUrl, type SearchHint, type SocialUrlInfo } from "../lib/search-hint";
 import { searchDblp, getDblpCompletenessScore, type DblpSearchResponse } from "../lib/dblp";
 import { searchOpenAlex, getOpenAlexCompletenessScore, type OpenAlexSearchResponse } from "../lib/openalex";
 import { searchSemanticScholar, getCompletenessScore as getS2CompletenessScore, type S2SearchResponse } from "../lib/semantic-scholar";
 import { searchCrossref, getCrossrefCompletenessScore, type CrossrefSearchResponse } from "../lib/crossref";
 import { generateMarkdown, generateCitationKey } from "../lib/markdown";
 import { loadConfig } from "../lib/storage";
-import { suggestTags } from "../lib/tags";
+import { suggestTags, getPlatformTags } from "../lib/tags";
 import { createApiClient, type ExtenoteApi } from "../lib/api";
 import { matchPageToVault, getValidationStatus, compareFields, createCheckLog, type VaultEntry, type MatchResult } from "../lib/vault";
-import type { PageMetadata, ClipperConfig, VaultObject, CheckLog } from "../lib/types";
+import { saveToWaybackMachine, checkWaybackArchive } from "../lib/archive";
+import type { PageMetadata, ClipperConfig, VaultObject, CheckLog, ReadStatus } from "../lib/types";
 
 // DOM Elements
 const searchQueryEl = document.getElementById("search-query") as HTMLInputElement;
@@ -97,6 +98,34 @@ const bookmarkNotesEl = document.getElementById("bookmark-notes") as HTMLTextAre
 const bookmarkSaveBtnEl = document.getElementById("bookmark-save-btn") as HTMLButtonElement;
 const bookmarkDuplicateWarningEl = document.getElementById("bookmark-duplicate-warning") as HTMLDivElement;
 const bookmarkDuplicatePathEl = document.getElementById("bookmark-duplicate-path") as HTMLSpanElement;
+const bookmarkStatusEl = document.getElementById("bookmark-status") as HTMLSelectElement;
+
+// Quick save elements
+const quickSaveBarEl = document.getElementById("quick-save-bar") as HTMLDivElement;
+const quickSaveBtnEl = document.getElementById("quick-save-btn") as HTMLButtonElement;
+
+// Read status element
+const readStatusEl = document.getElementById("read-status") as HTMLSelectElement;
+
+// Selection preview elements
+const selectionPreviewEl = document.getElementById("selection-preview") as HTMLDivElement;
+const selectedTextContentEl = document.getElementById("selected-text-content") as HTMLElement;
+
+// Batch mode elements
+const tabBatchEl = document.getElementById("tab-batch") as HTMLButtonElement;
+const batchSectionEl = document.getElementById("batch-section") as HTMLDivElement;
+const batchTabListEl = document.getElementById("batch-tab-list") as HTMLDivElement;
+const batchSelectAllEl = document.getElementById("batch-select-all") as HTMLInputElement;
+const batchClipBtnEl = document.getElementById("batch-clip-btn") as HTMLButtonElement;
+const batchRefreshBtnEl = document.getElementById("batch-refresh-btn") as HTMLButtonElement;
+const batchSelectedCountEl = document.getElementById("batch-selected-count") as HTMLSpanElement;
+const batchProgressEl = document.getElementById("batch-progress") as HTMLDivElement;
+const batchProgressFillEl = document.getElementById("batch-progress-fill") as HTMLDivElement;
+const batchProgressTextEl = document.getElementById("batch-progress-text") as HTMLSpanElement;
+
+// Archive elements
+const bookmarkArchiveEl = document.getElementById("bookmark-archive") as HTMLInputElement;
+const archiveStatusEl = document.getElementById("archive-status") as HTMLDivElement;
 
 // State
 let currentUrl = "";
@@ -127,9 +156,30 @@ let validationApiResult: {
 let comparisonResult: ReturnType<typeof compareFields> | null = null;
 type PopupMode = "search" | "validate";
 let currentMode: PopupMode = "search";
-type TabMode = "reference" | "bookmark";
+type TabMode = "reference" | "bookmark" | "batch";
 let currentTabMode: TabMode = "reference";
 let existingBookmarkPath: string | null = null;
+let selectedText: string | null = null;
+let platformTags: string[] = [];
+let socialInfo: SocialUrlInfo | null = null;
+let socialPostContent: { text: string; author?: string; authorHandle?: string } | null = null;
+
+// Batch mode state
+interface BatchTab {
+  id: number;
+  url: string;
+  title: string;
+  selected: boolean;
+}
+let batchTabs: BatchTab[] = [];
+
+interface PendingClip {
+  url: string;
+  title?: string;
+  selectedText?: string;
+  linkUrl?: string;
+  menuId: string;
+}
 
 /**
  * Initialize popup
@@ -157,6 +207,30 @@ async function init() {
   currentTabId = tab.id;
   let pageTitle = "";
 
+  // Check for pending clip from context menu
+  try {
+    const { pendingClip } = await browser.storage.session.get("pendingClip") as { pendingClip?: PendingClip };
+    if (pendingClip) {
+      // Clear the pending clip
+      await browser.storage.session.remove("pendingClip");
+
+      // Use the pending clip data
+      if (pendingClip.url) currentUrl = pendingClip.url;
+      if (pendingClip.title) pageTitle = pendingClip.title;
+      if (pendingClip.selectedText) selectedText = pendingClip.selectedText;
+
+      // If clipping a link, switch to the link URL
+      if (pendingClip.menuId === "clip-link" && pendingClip.linkUrl) {
+        currentUrl = pendingClip.linkUrl;
+      }
+    }
+  } catch {
+    // Session storage might not be available in all contexts
+  }
+
+  // Parse social URL info
+  socialInfo = parseSocialUrl(currentUrl);
+
   // Request page info from content script
   try {
     const response = await browser.tabs.sendMessage(tab.id, { type: "GET_PAGE_INFO" });
@@ -182,6 +256,54 @@ async function init() {
   if (config.mode === "api" && apiClient) {
     await checkVaultMatch(pageTitle);
   }
+
+  // Get platform-based tags
+  platformTags = getPlatformTags(currentUrl);
+
+  // Request selected text from content script
+  try {
+    const selectionResponse = await browser.tabs.sendMessage(tab.id, { type: "GET_SELECTION" });
+    if (selectionResponse?.selectedText && !selectedText) {
+      selectedText = selectionResponse.selectedText;
+    }
+    if (selectedText) {
+      showSelectionPreview(selectedText);
+    }
+  } catch {
+    // Content script might not support selection yet
+  }
+
+  // For social platforms, try to parse the post content
+  if (socialInfo && socialInfo.platform !== "unknown" && socialInfo.isPost) {
+    try {
+      const postResponse = await browser.tabs.sendMessage(tab.id, { type: "PARSE_SOCIAL_POST" });
+      if (postResponse?.post) {
+        socialPostContent = postResponse.post;
+        // Pre-fill bookmark fields with social post data
+        if (bookmarkTitleEl && !bookmarkTitleEl.value && socialPostContent.text) {
+          // Use first 100 chars of post as title
+          const shortText = socialPostContent.text.slice(0, 100);
+          bookmarkTitleEl.value = shortText + (socialPostContent.text.length > 100 ? "..." : "");
+        }
+        // Show selection preview with post content if no manual selection
+        if (!selectedText && socialPostContent.text) {
+          showSelectionPreview(socialPostContent.text);
+          selectedText = socialPostContent.text;
+        }
+      }
+    } catch {
+      // Content script might not support social parsing yet
+    }
+  }
+
+  // Set up quick save bar (if enabled)
+  if (config.quickSaveEnabled && quickSaveBarEl) {
+    quickSaveBarEl.classList.remove("hidden");
+    quickSaveBtnEl?.addEventListener("click", handleQuickSave);
+  }
+
+  // Set up keyboard shortcuts
+  setupKeyboardShortcuts();
 
   // Set up event listeners
   searchBtnEl.addEventListener("click", handleSearch);
@@ -240,6 +362,9 @@ async function init() {
 
   // Bookmark tab listeners
   setupBookmarkListeners();
+
+  // Batch tab listeners
+  setupBatchListeners();
 }
 
 /**
@@ -745,8 +870,14 @@ function selectSource(source: SourceKey) {
   };
   citationKeyEl.value = generateCitationKey(metadata);
 
-  // Set default tags
-  tagsEl.value = config.defaultTags.join(", ");
+  // Set default tags merged with platform tags
+  const defaultTags = mergePlatformTags(config.defaultTags);
+  tagsEl.value = defaultTags.join(", ");
+
+  // Set default read status
+  if (readStatusEl) {
+    readStatusEl.value = config.defaultReadStatus || "unread";
+  }
 
   // Show editor
   editorSectionEl.classList.remove("hidden");
@@ -897,6 +1028,12 @@ async function saveViaApi(metadata: PageMetadata, citationKey: string, tags: str
   }
   if (tags.length) {
     frontmatter.tags = tags;
+  }
+
+  // Include read status
+  const readStatus = readStatusEl?.value as ReadStatus;
+  if (readStatus && readStatus !== "unread") {
+    frontmatter.read_status = readStatus;
   }
 
   console.log("[Clipper] Writing frontmatter with keys:", Object.keys(frontmatter));
@@ -1369,7 +1506,7 @@ function generateBookmarkSlug(url: string): string {
 }
 
 /**
- * Switch between Reference and Bookmark tabs
+ * Switch between Reference, Bookmark, and Batch tabs
  */
 function switchTab(tab: TabMode) {
   currentTabMode = tab;
@@ -1377,29 +1514,41 @@ function switchTab(tab: TabMode) {
   // Update tab active states
   tabReferenceEl.classList.toggle("active", tab === "reference");
   tabBookmarkEl.classList.toggle("active", tab === "bookmark");
+  tabBatchEl?.classList.toggle("active", tab === "batch");
 
   // Show/hide sections
   const searchSectionEl = document.getElementById("search-section");
 
+  // Hide all content sections first
+  bookmarkSectionEl.classList.add("hidden");
+  batchSectionEl?.classList.add("hidden");
+  searchSectionEl?.classList.add("hidden");
+  sourcesSectionEl.classList.add("hidden");
+  editorSectionEl.classList.add("hidden");
+  validationSectionEl.classList.add("hidden");
+
   if (tab === "reference") {
-    bookmarkSectionEl.classList.add("hidden");
     searchSectionEl?.classList.remove("hidden");
     sourcesSectionEl.classList.toggle("hidden", !selectedSource);
     editorSectionEl.classList.toggle("hidden", !selectedSource);
-  } else {
+  } else if (tab === "bookmark") {
     bookmarkSectionEl.classList.remove("hidden");
-    searchSectionEl?.classList.add("hidden");
-    sourcesSectionEl.classList.add("hidden");
-    editorSectionEl.classList.add("hidden");
-    validationSectionEl.classList.add("hidden");
 
     // Populate bookmark fields
     bookmarkUrlEl.textContent = currentUrl;
+
+    // Set archive checkbox based on config
+    if (bookmarkArchiveEl) {
+      bookmarkArchiveEl.checked = config.autoArchive || false;
+    }
 
     // Check for existing bookmark (API mode only)
     if (config.mode === "api" && apiClient) {
       checkExistingBookmark();
     }
+  } else if (tab === "batch") {
+    batchSectionEl?.classList.remove("hidden");
+    loadBatchTabs();
   }
 }
 
@@ -1438,13 +1587,18 @@ async function checkExistingBookmark() {
  */
 async function saveBookmark() {
   const title = bookmarkTitleEl.value.trim();
-  const tags = bookmarkTagsEl.value
+  let tags = bookmarkTagsEl.value
     .split(",")
     .map((t) => t.trim())
     .filter((t) => t);
+
+  // Merge platform tags
+  tags = mergePlatformTags(tags);
+
   const notes = bookmarkNotesEl.value.trim();
   const platform = detectPlatform(currentUrl);
   const slug = generateBookmarkSlug(currentUrl);
+  const bookmarkReadStatus = bookmarkStatusEl?.value as ReadStatus;
 
   if (!title) {
     showError("Title is required");
@@ -1457,6 +1611,12 @@ async function saveBookmark() {
   try {
     const now = new Date().toISOString().slice(0, 10);
 
+    // Handle archiving if enabled
+    let savedArchiveUrl: string | null = null;
+    if (bookmarkArchiveEl?.checked) {
+      savedArchiveUrl = await archiveUrl(currentUrl);
+    }
+
     // Build frontmatter
     const frontmatter: Record<string, unknown> = {
       type: "bookmark",
@@ -1468,6 +1628,23 @@ async function saveBookmark() {
     };
     if (tags.length > 0) frontmatter.tags = tags;
     if (notes) frontmatter.notes = notes;
+    if (bookmarkReadStatus && bookmarkReadStatus !== "unread") {
+      frontmatter.read_status = bookmarkReadStatus;
+    }
+    if (selectedText) {
+      frontmatter.selected_text = selectedText;
+    }
+    // Include social author info if available
+    if (socialInfo && socialInfo.username) {
+      frontmatter.author_handle = socialInfo.username;
+    }
+    if (socialPostContent?.author) {
+      frontmatter.author_name = socialPostContent.author;
+    }
+    // Include archive URL if available
+    if (savedArchiveUrl) {
+      frontmatter.archive_url = savedArchiveUrl;
+    }
 
     // Use API mode if configured and connected
     if (config.mode === "api" && apiClient) {
@@ -1575,6 +1752,438 @@ function setupBookmarkListeners() {
   tabReferenceEl?.addEventListener("click", () => switchTab("reference"));
   tabBookmarkEl?.addEventListener("click", () => switchTab("bookmark"));
   bookmarkSaveBtnEl?.addEventListener("click", saveBookmark);
+}
+
+/**
+ * Set up keyboard shortcuts for popup navigation
+ * j/k: Navigate source cards
+ * 1-5: Select source directly
+ * Ctrl+S / Cmd+S: Save
+ * Escape: Close popup
+ * r: Switch to Reference tab
+ * b: Switch to Bookmark tab
+ */
+function setupKeyboardShortcuts() {
+  document.addEventListener("keydown", handleKeydown);
+}
+
+/**
+ * Handle keyboard events
+ */
+function handleKeydown(e: KeyboardEvent) {
+  // Don't handle if typing in an input/textarea
+  const target = e.target as HTMLElement;
+  const isEditing = target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.tagName === "SELECT";
+
+  // Ctrl+S / Cmd+S: Save (works even in inputs)
+  if ((e.ctrlKey || e.metaKey) && e.key === "s") {
+    e.preventDefault();
+    if (currentTabMode === "reference" && !clipBtnEl.disabled) {
+      handleSave();
+    } else if (currentTabMode === "bookmark") {
+      saveBookmark();
+    }
+    return;
+  }
+
+  // Escape: Close popup
+  if (e.key === "Escape") {
+    e.preventDefault();
+    window.close();
+    return;
+  }
+
+  // Don't process other shortcuts if editing
+  if (isEditing) return;
+
+  // j/k: Navigate source cards
+  if (e.key === "j" || e.key === "k") {
+    e.preventDefault();
+    navigateSources(e.key === "j" ? 1 : -1);
+    return;
+  }
+
+  // 1-5: Select source directly
+  if (e.key >= "1" && e.key <= "5") {
+    e.preventDefault();
+    selectSourceByNumber(parseInt(e.key, 10));
+    return;
+  }
+
+  // r: Switch to Reference tab
+  if (e.key === "r") {
+    e.preventDefault();
+    switchTab("reference");
+    return;
+  }
+
+  // b: Switch to Bookmark tab
+  if (e.key === "b") {
+    e.preventDefault();
+    switchTab("bookmark");
+    return;
+  }
+
+  // s: Quick save (if enabled)
+  if (e.key === "s" && config.quickSaveEnabled) {
+    e.preventDefault();
+    handleQuickSave();
+    return;
+  }
+
+  // /: Focus search
+  if (e.key === "/") {
+    e.preventDefault();
+    searchQueryEl.focus();
+    return;
+  }
+
+  // Enter: Trigger search if search box is visible
+  if (e.key === "Enter" && currentTabMode === "reference" && currentMode === "search") {
+    e.preventDefault();
+    handleSearch();
+    return;
+  }
+}
+
+/**
+ * Navigate between source cards with j/k
+ */
+function navigateSources(direction: 1 | -1) {
+  const sourceCards = [sourcePageEl, sourceDblpEl, sourceS2El, sourceOpenalexEl, sourceCrossrefEl];
+  const visibleCards = sourceCards.filter(card => card && !card.classList.contains("hidden"));
+
+  if (visibleCards.length === 0) return;
+
+  // Find currently focused/selected card
+  let currentIndex = -1;
+  if (selectedSource) {
+    const sourceMap: Record<SourceKey, HTMLDivElement> = {
+      page: sourcePageEl,
+      dblp: sourceDblpEl,
+      s2: sourceS2El,
+      openalex: sourceOpenalexEl,
+      crossref: sourceCrossrefEl,
+    };
+    currentIndex = visibleCards.indexOf(sourceMap[selectedSource]);
+  }
+
+  // Calculate new index
+  let newIndex = currentIndex + direction;
+  if (newIndex < 0) newIndex = visibleCards.length - 1;
+  if (newIndex >= visibleCards.length) newIndex = 0;
+
+  // Select the new card
+  const newCard = visibleCards[newIndex];
+  const radio = newCard.querySelector('input[type="radio"]') as HTMLInputElement;
+  if (radio && !radio.disabled) {
+    radio.checked = true;
+    selectSource(radio.value as SourceKey);
+    newCard.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+}
+
+/**
+ * Select source by number (1-5)
+ */
+function selectSourceByNumber(num: number) {
+  const sourceMap: Record<number, { el: HTMLDivElement; key: SourceKey }> = {
+    1: { el: sourcePageEl, key: "page" },
+    2: { el: sourceDblpEl, key: "dblp" },
+    3: { el: sourceS2El, key: "s2" },
+    4: { el: sourceOpenalexEl, key: "openalex" },
+    5: { el: sourceCrossrefEl, key: "crossref" },
+  };
+
+  const source = sourceMap[num];
+  if (!source || source.el.classList.contains("hidden")) return;
+
+  const radio = source.el.querySelector('input[type="radio"]') as HTMLInputElement;
+  if (radio && !radio.disabled) {
+    radio.checked = true;
+    selectSource(source.key);
+  }
+}
+
+/**
+ * Handle quick save - save immediately with defaults
+ */
+async function handleQuickSave() {
+  if (!quickSaveBtnEl) return;
+
+  quickSaveBtnEl.disabled = true;
+  const originalText = quickSaveBtnEl.innerHTML;
+  quickSaveBtnEl.innerHTML = '<span class="quick-save-icon">⏳</span> Saving...';
+
+  try {
+    if (currentTabMode === "bookmark") {
+      // Quick save bookmark
+      await saveBookmark();
+    } else {
+      // Quick save reference - auto-search and save
+      await handleSearch();
+
+      // Wait a bit for search results
+      await new Promise(resolve => setTimeout(resolve, 500));
+
+      // If we have a selected source, save it
+      if (selectedSource && !clipBtnEl.disabled) {
+        await handleSave();
+      } else {
+        throw new Error("No result to save - try manual search");
+      }
+    }
+  } catch (e) {
+    showError(e instanceof Error ? e.message : "Quick save failed");
+    quickSaveBtnEl.disabled = false;
+    quickSaveBtnEl.innerHTML = originalText;
+  }
+}
+
+/**
+ * Show selection preview in bookmark mode
+ */
+function showSelectionPreview(text: string) {
+  if (!selectionPreviewEl || !selectedTextContentEl) return;
+
+  // Truncate long selections
+  const displayText = text.length > 300 ? text.slice(0, 297) + "..." : text;
+  selectedTextContentEl.textContent = displayText;
+  selectionPreviewEl.classList.remove("hidden");
+}
+
+/**
+ * Merge platform tags with suggested tags
+ */
+function mergePlatformTags(existingTags: string[]): string[] {
+  const tagSet = new Set(existingTags.map(t => t.toLowerCase()));
+  const newTags = [...existingTags];
+
+  for (const tag of platformTags) {
+    if (!tagSet.has(tag.toLowerCase())) {
+      newTags.push(tag);
+      tagSet.add(tag.toLowerCase());
+    }
+  }
+
+  return newTags;
+}
+
+/**
+ * Load all browser tabs for batch mode
+ */
+async function loadBatchTabs() {
+  if (!batchTabListEl) return;
+
+  batchTabListEl.innerHTML = '<div class="loading">Loading tabs...</div>';
+
+  try {
+    const tabs = await browser.tabs.query({ currentWindow: true });
+
+    // Filter to only http/https tabs
+    batchTabs = tabs
+      .filter(tab => tab.id && tab.url?.startsWith("http"))
+      .map(tab => ({
+        id: tab.id!,
+        url: tab.url!,
+        title: tab.title || tab.url!,
+        selected: false,
+      }));
+
+    renderBatchTabs();
+  } catch (e) {
+    batchTabListEl.innerHTML = '<div class="error">Failed to load tabs</div>';
+  }
+}
+
+/**
+ * Render batch tabs list
+ */
+function renderBatchTabs() {
+  if (!batchTabListEl) return;
+
+  if (batchTabs.length === 0) {
+    batchTabListEl.innerHTML = '<div class="batch-empty">No tabs to clip</div>';
+    return;
+  }
+
+  batchTabListEl.innerHTML = "";
+
+  for (const tab of batchTabs) {
+    const item = document.createElement("div");
+    item.className = `batch-tab-item ${tab.selected ? "selected" : ""}`;
+    item.innerHTML = `
+      <input type="checkbox" ${tab.selected ? "checked" : ""} data-tab-id="${tab.id}">
+      <div class="batch-tab-info">
+        <div class="batch-tab-title">${escapeHtml(tab.title)}</div>
+        <div class="batch-tab-url">${escapeHtml(tab.url)}</div>
+      </div>
+    `;
+
+    const checkbox = item.querySelector("input") as HTMLInputElement;
+    checkbox.addEventListener("change", () => {
+      tab.selected = checkbox.checked;
+      item.classList.toggle("selected", tab.selected);
+      updateBatchStats();
+    });
+
+    item.addEventListener("click", (e) => {
+      if ((e.target as HTMLElement).tagName !== "INPUT") {
+        checkbox.checked = !checkbox.checked;
+        checkbox.dispatchEvent(new Event("change"));
+      }
+    });
+
+    batchTabListEl.appendChild(item);
+  }
+
+  updateBatchStats();
+}
+
+/**
+ * Update batch stats and button state
+ */
+function updateBatchStats() {
+  const selectedCount = batchTabs.filter(t => t.selected).length;
+
+  if (batchSelectedCountEl) {
+    batchSelectedCountEl.textContent = `${selectedCount} selected`;
+  }
+
+  if (batchClipBtnEl) {
+    batchClipBtnEl.disabled = selectedCount === 0;
+    batchClipBtnEl.textContent = selectedCount === 0
+      ? "Clip Selected Tabs"
+      : `Clip ${selectedCount} Tab${selectedCount !== 1 ? "s" : ""}`;
+  }
+
+  if (batchSelectAllEl) {
+    batchSelectAllEl.checked = selectedCount === batchTabs.length && batchTabs.length > 0;
+  }
+}
+
+/**
+ * Handle batch clip button click
+ */
+async function handleBatchClip() {
+  const selectedTabs = batchTabs.filter(t => t.selected);
+  if (selectedTabs.length === 0) return;
+
+  if (!batchClipBtnEl || !batchProgressEl || !batchProgressFillEl || !batchProgressTextEl) return;
+
+  batchClipBtnEl.disabled = true;
+  batchProgressEl.classList.remove("hidden");
+
+  let completed = 0;
+  const total = selectedTabs.length;
+
+  for (const tab of selectedTabs) {
+    try {
+      // Create bookmark for each tab
+      const platform = detectPlatform(tab.url);
+      const slug = generateBookmarkSlug(tab.url);
+      const now = new Date().toISOString().slice(0, 10);
+
+      const frontmatter: Record<string, unknown> = {
+        type: "bookmark",
+        title: tab.title,
+        url: tab.url,
+        platform,
+        saved_at: now,
+        visibility: "private",
+        tags: mergePlatformTags(["batch-clipped"]),
+      };
+
+      if (config.mode === "api" && apiClient) {
+        const createResult = await apiClient.createObject({
+          schema: "bookmark",
+          slug,
+          title: tab.title,
+          project: "private-content",
+        });
+
+        if (createResult.success && createResult.filePath) {
+          await apiClient.writeObject({
+            filePath: createResult.filePath,
+            frontmatter,
+            merge: false,
+          });
+        }
+      }
+    } catch (e) {
+      console.error(`Failed to clip tab: ${tab.url}`, e);
+    }
+
+    completed++;
+    const percent = Math.round((completed / total) * 100);
+    batchProgressFillEl.style.width = `${percent}%`;
+    batchProgressTextEl.textContent = `${completed} / ${total}`;
+  }
+
+  // Show success
+  batchClipBtnEl.textContent = "Done!";
+  setTimeout(() => {
+    batchProgressEl.classList.add("hidden");
+    batchClipBtnEl.textContent = "Clip Selected Tabs";
+    batchClipBtnEl.disabled = false;
+    // Reload tabs to refresh state
+    loadBatchTabs();
+  }, 1500);
+}
+
+/**
+ * Set up batch mode event listeners
+ */
+function setupBatchListeners() {
+  tabBatchEl?.addEventListener("click", () => switchTab("batch"));
+
+  batchRefreshBtnEl?.addEventListener("click", loadBatchTabs);
+
+  batchSelectAllEl?.addEventListener("change", () => {
+    const selectAll = batchSelectAllEl.checked;
+    batchTabs.forEach(tab => tab.selected = selectAll);
+    renderBatchTabs();
+  });
+
+  batchClipBtnEl?.addEventListener("click", handleBatchClip);
+}
+
+/**
+ * Handle archive save for bookmark
+ */
+async function archiveUrl(url: string): Promise<string | null> {
+  if (!archiveStatusEl) return null;
+
+  archiveStatusEl.classList.remove("hidden", "success", "error");
+  archiveStatusEl.classList.add("pending");
+  archiveStatusEl.textContent = "Saving to Archive.org...";
+
+  try {
+    // First check if already archived
+    const existing = await checkWaybackArchive(url);
+    if (existing.available && existing.url) {
+      archiveStatusEl.classList.remove("pending");
+      archiveStatusEl.classList.add("success");
+      archiveStatusEl.textContent = `Already archived`;
+      return existing.url;
+    }
+
+    // Save to Wayback Machine
+    const result = await saveToWaybackMachine(url);
+    if (result.success && result.archiveUrl) {
+      archiveStatusEl.classList.remove("pending");
+      archiveStatusEl.classList.add("success");
+      archiveStatusEl.textContent = "Archived successfully";
+      return result.archiveUrl;
+    } else {
+      throw new Error(result.error || "Archive failed");
+    }
+  } catch (e) {
+    archiveStatusEl.classList.remove("pending");
+    archiveStatusEl.classList.add("error");
+    archiveStatusEl.textContent = e instanceof Error ? e.message : "Archive failed";
+    return null;
+  }
 }
 
 // Initialize on load

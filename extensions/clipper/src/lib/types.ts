@@ -2,6 +2,8 @@
  * Shared types for Extenote Web Clipper
  */
 
+export type ReadStatus = "unread" | "reading" | "read" | "skipped";
+
 export interface PageMetadata {
   url: string;
   title: string;
@@ -14,6 +16,18 @@ export interface PageMetadata {
   tags?: string[];
   entryType?: string;
   externalBibtex?: string;
+  readStatus?: ReadStatus;
+}
+
+export interface BookmarkMetadata {
+  url: string;
+  title: string;
+  platform: string;
+  tags?: string[];
+  notes?: string;
+  readStatus?: ReadStatus;
+  selectedText?: string;
+  authorHandle?: string;
 }
 
 export interface ClipperConfig {
@@ -27,6 +41,14 @@ export interface ClipperConfig {
   mode: "download" | "api";
   apiUrl: string;
   defaultProject: string;
+
+  // Quick save settings
+  quickSaveEnabled: boolean;
+  quickSaveHotkey: string;
+  defaultReadStatus: ReadStatus;
+
+  // Auto-archive settings
+  autoArchive: boolean;
 }
 
 export const DEFAULT_CONFIG: ClipperConfig = {
@@ -40,6 +62,14 @@ export const DEFAULT_CONFIG: ClipperConfig = {
   mode: "download",
   apiUrl: "http://localhost:3001",
   defaultProject: "",
+
+  // Quick save defaults
+  quickSaveEnabled: false,
+  quickSaveHotkey: "Alt+Shift+S",
+  defaultReadStatus: "unread",
+
+  // Auto-archive defaults
+  autoArchive: false,
 };
 
 export interface ClipRequest {

@@ -1,6 +1,6 @@
 import path from 'path'
 import { readFile } from 'fs/promises'
-import { buildTagTree, getAllTags, previewTagMutation, applyTagMutation, loadTaxonomy, validateTaxonomy, fixTaxonomyViolation, type TagMutation, type TaxonomyViolation, type VaultState } from '@extenote/core'
+import { buildTagTree, getAllTags, previewTagMutation, applyTagMutation, createBackup, loadTaxonomy, validateTaxonomy, fixTaxonomyViolation, type TagMutation, type TaxonomyViolation, type VaultState } from '@extenote/core'
 import { json } from '../utils.js'
 import { invalidateVaultCache, loadVaultBundle, type CachedVaultState } from '../cache.js'
 
@@ -31,6 +31,16 @@ export async function handleTagApply(cwd: string, body: TagMutation, headers: He
   const { vault } = await loadVaultBundle(cwd)
   const vaultState = asVaultState(vault)
   const preview = previewTagMutation(vaultState, body)
+  const filePaths = preview.affectedFiles.map((file) => file.filePath)
+  if (filePaths.length > 0) {
+    let operation = `tag delete: ${body.oldTag}`
+    if (body.type === 'rename') {
+      operation = `tag rename: ${body.oldTag} -> ${body.newTag ?? ''}`
+    } else if (body.type === 'merge') {
+      operation = `tag merge: ${body.oldTag} -> ${body.newTag ?? ''}`
+    }
+    await createBackup(cwd, operation, filePaths)
+  }
   const result = await applyTagMutation(preview)
 
   // Invalidate cache after modifying files

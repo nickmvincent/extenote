@@ -1148,6 +1148,287 @@ footer .separator {
   font-size: 12px;
 }
 
+/* Quick save bar */
+.quick-save-bar {
+  margin-bottom: 12px;
+}
+
+.quick-save-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.quick-save-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.4);
+}
+
+.quick-save-btn:active {
+  transform: translateY(0);
+}
+
+.quick-save-icon {
+  font-size: 16px;
+}
+
+.quick-save-hint {
+  font-size: 10px;
+  opacity: 0.8;
+  padding: 2px 6px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 3px;
+  margin-left: 4px;
+}
+
+/* Selection preview */
+.selection-preview {
+  margin-bottom: 12px;
+  padding: 8px 10px;
+  background: #f8f9fa;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+}
+
+.selection-preview label {
+  display: block;
+  font-size: 10px;
+  font-weight: 500;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+  margin-bottom: 4px;
+}
+
+.selection-preview blockquote {
+  margin: 0;
+  padding: 6px 10px;
+  border-left: 3px solid #0066cc;
+  background: #fff;
+  font-size: 12px;
+  color: #333;
+  font-style: italic;
+  max-height: 60px;
+  overflow-y: auto;
+}
+
+/* Focus styles for keyboard navigation */
+.source-card:focus-within {
+  outline: 2px solid #0066cc;
+  outline-offset: 2px;
+}
+
+.mode-tab:focus {
+  outline: 2px solid #0066cc;
+  outline-offset: -2px;
+}
+
+button:focus {
+  outline: 2px solid #0066cc;
+  outline-offset: 2px;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: #0066cc;
+  box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.2);
+}
+
+/* Keyboard shortcut hints */
+.kbd-hint {
+  display: inline-block;
+  font-size: 9px;
+  font-family: "SF Mono", Monaco, Consolas, monospace;
+  padding: 1px 4px;
+  background: #f0f0f0;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  color: #666;
+  margin-left: 4px;
+}
+
+/* Batch mode styles */
+.batch-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.batch-title {
+  font-weight: 600;
+  font-size: 12px;
+  color: #333;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.batch-description {
+  font-size: 12px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.batch-select-all {
+  padding: 8px 0;
+  border-bottom: 1px solid #e5e5e5;
+  margin-bottom: 8px;
+}
+
+.batch-tab-list {
+  max-height: 200px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+
+.batch-tab-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 8px;
+  border: 1px solid #e5e5e5;
+  border-radius: 4px;
+  margin-bottom: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.batch-tab-item:hover {
+  border-color: #0066cc;
+  background: #f8f9fa;
+}
+
+.batch-tab-item.selected {
+  border-color: #0066cc;
+  background: #f0f7ff;
+}
+
+.batch-tab-item input[type="checkbox"] {
+  margin-top: 2px;
+}
+
+.batch-tab-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.batch-tab-title {
+  font-size: 12px;
+  font-weight: 500;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 2px;
+}
+
+.batch-tab-url {
+  font-size: 10px;
+  color: #888;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.batch-stats {
+  font-size: 11px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.batch-progress {
+  margin-top: 12px;
+}
+
+.progress-bar {
+  height: 6px;
+  background: #e5e5e5;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: #0066cc;
+  border-radius: 3px;
+  transition: width 0.3s ease;
+  width: 0%;
+}
+
+#batch-progress-text {
+  font-size: 11px;
+  color: #666;
+}
+
+/* Archive option styles */
+.archive-option {
+  padding: 8px;
+  background: #f8f9fa;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.archive-status {
+  font-size: 11px;
+  margin-top: 6px;
+  padding: 4px 8px;
+  border-radius: 3px;
+}
+
+.archive-status.success {
+  background: #d4edda;
+  color: #155724;
+}
+
+.archive-status.error {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.archive-status.pending {
+  background: #e9ecef;
+  color: #495057;
+}
+
+/* Source card number indicators for keyboard shortcuts */
+.source-card .source-number {
+  display: none;
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 16px;
+  height: 16px;
+  font-size: 10px;
+  font-weight: 600;
+  background: #e0e0e0;
+  color: #666;
+  border-radius: 50%;
+  text-align: center;
+  line-height: 16px;
+}
+
+.sources-grid.keyboard-mode .source-card {
+  position: relative;
+}
+
+.sources-grid.keyboard-mode .source-card .source-number {
+  display: block;
+}
+
 /* Dark mode support */
 @media (prefers-color-scheme: dark) {
   body {

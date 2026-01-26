@@ -183,3 +183,141 @@ export function formatQueryForDisplay(hint: SearchHint): string {
 export function getQueryValue(hint: SearchHint): string {
   return hint.value;
 }
+
+/**
+ * Social platform URL patterns for username extraction
+ */
+export interface SocialUrlInfo {
+  platform: "twitter" | "bluesky" | "mastodon" | "threads" | "linkedin" | "unknown";
+  username?: string;
+  postId?: string;
+  isPost: boolean;
+}
+
+/**
+ * Parse social media URL to extract username and post ID
+ */
+export function parseSocialUrl(url: string): SocialUrlInfo {
+  try {
+    const urlObj = new URL(url);
+    const hostname = urlObj.hostname.toLowerCase();
+    const pathname = urlObj.pathname;
+
+    // Twitter/X: twitter.com/username or x.com/username/status/postId
+    if (hostname === "x.com" || hostname === "twitter.com" || hostname === "www.twitter.com") {
+      const match = pathname.match(/^\/([^/]+)(?:\/status\/(\d+))?/);
+      if (match && match[1] && !["home", "explore", "notifications", "messages", "i", "search"].includes(match[1])) {
+        return {
+          platform: "twitter",
+          username: match[1],
+          postId: match[2],
+          isPost: !!match[2],
+        };
+      }
+    }
+
+    // Bluesky: bsky.app/profile/username.bsky.social/post/postId
+    if (hostname === "bsky.app") {
+      const match = pathname.match(/^\/profile\/([^/]+)(?:\/post\/([a-z0-9]+))?/i);
+      if (match) {
+        return {
+          platform: "bluesky",
+          username: match[1],
+          postId: match[2],
+          isPost: !!match[2],
+        };
+      }
+    }
+
+    // Threads: threads.net/@username/post/postId (check before Mastodon due to /@ pattern)
+    if (hostname === "threads.net" || hostname === "www.threads.net") {
+      const match = pathname.match(/^\/@([^/]+)(?:\/post\/([^/]+))?/);
+      if (match) {
+        return {
+          platform: "threads",
+          username: match[1],
+          postId: match[2],
+          isPost: !!match[2],
+        };
+      }
+    }
+
+    // Mastodon: mastodon.social/@username/postId or any instance
+    if (hostname.includes("mastodon") || pathname.startsWith("/@")) {
+      const match = pathname.match(/^\/@([^/]+)(?:\/(\d+))?/);
+      if (match) {
+        return {
+          platform: "mastodon",
+          username: match[1],
+          postId: match[2],
+          isPost: !!match[2],
+        };
+      }
+    }
+
+    // LinkedIn: linkedin.com/in/username or linkedin.com/posts/activity-id
+    if (hostname === "linkedin.com" || hostname === "www.linkedin.com") {
+      const profileMatch = pathname.match(/^\/in\/([^/]+)/);
+      if (profileMatch) {
+        return {
+          platform: "linkedin",
+          username: profileMatch[1],
+          isPost: false,
+        };
+      }
+      const postMatch = pathname.match(/^\/posts\/([^/]+)/);
+      if (postMatch) {
+        return {
+          platform: "linkedin",
+          postId: postMatch[1],
+          isPost: true,
+        };
+      }
+    }
+
+    return { platform: "unknown", isPost: false };
+  } catch {
+    return { platform: "unknown", isPost: false };
+  }
+}
+
+/**
+ * Check if URL is a PDF (for arXiv PDFs, etc.)
+ */
+export function isPdfUrl(url: string): boolean {
+  try {
+    const urlObj = new URL(url);
+    const pathname = urlObj.pathname.toLowerCase();
+
+    // Direct PDF links
+    if (pathname.endsWith(".pdf")) return true;
+
+    // ArXiv PDF pages
+    if (urlObj.hostname === "arxiv.org" && pathname.includes("/pdf/")) return true;
+
+    return false;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Extract arXiv ID from PDF URL
+ */
+export function extractArxivIdFromPdf(url: string): string | null {
+  try {
+    const urlObj = new URL(url);
+    if (urlObj.hostname !== "arxiv.org") return null;
+
+    const match = urlObj.pathname.match(/\/pdf\/(\d{4}\.\d{4,5}(?:v\d+)?)/);
+    if (match) return match[1];
+
+    // Old format
+    const oldMatch = urlObj.pathname.match(/\/pdf\/([a-z-]+\/\d+)/i);
+    if (oldMatch) return oldMatch[1];
+
+    return null;
+  } catch {
+    return null;
+  }
+}

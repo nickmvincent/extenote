@@ -26,6 +26,12 @@ const testApiBtn = document.getElementById("test-api") as HTMLButtonElement;
 const apiTestResultEl = document.getElementById("api-test-result")!;
 const statusEl = document.getElementById("status")!;
 
+// New settings elements
+const defaultReadStatusSelect = document.getElementById("default-read-status") as HTMLSelectElement;
+const quickSaveEnabledCheckbox = document.getElementById("quick-save-enabled") as HTMLInputElement;
+const quickSaveHotkeyInput = document.getElementById("quick-save-hotkey") as HTMLInputElement;
+const autoArchiveCheckbox = document.getElementById("auto-archive") as HTMLInputElement;
+
 /**
  * Show status message
  */
@@ -79,6 +85,12 @@ async function loadAndDisplay() {
     downloadSubdirInput.value = config.downloadSubdir;
     apiUrlInput.value = config.apiUrl;
     defaultProjectInput.value = config.defaultProject;
+
+    // New settings
+    defaultReadStatusSelect.value = config.defaultReadStatus || "unread";
+    quickSaveEnabledCheckbox.checked = config.quickSaveEnabled || false;
+    quickSaveHotkeyInput.value = config.quickSaveHotkey || "Alt+Shift+S";
+    autoArchiveCheckbox.checked = config.autoArchive || false;
   } catch (err) {
     console.error("Failed to load config:", err);
     showStatus("Failed to load settings", "error");
@@ -101,6 +113,11 @@ async function save() {
       downloadSubdir: downloadSubdirInput.value.trim(),
       apiUrl: apiUrlInput.value.trim() || DEFAULT_CONFIG.apiUrl,
       defaultProject: defaultProjectInput.value.trim(),
+      // New settings
+      defaultReadStatus: defaultReadStatusSelect.value as "unread" | "reading" | "read" | "skipped",
+      quickSaveEnabled: quickSaveEnabledCheckbox.checked,
+      quickSaveHotkey: quickSaveHotkeyInput.value.trim() || DEFAULT_CONFIG.quickSaveHotkey,
+      autoArchive: autoArchiveCheckbox.checked,
     };
 
     await saveConfig(config);

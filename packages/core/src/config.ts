@@ -313,7 +313,12 @@ function validatePreRenderStep(step: PreRenderStep, project: string, index: numb
       if (!step.dst) throw new BuildConfigError(project, `${prefix}.dst`, "rsync step requires dst");
       break;
     case "cli":
-      if (!step.command) throw new BuildConfigError(project, `${prefix}.command`, "cli step requires command");
+      {
+        const command = step.command?.trim();
+        if ((!command || command.length === 0) && (!step.args || step.args.length === 0)) {
+          throw new BuildConfigError(project, `${prefix}.command`, "cli step requires command or args");
+        }
+      }
       break;
     case "copy":
       if (!step.src) throw new BuildConfigError(project, `${prefix}.src`, "copy step requires src");
@@ -331,7 +336,23 @@ function validatePreRenderStep(step: PreRenderStep, project: string, index: numb
 }
 
 function sourcesMatch(a: SourceConfig, b: SourceConfig): boolean {
-  return JSON.stringify(a) === JSON.stringify(b);
+  const canonicalA = JSON.stringify(sortObjectKeys(a));
+  const canonicalB = JSON.stringify(sortObjectKeys(b));
+  return canonicalA === canonicalB;
+}
+
+function sortObjectKeys(obj: unknown): unknown {
+  if (obj === null || typeof obj !== "object") {
+    return obj;
+  }
+  if (Array.isArray(obj)) {
+    return obj.map(sortObjectKeys);
+  }
+  const sorted: Record<string, unknown> = {};
+  for (const key of Object.keys(obj as Record<string, unknown>).sort()) {
+    sorted[key] = sortObjectKeys((obj as Record<string, unknown>)[key]);
+  }
+  return sorted;
 }
 
 async function importConfigModule(configPath: string): Promise<Record<string, unknown>> {

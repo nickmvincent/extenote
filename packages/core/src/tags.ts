@@ -42,6 +42,35 @@ export interface TagMutationResult {
   errors: Array<{ filePath: string; error: string }>;
 }
 
+async function writeFileAtomic(filePath: string, content: string): Promise<void> {
+  const dir = path.dirname(filePath);
+  const baseName = path.basename(filePath);
+  const tempPath = path.join(
+    dir,
+    `.${baseName}.tmp-${Date.now()}-${Math.random().toString(16).slice(2)}`
+  );
+
+  let mode: number | undefined;
+  try {
+    const stat = await fs.stat(filePath);
+    mode = stat.mode;
+  } catch {
+    // If we can't stat the file, fall back to default permissions.
+  }
+
+  await fs.writeFile(tempPath, content, mode ? { mode } : undefined);
+  try {
+    await fs.rename(tempPath, filePath);
+  } catch (err) {
+    try {
+      await fs.rm(tempPath);
+    } catch {
+      // Best-effort cleanup.
+    }
+    throw err;
+  }
+}
+
 // ─── Tag Tree Building ───────────────────────────────────────────────────────
 
 /**
@@ -227,7 +256,7 @@ export async function applyTagMutation(
 
       // Write back
       const newContent = stringifyMarkdown(parsed.frontmatter, parsed.body);
-      await fs.writeFile(file.filePath, newContent, "utf8");
+      await writeFileAtomic(file.filePath, newContent);
       filesModified++;
     } catch (err) {
       errors.push({

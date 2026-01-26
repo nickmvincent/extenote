@@ -83,6 +83,47 @@
           <input type="text" id="default-tags" value="clipped">
           <p class="hint">Comma-separated tags to add to all clipped pages</p>
         </div>
+
+        <div class="field">
+          <label for="default-read-status">Default Read Status</label>
+          <select id="default-read-status">
+            <option value="unread">📕 Unread</option>
+            <option value="reading">📖 Reading</option>
+            <option value="read">📗 Read</option>
+            <option value="skipped">⏭️ Skipped</option>
+          </select>
+          <p class="hint">Default status for new clips and bookmarks</p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Quick Save</h2>
+
+        <div class="field">
+          <label class="checkbox-label">
+            <input type="checkbox" id="quick-save-enabled">
+            <span>Enable Quick Save</span>
+          </label>
+          <p class="hint">Show a one-click save button that uses all defaults without prompting</p>
+        </div>
+
+        <div class="field">
+          <label for="quick-save-hotkey">Quick Save Hotkey</label>
+          <input type="text" id="quick-save-hotkey" value="Alt+Shift+S" readonly>
+          <p class="hint">Keyboard shortcut for quick save (configured via browser extension settings)</p>
+        </div>
+      </section>
+
+      <section>
+        <h2>Archiving</h2>
+
+        <div class="field">
+          <label class="checkbox-label">
+            <input type="checkbox" id="auto-archive">
+            <span>Auto-save to Archive.org</span>
+          </label>
+          <p class="hint">Automatically save pages to the Wayback Machine when clipping (Phase 3 feature)</p>
+        </div>
       </section>
 
       <section>

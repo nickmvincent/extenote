@@ -336,89 +336,91 @@ export function buildObjectGraph(objects: VaultObject[]): ObjectGraph {
  * Includes both wikilinks and citations
  */
 export function computeAllCrossRefs(objects: VaultObject[]): Map<string, ObjectCrossRefs> {
-  const index = buildObjectIndex(objects);
   const result = new Map<string, ObjectCrossRefs>();
 
-  // First, compute all outgoing links (wikilinks + citations)
   const outgoingMap = new Map<string, ObjectLink[]>();
-  const citationMap = new Map<string, ObjectLink[]>(); // Keep citations separate for backlink lookup
+  const backlinksMap = new Map<string, ObjectCrossRefs["backlinks"]>();
+  const wikilinkTargets = new Map<string, string[]>();
+  const citationKeyToIds = new Map<string, string[]>();
+
+  for (const obj of objects) {
+    backlinksMap.set(obj.id, []);
+
+    const wikilinkKeys = new Set<string>();
+    wikilinkKeys.add(obj.id);
+    const basename = obj.relativePath.split("/").pop()?.replace(/\.md$/, "");
+    if (basename) {
+      wikilinkKeys.add(basename);
+    }
+    for (const key of wikilinkKeys) {
+      const existing = wikilinkTargets.get(key);
+      if (existing) {
+        existing.push(obj.id);
+      } else {
+        wikilinkTargets.set(key, [obj.id]);
+      }
+    }
+
+    if (obj.type === "bibtex_entry") {
+      const citationKey = obj.frontmatter.citation_key;
+      if (typeof citationKey === "string" && citationKey) {
+        const existing = citationKeyToIds.get(citationKey);
+        if (existing) {
+          existing.push(obj.id);
+        } else {
+          citationKeyToIds.set(citationKey, [obj.id]);
+        }
+      }
+    }
+  }
 
   for (const obj of objects) {
     const wikilinks = parseWikiLinks(obj.body);
     const citations = parseCitations(obj.body);
     outgoingMap.set(obj.id, [...wikilinks, ...citations]);
-    citationMap.set(obj.id, citations);
-  }
 
-  // Build a map of citation_key -> object id for bibtex entries
-  const citationKeyToId = new Map<string, string>();
-  for (const obj of objects) {
-    if (obj.type === "bibtex_entry") {
-      const citationKey = obj.frontmatter.citation_key;
-      if (typeof citationKey === "string" && citationKey) {
-        citationKeyToId.set(citationKey, obj.id);
+    for (const link of wikilinks) {
+      const targets = wikilinkTargets.get(link.targetId);
+      if (!targets) continue;
+
+      for (const targetId of targets) {
+        if (targetId === obj.id) continue;
+        const backlinks = backlinksMap.get(targetId);
+        if (!backlinks) continue;
+        backlinks.push({
+          sourceId: obj.id,
+          sourceTitle: obj.title,
+          sourcePath: obj.relativePath,
+          context: link.context,
+          linkType: "wikilink",
+        });
+      }
+    }
+
+    for (const citation of citations) {
+      const targets = citationKeyToIds.get(citation.targetId);
+      if (!targets) continue;
+
+      for (const targetId of targets) {
+        if (targetId === obj.id) continue;
+        const backlinks = backlinksMap.get(targetId);
+        if (!backlinks) continue;
+        backlinks.push({
+          sourceId: obj.id,
+          sourceTitle: obj.title,
+          sourcePath: obj.relativePath,
+          context: citation.context,
+          linkType: "citation",
+        });
       }
     }
   }
 
-  // Then compute backlinks for each object
   for (const obj of objects) {
-    const backlinks: ObjectCrossRefs["backlinks"] = [];
-
-    // Check wikilinks pointing to this object
-    for (const [sourceId, links] of outgoingMap) {
-      if (sourceId === obj.id) continue;
-
-      for (const link of links) {
-        if (link.linkType === "wikilink") {
-          if (
-            link.targetId === obj.id ||
-            link.targetId === obj.relativePath.split('/').pop()?.replace(/\.md$/, '')
-          ) {
-            const sourceObj = index.get(sourceId);
-            if (sourceObj) {
-              backlinks.push({
-                sourceId,
-                sourceTitle: sourceObj.title,
-                sourcePath: sourceObj.relativePath,
-                context: link.context,
-                linkType: "wikilink",
-              });
-            }
-          }
-        }
-      }
-    }
-
-    // Check citations pointing to this object (if it's a bibtex_entry)
-    if (obj.type === "bibtex_entry") {
-      const citationKey = obj.frontmatter.citation_key;
-      if (typeof citationKey === "string" && citationKey) {
-        for (const [sourceId, citations] of citationMap) {
-          if (sourceId === obj.id) continue;
-
-          for (const citation of citations) {
-            if (citation.targetId === citationKey) {
-              const sourceObj = index.get(sourceId);
-              if (sourceObj) {
-                backlinks.push({
-                  sourceId,
-                  sourceTitle: sourceObj.title,
-                  sourcePath: sourceObj.relativePath,
-                  context: citation.context,
-                  linkType: "citation",
-                });
-              }
-            }
-          }
-        }
-      }
-    }
-
     result.set(obj.id, {
       id: obj.id,
       outgoingLinks: outgoingMap.get(obj.id) || [],
-      backlinks,
+      backlinks: backlinksMap.get(obj.id) || [],
     });
   }
 
@@ -470,4 +472,3 @@ export function buildProjectDependencyGraph(
 
   return { type: "project-deps", nodes, edges };
 }
-

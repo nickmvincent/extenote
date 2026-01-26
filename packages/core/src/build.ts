@@ -1,6 +1,7 @@
 import { spawn } from "child_process";
 import fs from "fs/promises";
 import path from "path";
+import os from "os";
 import type {
   BuildConfig,
   DeployConfig,
@@ -91,6 +92,75 @@ async function runCommand(
   });
 }
 
+function splitCommandArgs(command: string): string[] {
+  const args: string[] = [];
+  let current = "";
+  let quote: "'" | '"' | null = null;
+  let escaped = false;
+
+  const pushCurrent = () => {
+    if (current.length > 0) {
+      args.push(current);
+      current = "";
+    }
+  };
+
+  for (let i = 0; i < command.length; i++) {
+    const char = command[i];
+
+    if (escaped) {
+      current += char;
+      escaped = false;
+      continue;
+    }
+
+    if (char === "\\" && quote !== "'") {
+      escaped = true;
+      continue;
+    }
+
+    if (char === "'" && quote !== '"') {
+      quote = quote === "'" ? null : "'";
+      continue;
+    }
+
+    if (char === '"' && quote !== "'") {
+      quote = quote === '"' ? null : '"';
+      continue;
+    }
+
+    if (!quote && /\s/.test(char)) {
+      pushCurrent();
+      continue;
+    }
+
+    current += char;
+  }
+
+  if (escaped) {
+    current += "\\";
+  }
+
+  if (quote) {
+    throw new Error(`Unclosed quote in command: ${command}`);
+  }
+
+  pushCurrent();
+  return args;
+}
+
+function quoteArg(arg: string): string {
+  if (!/[\s"'\\]/.test(arg)) {
+    return arg;
+  }
+  const escaped = arg.replace(/(["\\])/g, "\\$1");
+  return `"${escaped}"`;
+}
+
+function formatCommand(command: string, args: string[]): string {
+  return [command, ...args].map(quoteArg).join(" ");
+}
+
 // ─── PreRender Step Execution ────────────────────────────────────────────────
 
 async function executeRsyncStep(
@@ -138,9 +208,14 @@ async function executeCliStep(
 ): Promise<void> {
   const outputDir = step.outputDir ? path.resolve(projectDir, step.outputDir) : projectDir;
   const log = options.log ?? console.log;
-
-  // Build command as single string to preserve quoted arguments
-  const fullCommand = `bun run cli -- ${step.command} -o "${outputDir}"`;
+  const runtime = step.runtime ?? "bun";
+  const runtimeArgs = step.runtimeArgs ?? ["run", "cli", "--"];
+  const cliArgs = step.args ?? splitCommandArgs(step.command ?? "");
+  if (cliArgs.length === 0) {
+    throw new Error("cli step requires command or args");
+  }
+  const fullArgs = [...runtimeArgs, ...cliArgs, "-o", outputDir];
+  const fullCommand = formatCommand(runtime, fullArgs);
 
   if (options.dryRun) {
     log(`  [dry-run] ${fullCommand}`);
@@ -151,8 +226,7 @@ async function executeCliStep(
     log(`  ${fullCommand}`);
   }
 
-  // Run as shell command to handle complex argument quoting
-  const result = await runCommand("bash", ["-c", fullCommand], extenoteDir, options.verbose);
+  const result = await runCommand(runtime, fullArgs, extenoteDir, options.verbose);
   if (result.code !== 0) {
     throw new Error(`cli command failed: ${result.stderr || result.stdout}`);
   }
@@ -532,19 +606,33 @@ export async function deployProject(
           // --parallel=N: upload N files in parallel
           const parallel = deploy.parallel ?? DEFAULT_FTP_PARALLEL;
           const timeout = deploy.timeout ?? DEFAULT_FTP_TIMEOUT;
+          const netrcPath = path.join(
+            os.tmpdir(),
+            `extenote-netrc-${Date.now()}-${Math.random().toString(16).slice(2)}`
+          );
+          const netrcContent = `machine ${host}\n  login ${user}\n  password ${password}\n`;
           const mirrorArgs = deleteRemote
-            ? `mirror -R --delete --verbose --parallel=${parallel} ${deployDir} ${remoteDir}`
-            : `mirror -R --verbose --parallel=${parallel} ${deployDir} ${remoteDir}`;
+            ? `mirror -R --delete --verbose --parallel=${parallel} ${quoteArg(deployDir)} ${quoteArg(remoteDir)}`
+            : `mirror -R --verbose --parallel=${parallel} ${quoteArg(deployDir)} ${quoteArg(remoteDir)}`;
+
+          await fs.writeFile(netrcPath, netrcContent, { mode: 0o600 });
 
           const lftpScript = [
             `set ftp:ssl-allow no`,  // Some hosts don't support SSL
             `set net:timeout ${timeout}`,
-            `open -u ${user},${password} ftp://${host}:${ftpPort}`,
+            `set net:netrc-file ${quoteArg(netrcPath)}`,
+            `set net:netrc on`,
+            `open ftp://${host}:${ftpPort}`,
             mirrorArgs,
             `quit`
           ].join("; ");
 
-          const result = await runCommand("lftp", ["-e", lftpScript], projectDir, verbose);
+          let result;
+          try {
+            result = await runCommand("lftp", ["-e", lftpScript], projectDir, verbose);
+          } finally {
+            await fs.rm(netrcPath, { force: true });
+          }
 
           if (result.code !== 0) {
             throw new Error(`FTP deployment failed: ${result.stderr || result.stdout}`);

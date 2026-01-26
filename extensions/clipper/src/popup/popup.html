@@ -18,11 +18,56 @@
 
     <!-- Mode Tabs -->
     <div class="mode-tabs">
-      <button id="tab-reference" class="mode-tab active">Reference</button>
-      <button id="tab-bookmark" class="mode-tab">Bookmark</button>
+      <button id="tab-reference" class="mode-tab active" tabindex="1">Reference</button>
+      <button id="tab-bookmark" class="mode-tab" tabindex="2">Bookmark</button>
+      <button id="tab-batch" class="mode-tab" tabindex="3">Batch</button>
+    </div>
+
+    <!-- Quick Save Button (shown when enabled in options) -->
+    <div id="quick-save-bar" class="quick-save-bar hidden">
+      <button id="quick-save-btn" class="quick-save-btn" tabindex="3">
+        <span class="quick-save-icon">⚡</span>
+        Quick Save
+        <span class="quick-save-hint">Alt+Shift+S</span>
+      </button>
     </div>
 
     <main id="main-content">
+      <!-- Batch Section (multi-tab clipping) -->
+      <div id="batch-section" class="hidden">
+        <div class="batch-header">
+          <span class="batch-title">Batch Clip</span>
+          <button id="batch-refresh-btn" class="text-btn">Refresh</button>
+        </div>
+        <p class="batch-description">Select tabs to clip as bookmarks:</p>
+
+        <div class="batch-select-all">
+          <label class="checkbox-label">
+            <input type="checkbox" id="batch-select-all">
+            <span>Select all tabs</span>
+          </label>
+        </div>
+
+        <div id="batch-tab-list" class="batch-tab-list">
+          <!-- Tab items will be inserted here -->
+        </div>
+
+        <div class="batch-stats">
+          <span id="batch-selected-count">0 selected</span>
+        </div>
+
+        <div class="actions">
+          <button id="batch-clip-btn" class="primary" disabled>Clip Selected Tabs</button>
+        </div>
+
+        <div id="batch-progress" class="batch-progress hidden">
+          <div class="progress-bar">
+            <div id="batch-progress-fill" class="progress-fill"></div>
+          </div>
+          <span id="batch-progress-text">0 / 0</span>
+        </div>
+      </div>
+
       <!-- Bookmark Section (simple quick save) -->
       <div id="bookmark-section" class="hidden">
         <div class="bookmark-preview">
@@ -37,9 +82,35 @@
           <input type="text" id="bookmark-tags" placeholder="read-later, interesting">
         </div>
 
-        <div class="field">
-          <label for="bookmark-notes">Notes (optional)</label>
-          <textarea id="bookmark-notes" rows="2" placeholder="Why you're saving this..."></textarea>
+        <div class="field-row">
+          <div class="field">
+            <label for="bookmark-notes">Notes (optional)</label>
+            <textarea id="bookmark-notes" rows="2" placeholder="Why you're saving this..."></textarea>
+          </div>
+          <div class="field" id="bookmark-status-field">
+            <label for="bookmark-status">Status</label>
+            <select id="bookmark-status">
+              <option value="unread">📕 Unread</option>
+              <option value="reading">📖 Reading</option>
+              <option value="read">📗 Read</option>
+              <option value="skipped">⏭️ Skipped</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Selected Text Preview (Phase 2) -->
+        <div id="selection-preview" class="selection-preview hidden">
+          <label>Selected Text</label>
+          <blockquote id="selected-text-content"></blockquote>
+        </div>
+
+        <!-- Archive Option -->
+        <div class="field archive-option">
+          <label class="checkbox-label">
+            <input type="checkbox" id="bookmark-archive">
+            <span>Save to Archive.org</span>
+          </label>
+          <div id="archive-status" class="archive-status hidden"></div>
         </div>
 
         <!-- Bookmark Duplicate Warning -->
@@ -190,11 +261,22 @@
           </div>
         </div>
 
-        <div class="field" id="project-field">
-          <label for="project">Project</label>
-          <select id="project">
-            <option value="">Select project...</option>
-          </select>
+        <div class="field-row">
+          <div class="field" id="project-field">
+            <label for="project">Project</label>
+            <select id="project" tabindex="12">
+              <option value="">Select project...</option>
+            </select>
+          </div>
+          <div class="field" id="read-status-field">
+            <label for="read-status">Status</label>
+            <select id="read-status" tabindex="13">
+              <option value="unread">📕 Unread</option>
+              <option value="reading">📖 Reading</option>
+              <option value="read">📗 Read</option>
+              <option value="skipped">⏭️ Skipped</option>
+            </select>
+          </div>
         </div>
 
         <div class="field collapsible" id="abstract-field">
@@ -302,6 +384,8 @@
       <span class="separator">|</span>
       <a href="#" id="queue-link" class="hidden">Queue</a>
       <span class="separator hidden" id="queue-separator">|</span>
+      <a href="#" id="shortcuts-link" title="Keyboard shortcuts: j/k navigate, 1-5 select source, Ctrl+S save, Esc close">⌨</a>
+      <span class="separator">|</span>
       <span id="mode-indicator" class="mode-indicator">Download mode</span>
     </footer>
   </div>

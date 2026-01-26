@@ -309,12 +309,90 @@ browser.tabs.onActivated.addListener(async (activeInfo) => {
   }
 });
 
+// Context menu IDs
+const MENU_CLIP_PAGE = "clip-page";
+const MENU_CLIP_SELECTION = "clip-selection";
+const MENU_CLIP_LINK = "clip-link";
+
+/**
+ * Create context menus on install
+ */
+function createContextMenus() {
+  // Remove existing menus first
+  browser.contextMenus.removeAll();
+
+  // Clip current page
+  browser.contextMenus.create({
+    id: MENU_CLIP_PAGE,
+    title: "Clip to Extenote",
+    contexts: ["page"],
+  });
+
+  // Clip selected text
+  browser.contextMenus.create({
+    id: MENU_CLIP_SELECTION,
+    title: "Clip selection to Extenote",
+    contexts: ["selection"],
+  });
+
+  // Clip link
+  browser.contextMenus.create({
+    id: MENU_CLIP_LINK,
+    title: "Clip link to Extenote",
+    contexts: ["link"],
+  });
+
+  console.log("[Extenote Clipper] Context menus created");
+}
+
+/**
+ * Handle context menu click
+ */
+browser.contextMenus.onClicked.addListener(async (info, tab) => {
+  if (!tab?.id) return;
+
+  // Store pending clip data for popup to retrieve
+  const pendingClip: {
+    url: string;
+    title?: string;
+    selectedText?: string;
+    linkUrl?: string;
+    menuId: string;
+  } = {
+    url: info.pageUrl || tab.url || "",
+    title: tab.title,
+    menuId: info.menuItemId as string,
+  };
+
+  if (info.menuItemId === MENU_CLIP_SELECTION && info.selectionText) {
+    pendingClip.selectedText = info.selectionText;
+  }
+
+  if (info.menuItemId === MENU_CLIP_LINK && info.linkUrl) {
+    pendingClip.linkUrl = info.linkUrl;
+    pendingClip.url = info.linkUrl;
+  }
+
+  // Store in session storage for popup to retrieve
+  await browser.storage.session.set({ pendingClip });
+
+  // Open popup (note: this doesn't work in all browsers, so we use action.openPopup)
+  try {
+    await browser.action.openPopup();
+  } catch {
+    // Fallback: just store the data, user can click the icon
+    console.log("[Extenote Clipper] Cannot open popup programmatically, data stored for next open");
+  }
+});
+
 // Handle extension install
 browser.runtime.onInstalled.addListener((details) => {
   if (details.reason === "install") {
     console.log("[Extenote Clipper] Extension installed");
+    createContextMenus();
   } else if (details.reason === "update") {
     console.log("[Extenote Clipper] Extension updated to", browser.runtime.getManifest().version);
+    createContextMenus();
   }
 });
 

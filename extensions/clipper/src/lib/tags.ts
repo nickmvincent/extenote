@@ -5,6 +5,78 @@
 
 import type { PageMetadata } from "./types";
 
+// Platform-based automatic tag suggestions
+export const PLATFORM_TAGS: Record<string, string[]> = {
+  // Social platforms
+  "x.com": ["social", "twitter"],
+  "twitter.com": ["social", "twitter"],
+  "bsky.app": ["social", "bluesky"],
+  "mastodon.social": ["social", "mastodon"],
+  "threads.net": ["social", "threads"],
+  "linkedin.com": ["social", "linkedin"],
+
+  // Academic platforms
+  "arxiv.org": ["preprint", "arxiv"],
+  "openreview.net": ["preprint", "peer-review"],
+  "dl.acm.org": ["published", "acm"],
+  "ieeexplore.ieee.org": ["published", "ieee"],
+  "semanticscholar.org": ["academic-search"],
+  "scholar.google.com": ["academic-search"],
+  "dblp.org": ["bibliography"],
+  "proceedings.neurips.cc": ["published", "neurips"],
+  "proceedings.mlr.press": ["published", "mlr"],
+
+  // Code/Tech platforms
+  "github.com": ["code", "github"],
+  "gitlab.com": ["code", "gitlab"],
+  "huggingface.co": ["ml-models", "huggingface"],
+  "paperswithcode.com": ["ml-benchmarks"],
+  "stackoverflow.com": ["q-and-a", "stackoverflow"],
+  "medium.com": ["blog"],
+  "substack.com": ["newsletter"],
+
+  // News/Media
+  "nytimes.com": ["news"],
+  "washingtonpost.com": ["news"],
+  "theguardian.com": ["news"],
+  "arstechnica.com": ["tech-news"],
+  "wired.com": ["tech-news"],
+  "theverge.com": ["tech-news"],
+
+  // Video platforms
+  "youtube.com": ["video", "youtube"],
+  "vimeo.com": ["video"],
+
+  // Podcasts
+  "podcasts.apple.com": ["podcast"],
+  "open.spotify.com": ["podcast"],
+};
+
+/**
+ * Get platform-based tags from URL
+ */
+export function getPlatformTags(url: string): string[] {
+  try {
+    const hostname = new URL(url).hostname.toLowerCase().replace(/^www\./, "");
+
+    // Check exact match first
+    if (PLATFORM_TAGS[hostname]) {
+      return PLATFORM_TAGS[hostname];
+    }
+
+    // Check partial matches for subdomains
+    for (const [platform, tags] of Object.entries(PLATFORM_TAGS)) {
+      if (hostname.endsWith(platform) || hostname.includes(platform.split(".")[0])) {
+        return tags;
+      }
+    }
+
+    return [];
+  } catch {
+    return [];
+  }
+}
+
 // Known tag taxonomy based on user's content analysis
 export const TAG_TAXONOMY = {
   // Top-level topic tags (most common)

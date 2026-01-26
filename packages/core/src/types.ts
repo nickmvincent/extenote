@@ -166,7 +166,13 @@ export interface RsyncStep {
 
 export interface CliStep {
   type: "cli";
-  command: string;
+  command?: string;
+  /** Explicit CLI args (preferred over parsing the command string). */
+  args?: string[];
+  /** Command to launch the CLI (default: "bun"). */
+  runtime?: string;
+  /** Arguments to invoke the CLI (default: ["run", "cli", "--"]). */
+  runtimeArgs?: string[];
   outputDir?: string;
 }
 

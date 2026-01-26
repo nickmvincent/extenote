@@ -1,6 +1,10 @@
 /**
  * Build script for Extenote Web Clipper extension
- * Usage: bun run build.ts [--watch]
+ * Usage: bun run build.ts [--watch] [--chrome]
+ *
+ * Options:
+ *   --watch   Watch for changes and rebuild
+ *   --chrome  Build for Chrome (uses manifest.chrome.json)
  */
 
 import { watch } from "fs";
@@ -8,8 +12,9 @@ import { cp, mkdir, rm } from "fs/promises";
 import { join } from "path";
 
 const isWatch = process.argv.includes("--watch");
+const isChrome = process.argv.includes("--chrome");
 const srcDir = "./src";
-const distDir = "./dist";
+const distDir = isChrome ? "./dist-chrome" : "./dist";
 
 interface BuildEntry {
   input: string;
@@ -28,7 +33,7 @@ const entries: BuildEntry[] = [
 ];
 
 async function build() {
-  console.log("Building extension...");
+  console.log(`Building extension for ${isChrome ? "Chrome" : "Firefox"}...`);
 
   // Clean dist
   await rm(distDir, { recursive: true, force: true });
@@ -65,8 +70,9 @@ async function build() {
 }
 
 async function copyStaticFiles() {
-  // Copy manifest.json
-  await cp("./manifest.json", join(distDir, "manifest.json"));
+  // Copy manifest.json (use Chrome manifest if building for Chrome)
+  const manifestSrc = isChrome ? "./manifest.chrome.json" : "./manifest.json";
+  await cp(manifestSrc, join(distDir, "manifest.json"));
 
   // Copy icons
   try {

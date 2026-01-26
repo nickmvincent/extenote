@@ -185,11 +185,83 @@ src/
 
 ## Keyboard Shortcuts
 
+**Global:**
 - `Alt+Shift+C`: Open clipper popup
+
+**In Popup:**
+- `j/k`: Navigate between sources
+- `1-5`: Select source directly (1=Page, 2=DBLP, 3=S2, 4=OpenAlex, 5=Crossref)
+- `Ctrl+S` / `Cmd+S`: Save
+- `Escape`: Close popup
+- `r`: Switch to Reference tab
+- `b`: Switch to Bookmark tab
+- `/`: Focus search box
+- `s`: Quick save (if enabled in settings)
+
+## Browser Store Installation
+
+### Firefox (Self-hosted)
+
+1. Build and package:
+   ```bash
+   bun run package:firefox
+   ```
+
+2. Sign with web-ext (requires AMO API credentials):
+   ```bash
+   export WEB_EXT_API_KEY="your_key"
+   export WEB_EXT_API_SECRET="your_secret"
+   web-ext sign --config web-ext-config.js
+   ```
+
+3. Install the signed `.xpi` file in Firefox
+
+### Chrome (Self-hosted)
+
+1. Build for Chrome:
+   ```bash
+   bun run package:chrome
+   ```
+
+2. Load `extenote-clipper-chrome.zip` in Chrome:
+   - Go to `chrome://extensions`
+   - Enable "Developer mode"
+   - Click "Load unpacked" and select the unzipped folder
+
+### Store Submission
+
+Store assets are in `store/firefox/` and `store/chrome/`:
+- `description.md`: Store listing description
+- `privacy-policy.md`: Privacy policy for Firefox AMO
 
 ## Version History
 
-### v0.2.0 (Current)
+### v0.3.0 (Current)
+**Phase 1: Quality of Life**
+- Quick save mode with one-click clipping
+- Keyboard shortcuts for navigation (j/k, 1-5, Ctrl+S)
+- Read/unread status tracking for reading queue
+- Platform-based automatic tag suggestions
+
+**Phase 2: Content Capture**
+- Capture selected text as blockquotes
+- Social post content extraction (Twitter/X, Bluesky, Mastodon)
+- Author handle extraction from social URLs
+- Context menu integration (right-click to clip)
+
+**Phase 3: Advanced Features**
+- Archive.org/Wayback Machine integration
+- Thread detection for social platforms
+- Batch mode: clip multiple tabs at once
+- PDF/arXiv URL detection
+
+**Phase 4: Store Submission**
+- Firefox AMO submission assets
+- Chrome Web Store submission assets
+- Chrome-specific manifest
+- web-ext configuration for signing
+
+### v0.2.0
 - API-first architecture (replaces DOM scraping)
 - Multi-source search (DBLP, OpenAlex, Semantic Scholar)
 - Validation workflow for existing entries
