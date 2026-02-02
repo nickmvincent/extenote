@@ -365,6 +365,65 @@ async function init() {
 
   // Batch tab listeners
   setupBatchListeners();
+
+  // Auto-detect initial tab based on page content
+  const initialTab = detectInitialTab();
+  switchTab(initialTab);
+}
+
+// Academic platform indicators (subset of PLATFORM_TAGS from tags.ts)
+const ACADEMIC_PLATFORMS = [
+  "arxiv.org",
+  "openreview.net",
+  "dl.acm.org",
+  "ieeexplore.ieee.org",
+  "semanticscholar.org",
+  "scholar.google.com",
+  "dblp.org",
+  "proceedings.neurips.cc",
+  "proceedings.mlr.press",
+  "aclanthology.org",
+  "papers.nips.cc",
+  "jmlr.org",
+  "nature.com",
+  "science.org",
+  "pnas.org",
+  "springer.com",
+  "wiley.com",
+  "sciencedirect.com",
+  "cell.com",
+  "plos.org",
+  "frontiersin.org",
+  "biorxiv.org",
+  "medrxiv.org",
+  "ssrn.com",
+];
+
+/**
+ * Detect whether to show Reference or Bookmark tab initially
+ * Reference: academic identifiers detected or academic platform
+ * Bookmark: everything else (default)
+ */
+function detectInitialTab(): TabMode {
+  // Academic identifier detected → Reference
+  if (currentHint && ["doi", "arxiv", "s2", "openreview"].includes(currentHint.type)) {
+    return "reference";
+  }
+
+  // Academic platform detected → Reference
+  try {
+    const hostname = new URL(currentUrl).hostname.toLowerCase().replace(/^www\./, "");
+    for (const platform of ACADEMIC_PLATFORMS) {
+      if (hostname === platform || hostname.endsWith("." + platform)) {
+        return "reference";
+      }
+    }
+  } catch {
+    // Invalid URL, fall through to bookmark
+  }
+
+  // Default to bookmark for general web pages
+  return "bookmark";
 }
 
 /**
