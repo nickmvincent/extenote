@@ -20,6 +20,7 @@
     "@extenote/refcheck": "workspace:*"
   },
   "devDependencies": {
-    "typescript": "^5.5.4"
+    "typescript": "^5.5.4",
+    "web-ext": "^8.4.0"
   }
 }
