@@ -3,6 +3,34 @@ import { loadVault, loadConfig, loadSchemas, computeAllCrossRefs, loadSettings, 
 // Public-only mode - filters out private content for screenshots/demos
 export const PUBLIC_ONLY = process.env.EXTENOTE_PUBLIC_ONLY === 'true'
 
+/**
+ * Build a set of source IDs whose roots reference the private content directory.
+ */
+function getPrivateSourceIds(config: ExtenoteConfig): Set<string> {
+  const ids = new Set<string>()
+  for (const source of config.sources) {
+    if (source.type === 'local' && source.root.includes('extenote-priv')) {
+      ids.add(source.id)
+    }
+  }
+  return ids
+}
+
+/**
+ * Filter out private objects. Checks visibility, project name, and source origin.
+ */
+function filterPrivateContent<T extends Pick<VaultObject, 'visibility' | 'project' | 'sourceId'>>(
+  objects: T[],
+  privateSourceIds: Set<string>
+): T[] {
+  return objects.filter(obj => {
+    if (obj.visibility === 'private') return false
+    if (obj.project?.toLowerCase().includes('private')) return false
+    if (privateSourceIds.has(obj.sourceId)) return false
+    return true
+  })
+}
+
 // Cached settings - reload only when explicitly requested or on first access
 let cachedSettings: ReturnType<typeof loadSettings> | null = null
 let settingsTimestamp = 0
@@ -97,14 +125,8 @@ export async function loadVaultBundle(cwd: string, forceReload = false): Promise
       let filteredIssues = fullVault.issues
 
       if (PUBLIC_ONLY) {
-        // Filter out private objects and objects from private projects
-        filteredObjects = fullVault.objects.filter(obj => {
-          // Exclude objects with private visibility
-          if (obj.visibility === 'private') return false
-          // Exclude objects from projects containing "private" in name
-          if (obj.project?.toLowerCase().includes('private')) return false
-          return true
-        })
+        const privateSourceIds = getPrivateSourceIds(config)
+        filteredObjects = filterPrivateContent(fullVault.objects, privateSourceIds)
 
         // Filter issues to only include those for remaining objects
         // Note: issue.filePath is absolute, so compare against object.filePath (also absolute)
@@ -185,7 +207,12 @@ export async function getCrossRefs(cwd: string): Promise<Map<string, ObjectCross
 
   // Need to load full vault with bodies to compute cross-refs (for body link extraction)
   const fullVault = await loadVault({ cwd })
-  crossRefsCache = computeAllCrossRefs(fullVault.objects)
+  let objectsForCrossRefs = fullVault.objects
+  if (PUBLIC_ONLY) {
+    const privateSourceIds = getPrivateSourceIds(bundle.config)
+    objectsForCrossRefs = filterPrivateContent(fullVault.objects, privateSourceIds)
+  }
+  crossRefsCache = computeAllCrossRefs(objectsForCrossRefs)
   crossRefsCacheTimestamp = now
 
   return crossRefsCache
@@ -224,15 +251,13 @@ export async function getSearchIndex(cwd: string): Promise<SearchIndex> {
 
   // Need to load full vault with bodies to build search index
   const fullVault = await loadVault({ cwd })
+  const bundle = await loadVaultBundle(cwd)
 
   // Apply PUBLIC_ONLY filter if enabled
   let objectsToIndex = fullVault.objects
   if (PUBLIC_ONLY) {
-    objectsToIndex = fullVault.objects.filter(obj => {
-      if (obj.visibility === 'private') return false
-      if (obj.project?.toLowerCase().includes('private')) return false
-      return true
-    })
+    const privateSourceIds = getPrivateSourceIds(bundle.config)
+    objectsToIndex = filterPrivateContent(fullVault.objects, privateSourceIds)
   }
 
   searchIndexCache = createSearchIndex(objectsToIndex)
