@@ -16,10 +16,11 @@
     "README.md"
   ],
   "scripts": {
-    "build": "npx tsc -p tsconfig.build.json",
-    "dev": "npx tsc -p tsconfig.build.json --watch",
+    "build": "bun x tsc -p tsconfig.build.json",
+    "dev": "bun x tsc -p tsconfig.build.json --watch",
     "clean": "rm -rf dist",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "bun x tsc --noEmit",
+    "lint": "bun x tsc --noEmit",
     "test": "bun test"
   },
   "dependencies": {},

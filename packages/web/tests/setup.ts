@@ -40,6 +40,9 @@ export async function checkServerAvailability(): Promise<boolean> {
   if (_serverAvailable === null) {
     _serverAvailable = await isServerRunning();
     if (!_serverAvailable) {
+      if (process.env.REQUIRE_WEB_SERVER === "true") {
+        throw new Error(`Web server is required but not running at ${BASE_URL}`);
+      }
       console.log("\n⚠️  Web server not running at", BASE_URL);
       console.log("   Start it with: bun run web");
       console.log("   Skipping integration tests.\n");

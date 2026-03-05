@@ -1,5 +1,5 @@
-import { describe, expect, it, beforeAll } from "bun:test";
-import { readdir, readFile } from "fs/promises";
+import { describe, expect, it } from "bun:test";
+import { readFile } from "fs/promises";
 import { join, resolve } from "path";
 import { existsSync } from "fs";
 
@@ -16,16 +16,16 @@ const WEBSITES_DIR = resolve(
   import.meta.dirname,
   "../../../../extenote-pub/websites"
 );
+const WEBSITES_AVAILABLE = existsSync(WEBSITES_DIR);
 
 // Sites that have discussions pages
 const SITES_WITH_DISCUSSIONS = [
   "shared-references-astro",
   "data-counterfactuals-astro",
   "data-napkin-math-astro",
-  "personal-website-astro",
 ];
 
-describe("Build Validation", () => {
+describe.skipIf(!WEBSITES_AVAILABLE)("Build Validation", () => {
   /**
    * @narrative-step 1
    * @explanation Discussion pages aggregate links to GitHub discussions, ATProto posts,

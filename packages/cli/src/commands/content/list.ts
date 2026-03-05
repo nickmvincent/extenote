@@ -11,7 +11,7 @@ export function registerListCommand(program: Command) {
     .option("--type <type>", "Filter by object type")
     .option("--visibility <level>", "Filter by visibility (public|private|unlisted)")
     .option("--limit <n>", "Maximum objects to show", (v) => parseInt(v, 10), 20)
-    .option("--json", "Output as JSON")
+    .option("--json", "Output machine-readable JSON")
     .action(withAction(async (project, options, command) => {
       const { cwd } = cliContext(command);
       const vault = await loadVault({ cwd });

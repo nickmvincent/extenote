@@ -4,6 +4,7 @@ import { useVault } from '../hooks/useVault'
 import type { VaultIssue } from '@extenote/core'
 
 type SeverityFilter = 'all' | 'error' | 'warn' | 'info'
+type IssueObjectMeta = { relativePath: string; title?: string; type: string }
 
 export function Issues() {
   const { data, loading, error } = useVault()
@@ -29,20 +30,33 @@ export function Issues() {
       .sort((a, b) => severityWeight[b.severity] - severityWeight[a.severity])
   }, [data, filter])
 
+  const filePathToObjectMeta = useMemo(() => {
+    if (!data) return new Map<string, IssueObjectMeta>()
+    const map = new Map<string, IssueObjectMeta>()
+    for (const obj of data.vault.objects) {
+      map.set(obj.filePath, {
+        relativePath: obj.relativePath,
+        title: obj.title || (typeof obj.frontmatter['title'] === 'string' ? obj.frontmatter['title'] : undefined),
+        type: obj.type,
+      })
+    }
+    return map
+  }, [data])
+
   if (loading) {
-    return <div className="text-gray-500">Loading...</div>
+    return <div className="text-gray-500 dark:text-gray-400">Loading...</div>
   }
 
   if (error || !data) {
-    return <div className="text-red-600">Error loading issues</div>
+    return <div className="text-red-600 dark:text-red-400">Error loading issues</div>
   }
 
   return (
     <div className="px-4 sm:px-0">
-      <h1 className="text-3xl font-bold text-gray-900 mb-6">Issues</h1>
+      <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">Issues</h1>
 
       {/* Filter Tabs */}
-      <div className="mb-6 border-b border-gray-200">
+      <div className="mb-6 border-b border-gray-200 dark:border-gray-700">
         <nav className="-mb-px flex space-x-8">
           {(['all', 'error', 'warn', 'info'] as SeverityFilter[]).map((severity) => (
             <button
@@ -50,12 +64,12 @@ export function Issues() {
               onClick={() => setFilter(severity)}
               className={`py-4 px-1 border-b-2 font-medium text-sm ${
                 filter === severity
-                  ? 'border-indigo-500 text-indigo-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400'
+                  : 'border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:border-gray-300 dark:hover:border-gray-600'
               }`}
             >
               {severity.charAt(0).toUpperCase() + severity.slice(1)}
-              <span className="ml-2 text-xs bg-gray-100 px-2 py-1 rounded">
+              <span className="ml-2 text-xs bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded">
                 {counts[severity]}
               </span>
             </button>
@@ -65,16 +79,20 @@ export function Issues() {
 
       {/* Issues List */}
       {issues.length === 0 ? (
-        <div className="bg-green-50 border border-green-200 rounded-lg p-8 text-center">
-          <div className="text-green-800 font-semibold text-lg">✓ No issues found</div>
-          <div className="text-green-600 mt-2">
+        <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-8 text-center">
+          <div className="text-green-800 dark:text-green-300 font-semibold text-lg">✓ No issues found</div>
+          <div className="text-green-600 dark:text-green-400 mt-2">
             {filter === 'all' ? 'Your vault is clean!' : `No ${filter} issues.`}
           </div>
         </div>
       ) : (
         <div className="space-y-3">
           {issues.map((issue) => (
-            <IssueCard key={`${issue.filePath}-${issue.message}`} issue={issue} />
+            <IssueCard
+              key={`${issue.filePath}-${issue.message}`}
+              issue={issue}
+              objectMeta={filePathToObjectMeta.get(issue.filePath)}
+            />
           ))}
         </div>
       )}
@@ -82,15 +100,17 @@ export function Issues() {
   )
 }
 
-function IssueCard({ issue }: { issue: VaultIssue }) {
+function IssueCard({ issue, objectMeta }: { issue: VaultIssue; objectMeta?: IssueObjectMeta }) {
   const getRelativePath = (filePath: string) => {
     const parts = filePath.split('/')
     return parts.slice(-3).join('/')
   }
+  const displayPath = objectMeta?.relativePath ?? getRelativePath(issue.filePath)
+  const displayTitle = objectMeta?.title || displayPath
 
   return (
     <div
-      className={`bg-white rounded-lg shadow-sm border-l-4 p-4 ${
+      className={`bg-white dark:bg-gray-800 rounded-lg shadow-sm border-l-4 p-4 ${
         issue.severity === 'error'
           ? 'border-red-500'
           : issue.severity === 'warn'
@@ -112,14 +132,25 @@ function IssueCard({ issue }: { issue: VaultIssue }) {
             >
               {issue.severity}
             </span>
-            <Link
-              to={`/object/${encodeURIComponent(issue.filePath.split('/').slice(-2).join('/'))}`}
-              className="text-sm text-indigo-600 hover:text-indigo-800 font-medium"
-            >
-              {getRelativePath(issue.filePath)}
-            </Link>
+            {objectMeta?.relativePath ? (
+              <Link
+                to={`/object/${encodeURIComponent(objectMeta.relativePath)}`}
+                state={{ from: '/issues', label: 'Issues' }}
+                className="text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-800 dark:hover:text-indigo-300 font-medium"
+              >
+                {displayTitle}
+              </Link>
+            ) : (
+              <span className="text-sm text-gray-500 dark:text-gray-400 font-medium">{displayTitle}</span>
+            )}
+            {objectMeta?.type && (
+              <span className="text-[11px] px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300">
+                {objectMeta.type}
+              </span>
+            )}
           </div>
-          <div className="text-gray-800">{issue.message}</div>
+          <div className="text-xs text-gray-500 dark:text-gray-400 mb-1">{displayPath}</div>
+          <div className="text-gray-800 dark:text-gray-200">{issue.message}</div>
         </div>
       </div>
     </div>

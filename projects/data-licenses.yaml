@@ -14,7 +14,7 @@ visibilityField: visibility
 sources:
   - id: data-licenses-content
     type: local
-    root: ${EXTENOTE_CONTENT_ROOT:-../extenote-pub/content}/data-licenses
+    root: ${DATA_LICENSES_ROOT:-../extenote-pub/content/data-licenses}
     include:
       - "**/*.md"
 
@@ -57,7 +57,7 @@ recipes:
 # ─── Build Configuration ──────────────────────────────────────────────────────
 # How to build the website for this project
 build:
-  websiteDir: data-licenses-astro
+  websiteDir: ${DATA_LICENSES_WEBSITE:-data-licenses-astro}
   type: astro
   preRender:
     - type: network

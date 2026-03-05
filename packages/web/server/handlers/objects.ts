@@ -80,6 +80,9 @@ export async function handleGetObject(cwd: string, pathParam: string | null, idP
     project: object.project,
     type: object.type,
     title: object.title,
+    visibility: object.visibility,
+    sourceId: object.sourceId,
+    schema: object.schema,
     frontmatter: parsed.frontmatter,
     body: parsed.body,
   }, 200, headers)

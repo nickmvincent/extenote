@@ -9,6 +9,7 @@ export const API_ROUTES = {
   RELOAD: '/api/reload',
   WRITE: '/api/write',
   CREATE: '/api/create',
+  OBJECT: '/api/object',
 
   // Object operations
   CROSSREFS: (objectPath: string) => `/api/crossrefs/${encodeURIComponent(objectPath)}`,

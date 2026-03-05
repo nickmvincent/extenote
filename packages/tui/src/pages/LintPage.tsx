@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { Box, Text, useInput } from 'ink'
-import { lintObjects, type VaultState, type VaultIssue } from '@extenote/core'
+import { createBackup, lintObjects, type VaultState, type VaultIssue } from '@extenote/core'
 
 interface Props {
   vault: VaultState
@@ -28,6 +28,12 @@ export function LintPage({ vault, onReload }: Props) {
   const handleFix = async () => {
     setStep('fixing')
     try {
+      const preview = await lintObjects(vault.objects, vault.config, { fix: false })
+      const filesToFix = [...new Set(preview.issues.map((i) => i.filePath))]
+      if (filesToFix.length > 0) {
+        await createBackup(process.cwd(), `tui lint fix: ${filesToFix.length} files`, filesToFix)
+      }
+
       const result = await lintObjects(vault.objects, vault.config, { fix: true })
       setFixResult({ fixed: result.updatedFiles.length, errors: [] })
       setStep('done')

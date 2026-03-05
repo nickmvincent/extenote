@@ -39,6 +39,7 @@ export interface FieldCheck {
 export interface CheckResult {
   objectId: string;
   filePath: string;
+  relativePath: string;
   title: string;
   status: CheckStatus;
   /** Severity when status is mismatch */

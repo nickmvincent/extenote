@@ -8,6 +8,7 @@ import type {
 } from "./types.js";
 import { stringifyMarkdown } from "./markdown.js";
 import { hasValue } from "./utils.js";
+import { getVisibilityIssue } from "@extenote/frontmatter-lint";
 
 export interface LintOptions {
   fix?: boolean;
@@ -32,21 +33,25 @@ export async function lintObjects(
     const visibilityRule = lintConfig?.rules?.["required-visibility"] ?? "off";
     const visibilityField = profile?.visibilityField ?? config.visibilityField ?? "visibility";
     if (visibilityRule !== "off") {
-      const currentValue = object.frontmatter[visibilityField];
-      if (currentValue !== "public" && currentValue !== "private" && currentValue !== "unlisted") {
-        const defaultVisibility = profile?.defaultVisibility ?? config.defaultVisibility ?? "private";
+      const defaultVisibility = profile?.defaultVisibility ?? config.defaultVisibility ?? "private";
+      const visibilityIssue = getVisibilityIssue(object.frontmatter, {
+        visibilityField,
+        defaultVisibility,
+        severity: visibilityRule === "error" ? "error" : "warn",
+      });
 
+      if (visibilityIssue) {
         issues.push({
           sourceId: object.sourceId,
           filePath: object.filePath,
-          field: visibilityField,
-          message: `Missing ${visibilityField}; defaulting to ${defaultVisibility}`,
-          severity: visibilityRule === "error" ? "error" : "warn",
-          rule: "required-visibility"
+          field: visibilityIssue.field,
+          message: visibilityIssue.message,
+          severity: visibilityIssue.severity,
+          rule: visibilityIssue.rule,
         });
 
-        if (options.fix) {
-          object.frontmatter[visibilityField] = defaultVisibility;
+        if (options.fix && visibilityIssue.field) {
+          object.frontmatter[visibilityIssue.field] = defaultVisibility;
           object.visibility = defaultVisibility;
           const next = stringifyMarkdown(object.frontmatter, object.body);
           await fs.writeFile(object.filePath, next, "utf8");
@@ -131,4 +136,3 @@ function evaluateCompatibility(
 
   return issues;
 }
-

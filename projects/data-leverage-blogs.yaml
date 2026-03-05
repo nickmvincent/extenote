@@ -43,10 +43,8 @@ build:
   websiteDir: data-leverage-blogs-quarto
   type: quarto
   preRender:
-    - type: rsync
-      src: ${EXTENOTE_CONTENT_ROOT}/data-leverage-blogs
-      dst: posts
-      include: ["*.md", "*.qmd"]
+    - type: shell
+      command: ./scripts/sync-posts-from-content.sh --repair
     - type: cli
       command: export-project data-leverage-blogs -f bibtex --source shared-refs --detect-citations
       outputDir: .

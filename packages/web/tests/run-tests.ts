@@ -14,13 +14,17 @@
 import { spawn, type Subprocess } from "bun";
 import { setTimeout } from "timers/promises";
 import { resolve, dirname } from "path";
+import { existsSync } from "fs";
 
 // Derive paths from script location and env vars
 const SCRIPT_DIR = dirname(import.meta.path);
 const WEB_PACKAGE_PATH = resolve(SCRIPT_DIR, "..");
-const VAULT_PATH = process.env.EXTENOTE_CONTENT_ROOT
+const inferredVaultPath = process.env.EXTENOTE_CONTENT_ROOT
   ? resolve(process.env.EXTENOTE_CONTENT_ROOT, "..")
   : resolve(WEB_PACKAGE_PATH, "../../../../extenote-pub");
+const DEFAULT_PROJECT_ROOT = resolve(WEB_PACKAGE_PATH, "../..");
+const VAULT_PATH = existsSync(inferredVaultPath) ? inferredVaultPath : DEFAULT_PROJECT_ROOT;
+const BUN_BIN = Bun.which("bun") ?? process.execPath;
 const API_PORT = 3001;
 const DEV_PORT = 3000;
 
@@ -48,7 +52,7 @@ async function startServers(): Promise<void> {
 
   // Start API server from vault directory
   apiServer = spawn({
-    cmd: ["bun", "run", `${WEB_PACKAGE_PATH}/server.ts`],
+    cmd: [BUN_BIN, "run", `${WEB_PACKAGE_PATH}/server.ts`],
     cwd: VAULT_PATH,
     stdout: "pipe",
     stderr: "pipe",
@@ -58,7 +62,7 @@ async function startServers(): Promise<void> {
 
   // Start Vite dev server
   devServer = spawn({
-    cmd: ["bun", "run", "dev"],
+    cmd: [BUN_BIN, "run", "dev"],
     cwd: WEB_PACKAGE_PATH,
     stdout: "pipe",
     stderr: "pipe",
@@ -101,8 +105,9 @@ async function runTests(): Promise<boolean> {
   console.log("\nRunning integration tests...\n");
 
   const testProcess = spawn({
-    cmd: ["bun", "test", "tests/integration.test.ts"],
+    cmd: [BUN_BIN, "test", "tests/integration.test.ts"],
     cwd: WEB_PACKAGE_PATH,
+    env: { ...process.env, REQUIRE_WEB_SERVER: "true" },
     stdout: "inherit",
     stderr: "inherit",
   });

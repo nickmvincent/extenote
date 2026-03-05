@@ -23,6 +23,20 @@ export interface VaultStats {
   issueSeverityCounts: { error: number; warn: number; info: number }
 }
 
+export interface ObjectDetailData {
+  id: string
+  filePath: string
+  relativePath: string
+  project: string
+  type: string
+  title?: string
+  visibility: string
+  sourceId: string
+  schema?: { name: string }
+  frontmatter: Record<string, unknown>
+  body: string
+}
+
 export async function loadVaultData(): Promise<VaultData> {
   try {
     const response = await fetch(API_ROUTES.VAULT)
@@ -45,6 +59,16 @@ export async function loadVaultData(): Promise<VaultData> {
     console.error('Failed to load vault data:', err)
     throw err
   }
+}
+
+export async function loadObjectByPath(objectPath: string): Promise<ObjectDetailData | null> {
+  const response = await fetch(`${API_ROUTES.OBJECT}?path=${encodeURIComponent(objectPath)}`)
+
+  if (!response.ok) {
+    throw new Error(`Failed to load object: ${response.statusText}`)
+  }
+
+  return response.json()
 }
 
 export function getVaultStats(vault: VaultState): VaultStats {

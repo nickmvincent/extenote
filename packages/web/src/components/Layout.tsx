@@ -11,7 +11,20 @@ export function Layout({ children }: LayoutProps) {
   const navigate = useNavigate()
   const { theme, toggleTheme } = useTheme()
   const [searchQuery, setSearchQuery] = useState('')
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const searchInputRef = useRef<HTMLInputElement>(null)
+
+  const navLinks = [
+    { to: '/', label: 'Dashboard' },
+    { to: '/issues', label: 'Issues' },
+    { to: '/create-form', label: 'Create' },
+    { to: '/graph', label: 'Graph' },
+    { to: '/tags', label: 'Tags' },
+    { to: '/review', label: 'Review' },
+    { to: '/refcheck', label: 'Refcheck' },
+    { to: '/export', label: 'Export' },
+    { to: '/websites', label: 'Websites' },
+  ]
 
   // Keyboard shortcut: / to focus search
   useEffect(() => {
@@ -28,6 +41,10 @@ export function Layout({ children }: LayoutProps) {
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
   }, [])
+
+  useEffect(() => {
+    setMobileMenuOpen(false)
+  }, [location.pathname])
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault()
@@ -61,99 +78,39 @@ export function Layout({ children }: LayoutProps) {
                 </Link>
               </div>
               <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
-                <Link
-                  to="/"
-                  className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
-                    isActive('/')
-                      ? 'border-indigo-500 text-gray-900 dark:text-white'
-                      : 'border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600 hover:text-gray-700 dark:hover:text-gray-100'
-                  }`}
-                >
-                  Dashboard
-                </Link>
-                <Link
-                  to="/issues"
-                  className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
-                    isActive('/issues')
-                      ? 'border-indigo-500 text-gray-900 dark:text-white'
-                      : 'border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600 hover:text-gray-700 dark:hover:text-gray-100'
-                  }`}
-                >
-                  Issues
-                </Link>
-                <Link
-                  to="/create-form"
-                  className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
-                    isActive('/create-form')
-                      ? 'border-indigo-500 text-gray-900 dark:text-white'
-                      : 'border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600 hover:text-gray-700 dark:hover:text-gray-100'
-                  }`}
-                >
-                  Create
-                </Link>
-                <Link
-                  to="/graph"
-                  className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
-                    isActive('/graph')
-                      ? 'border-indigo-500 text-gray-900 dark:text-white'
-                      : 'border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600 hover:text-gray-700 dark:hover:text-gray-100'
-                  }`}
-                >
-                  Graph
-                </Link>
-                <Link
-                  to="/tags"
-                  className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
-                    isActive('/tags')
-                      ? 'border-indigo-500 text-gray-900 dark:text-white'
-                      : 'border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600 hover:text-gray-700 dark:hover:text-gray-100'
-                  }`}
-                >
-                  Tags
-                </Link>
-                <Link
-                  to="/review"
-                  className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
-                    isActive('/review')
-                      ? 'border-indigo-500 text-gray-900 dark:text-white'
-                      : 'border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600 hover:text-gray-700 dark:hover:text-gray-100'
-                  }`}
-                >
-                  Review
-                </Link>
-                <Link
-                  to="/refcheck"
-                  className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
-                    isActive('/refcheck')
-                      ? 'border-indigo-500 text-gray-900 dark:text-white'
-                      : 'border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600 hover:text-gray-700 dark:hover:text-gray-100'
-                  }`}
-                >
-                  Refcheck
-                </Link>
-                <Link
-                  to="/export"
-                  className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
-                    isActive('/export')
-                      ? 'border-indigo-500 text-gray-900 dark:text-white'
-                      : 'border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600 hover:text-gray-700 dark:hover:text-gray-100'
-                  }`}
-                >
-                  Export
-                </Link>
-                <Link
-                  to="/websites"
-                  className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
-                    isActive('/websites')
-                      ? 'border-indigo-500 text-gray-900 dark:text-white'
-                      : 'border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600 hover:text-gray-700 dark:hover:text-gray-100'
-                  }`}
-                >
-                  Websites
-                </Link>
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.to}
+                    to={link.to}
+                    className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium ${
+                      isActive(link.to)
+                        ? 'border-indigo-500 text-gray-900 dark:text-white'
+                        : 'border-transparent text-gray-500 dark:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600 hover:text-gray-700 dark:hover:text-gray-100'
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                ))}
               </div>
             </div>
             <div className="flex items-center gap-2 sm:gap-4">
+              <button
+                onClick={() => setMobileMenuOpen((open) => !open)}
+                className="sm:hidden p-2 text-gray-500 dark:text-gray-300 hover:text-gray-700 dark:hover:text-gray-100 rounded-md hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+                aria-expanded={mobileMenuOpen}
+                aria-controls="mobile-nav-menu"
+              >
+                {mobileMenuOpen ? (
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                ) : (
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  </svg>
+                )}
+              </button>
               <form onSubmit={handleSearch} className="flex items-center" role="search">
                 <div className="relative">
                   <label htmlFor="global-search" className="sr-only">
@@ -211,6 +168,23 @@ export function Layout({ children }: LayoutProps) {
               </button>
             </div>
           </div>
+          {mobileMenuOpen && (
+            <div id="mobile-nav-menu" className="sm:hidden border-t border-gray-200 dark:border-gray-700 py-2 space-y-1">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  className={`block px-3 py-2 rounded text-sm font-medium ${
+                    isActive(link.to)
+                      ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300'
+                      : 'text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700'
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              ))}
+            </div>
+          )}
         </div>
       </nav>
       <main id="main-content" className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8" tabIndex={-1}>

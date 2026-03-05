@@ -38,6 +38,7 @@ export function Refcheck() {
 
   // Projects list (extracted from stats or could be loaded separately)
   const [projects, setProjects] = useState<string[]>([])
+  const objectDetailState = { from: '/refcheck', label: 'Refcheck' } as const
 
   const loadData = async () => {
     setLoading(true)
@@ -455,7 +456,8 @@ export function Refcheck() {
                   <div className="flex items-center gap-2">
                     {getStatusIcon(result.status)}
                     <Link
-                      to={`/object/${encodeURIComponent(result.filePath.replace(/^.*\//, '').replace(/\.md$/, ''))}`}
+                      to={`/object/${encodeURIComponent(result.relativePath)}`}
+                      state={objectDetailState}
                       className="text-indigo-600 dark:text-indigo-400 hover:underline font-medium"
                     >
                       {result.title || result.objectId}
@@ -474,6 +476,7 @@ export function Refcheck() {
                 {result.message && (
                   <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{result.message}</p>
                 )}
+                <p className="mt-0.5 text-xs text-gray-400 dark:text-gray-500">{result.relativePath}</p>
 
                 {result.fieldChecks.length > 0 && (
                   <div className="mt-2 ml-6">

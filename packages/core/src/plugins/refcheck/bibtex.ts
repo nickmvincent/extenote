@@ -265,6 +265,7 @@ function toCheckResult(
   return {
     objectId: object.id,
     filePath: object.filePath,
+    relativePath: object.relativePath,
     title: object.title || object.id,
     status: refcheckLog.status,
     mismatchSeverity: refcheckLog.mismatch_severity,
@@ -316,6 +317,7 @@ export async function checkBibtexEntries(
       results.push({
         objectId: object.id,
         filePath: object.filePath,
+        relativePath: object.relativePath,
         title: object.title || object.id,
         status: "skipped",
         provider: providerName,

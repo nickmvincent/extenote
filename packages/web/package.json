@@ -9,7 +9,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "bun test tests/",
-    "test:integration": "bun test tests/integration.test.ts",
+    "test:integration": "REQUIRE_WEB_SERVER=true bun test tests/integration.test.ts",
     "test:run": "bun run tests/run-tests.ts"
   },
   "dependencies": {

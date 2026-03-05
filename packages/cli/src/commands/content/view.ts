@@ -9,7 +9,7 @@ export function registerViewCommand(program: Command) {
     .command("view")
     .description("View details of a specific object")
     .argument("<path>", "Object path (relative or absolute)")
-    .option("--json", "Output as JSON")
+    .option("--json", "Output machine-readable JSON")
     .action(withAction(async (pathArg, options, command) => {
       const { cwd } = cliContext(command);
       const vault = await loadVault({ cwd });

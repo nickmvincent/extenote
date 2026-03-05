@@ -1,0 +1,36 @@
+{
+  "name": "@extenote/frontmatter-lint",
+  "version": "0.1.0",
+  "description": "Reusable frontmatter schema validator and linter for markdown content",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "bin": {
+    "frontmatter-lint": "dist/cli.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "bun x tsc -p tsconfig.build.json",
+    "lint": "bun x tsc --noEmit",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "fast-glob": "^3.3.2",
+    "gray-matter": "^4.0.3",
+    "js-yaml": "^4.1.0",
+    "picocolors": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "typescript": "^5.5.4"
+  }
+}

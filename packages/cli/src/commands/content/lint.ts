@@ -5,11 +5,24 @@ import { loadVault, lintObjects } from "@extenote/core";
 import { createBackup } from "../../backup.js";
 import { cliContext, withAction, printIssue } from "../utils.js";
 
+function countBySeverity(issues: Array<{ severity: string }>) {
+  let error = 0;
+  let warn = 0;
+  let info = 0;
+  for (const issue of issues) {
+    if (issue.severity === "error") error += 1;
+    else if (issue.severity === "warn") warn += 1;
+    else info += 1;
+  }
+  return { error, warn, info };
+}
+
 export function registerLintCommand(program: Command) {
   program
     .command("lint")
     .description("Lint objects and optionally fix issues")
     .option("--fix", "Automatically fix fixable issues")
+    .option("--json", "Output machine-readable JSON")
     .action(withAction(async (options, command) => {
       const { cwd } = cliContext(command);
       const vault = await loadVault({ cwd });
@@ -24,6 +37,27 @@ export function registerLintCommand(program: Command) {
       }
 
       const result = await lintObjects(vault.objects, vault.config, { fix: options.fix });
+      const issueCounts = countBySeverity(result.issues);
+
+      if (options.json) {
+        console.log(
+          JSON.stringify(
+            {
+              fixedFiles: result.updatedFiles,
+              fixedCount: result.updatedFiles.length,
+              issueCounts,
+              issues: result.issues,
+            },
+            null,
+            2
+          )
+        );
+        if (issueCounts.error > 0) {
+          process.exitCode = 1;
+        }
+        return;
+      }
+
       if (result.updatedFiles.length) {
         console.log(pc.green(`✔ Fixed ${result.updatedFiles.length} files`));
         for (const file of result.updatedFiles.slice(0, 10)) {
@@ -42,6 +76,10 @@ export function registerLintCommand(program: Command) {
         }
       } else if (!result.issues.length && !result.updatedFiles.length) {
         console.log(pc.green("✔ No lint issues"));
+      }
+
+      if (issueCounts.error > 0) {
+        process.exitCode = 1;
       }
     }));
 }

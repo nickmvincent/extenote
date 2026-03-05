@@ -21,7 +21,7 @@ export function registerTagsCommand(program: Command) {
     .command("list")
     .description("List all tags with counts")
     .argument("[project]", "Filter by project")
-    .option("--json", "Output as JSON")
+    .option("--json", "Output machine-readable JSON")
     .option("--tree", "Show hierarchical tree structure")
     .action(withAction(async (projectArg, options, command) => {
       const { cwd } = cliContext(command);

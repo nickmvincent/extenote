@@ -66,9 +66,9 @@ export interface ExtenoteConfig {
 }
 
 export interface SchemaFieldDefinition {
-  type: "string" | "number" | "date" | "array" | "boolean";
+  type: "string" | "number" | "date" | "array" | "boolean" | "object";
   description?: string;
-  items?: "string" | "number" | "date" | "boolean";
+  items?: "string" | "number" | "date" | "boolean" | "object";
 }
 
 export interface SchemaDefinition {

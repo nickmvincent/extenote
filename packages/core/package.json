@@ -16,22 +16,23 @@
     }
   },
   "scripts": {
-    "build": "npx tsc -p tsconfig.build.json",
-    "dev": "tsc -w",
-    "lint": "tsc --noEmit",
+    "build": "bun x tsc -p tsconfig.build.json",
+    "dev": "bun x tsc -w",
+    "lint": "bun x tsc --noEmit",
     "test": "bun test"
   },
   "dependencies": {
+    "@extenote/frontmatter-lint": "workspace:*",
     "@extenote/refcheck": "workspace:*",
     "dotenv": "^17.2.3",
     "fast-glob": "^3.3.2",
     "gray-matter": "^4.0.3",
     "js-yaml": "^4.1.0",
     "minisearch": "^7.1.0",
-    "picocolors": "^1.0.0",
-    "typescript": "^5.5.4"
+    "picocolors": "^1.0.0"
   },
   "devDependencies": {
-    "@types/js-yaml": "^4.0.9"
+    "@types/js-yaml": "^4.0.9",
+    "typescript": "^5.5.4"
   }
 }

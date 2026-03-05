@@ -13,7 +13,7 @@ Last verified: 2026-01-02
 
 ```bash
 # Quick health check
-bun run build && bun run lint && bun run test
+bun run build && bun run lint && bun run test:full
 bun run cli -- status
 ```
 

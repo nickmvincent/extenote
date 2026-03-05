@@ -10,6 +10,9 @@ node_modules/
 .bun/
 .bun-cache/
 *.tsbuildinfo
+packages/web/vite.config.ts.timestamp-*.mjs
+extensions/clipper/dist-chrome/
+extensions/clipper/*.zip
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

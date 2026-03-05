@@ -7,7 +7,7 @@ export function registerWebsitesCommand(program: Command) {
   program
     .command("websites")
     .description("List all public websites linked to projects")
-    .option("--json", "Output as JSON")
+    .option("--json", "Output machine-readable JSON")
     .option("--urls-only", "Output only URLs (one per line)")
     .action(withAction(async (options, command) => {
       const { cwd } = cliContext(command);

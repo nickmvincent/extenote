@@ -14,7 +14,8 @@ Thanks for your interest in contributing!
 ```bash
 bun run build     # Build all packages
 bun run lint      # Type checking
-bun run test      # Run tests
+bun run test      # Run fast tests
+bun run test:full # Run full suite (web + clipper included)
 bun run cli -- <cmd>  # Test CLI commands
 bun run web       # Start web UI (localhost:3000 API, localhost:3001 Vite)
 bun run tui       # Start terminal UI
@@ -45,10 +46,12 @@ Web ---/
 **Before submitting:**
 - `bun run lint` must pass
 - `bun run test` must pass
+- `bun run test:full` for CI parity (recommended before pushing)
 
 **When to run what:**
 - Content changes: `bun run cli -- validate <project>`
 - Schema/config changes: `bun run lint && bun run test`
+- Cross-package/runtime changes: `bun run lint && bun run test:full`
 - Code changes: `bun run lint && bun run test`
 
 ## Pull Requests

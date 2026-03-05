@@ -14,7 +14,7 @@ visibilityField: visibility
 sources:
   - id: data-napkin-math-content
     type: local
-    root: ${EXTENOTE_CONTENT_ROOT:-../extenote-pub/content}/data-napkin-math
+    root: ${DATA_NAPKIN_MATH_ROOT:-../extenote-pub/content/data-napkin-math}
     include:
       - "**/*.md"
 
@@ -31,7 +31,7 @@ includes:
 # ─── Build Configuration ──────────────────────────────────────────────────────
 # How to build the website for this project
 build:
-  websiteDir: data-napkin-math-astro
+  websiteDir: ${DATA_NAPKIN_MATH_WEBSITE:-data-napkin-math-astro}
   type: astro
   preRender:
     - type: network

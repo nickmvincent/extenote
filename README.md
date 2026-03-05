@@ -125,7 +125,7 @@ Full documentation is available at **[nickmvincent.github.io/extenote](https://n
 | Document | Purpose |
 |----------|---------|
 | [VISION.md](./VISION.md) | High-level vision and user stories |
-| [STATUS-ROADMAP-TODOS.md](./STATUS-ROADMAP-TODOS.md) | Current status, roadmap, and active todos |
+| [STATUS.md](./STATUS.md) | Current status, roadmap, and active todos |
 | [CONTRIBUTING.md](./CONTRIBUTING.md) | Contribution guidelines |
 
 ## Packages
@@ -135,6 +135,7 @@ Full documentation is available at **[nickmvincent.github.io/extenote](https://n
 | `@extenote/core` | [packages/core/README.md](./packages/core/README.md) | Validation, lint, export |
 | `@extenote/cli` | [packages/cli/README.md](./packages/cli/README.md) | CLI commands |
 | `@extenote/web` | [packages/web/README.md](./packages/web/README.md) | Web UI |
+| `@extenote/frontmatter-lint` | [packages/frontmatter-lint/README.md](./packages/frontmatter-lint/README.md) | Reusable frontmatter validator/linter |
 | `@extenote/refcheck` | [packages/refcheck/README.md](./packages/refcheck/README.md) | Reference checking (DBLP, OpenAlex) |
 | `@extenote/tui` | [packages/tui/README.md](./packages/tui/README.md) | Terminal UI |
 
@@ -166,8 +167,10 @@ Content vaults are pointed to via environment variables (`EXTENOTE_CONTENT_ROOT`
 ## Testing
 
 ```bash
-bun run lint    # TypeScript checks
-bun run test    # Unit tests
+bun run lint       # TypeScript checks
+bun run test       # Fast test suite (default)
+bun run test:full  # Includes web + clipper suites
+bun run clean      # Remove generated build/test artifacts
 ```
 
 ## Motivation

@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "cd ../.. && node packages/tui/dist/index.js",
-    "build": "npx tsc",
+    "build": "bun x tsc",
     "start": "cd ../.. && node packages/tui/dist/index.js",
     "test": "bun test"
   },

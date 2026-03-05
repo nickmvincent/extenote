@@ -5,7 +5,7 @@
  * via the web app or TUI settings menu. Changes take effect immediately.
  */
 
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from "fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync, unlinkSync } from "fs";
 import { dirname, join } from "path";
 import {
   DEFAULT_API_MAX_RESULTS,
@@ -320,7 +320,6 @@ export function resetSettings(baseDir?: string): void {
   const settingsPath = getSettingsPath(base);
 
   if (existsSync(settingsPath)) {
-    const { unlinkSync } = require("fs");
     unlinkSync(settingsPath);
   }
 

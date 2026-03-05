@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react'
 import { useParams, Link, useLocation } from 'react-router-dom'
 import { useVault } from '../hooks/useVault'
 import { useRecentItems } from '../hooks/useRecentItems'
-import { getObjectIssues, loadCrossRefs, type CrossRefs } from '../api/vault'
+import { getObjectIssues, loadCrossRefs, loadObjectByPath, type CrossRefs, type ObjectDetailData } from '../api/vault'
 import { MarkdownPreview } from '../components/MarkdownPreview'
 
 export function ObjectDetail() {
@@ -13,13 +13,29 @@ export function ObjectDetail() {
   const [viewMode, setViewMode] = useState<'preview' | 'source'>('preview')
   const [crossRefs, setCrossRefs] = useState<CrossRefs | null>(null)
   const [crossRefsLoading, setCrossRefsLoading] = useState(false)
+  const [object, setObject] = useState<ObjectDetailData | null>(null)
+  const [objectLoading, setObjectLoading] = useState(true)
+  const [objectError, setObjectError] = useState<string | null>(null)
   const [copied, setCopied] = useState(false)
   const [editorOpening, setEditorOpening] = useState(false)
 
   const decodedPath = path ? decodeURIComponent(path) : ''
 
-  // Find the object first (needed for hooks)
-  const object = data?.vault.objects.find(obj => obj.relativePath === decodedPath)
+  // Load full object content (including body)
+  useEffect(() => {
+    if (!decodedPath) return
+
+    setObjectLoading(true)
+    setObjectError(null)
+
+    loadObjectByPath(decodedPath)
+      .then((result) => setObject(result))
+      .catch((err) => {
+        setObject(null)
+        setObjectError(err instanceof Error ? err.message : 'Failed to load object')
+      })
+      .finally(() => setObjectLoading(false))
+  }, [decodedPath])
 
   // Load cross-refs
   useEffect(() => {
@@ -37,18 +53,18 @@ export function ObjectDetail() {
     if (object) {
       addItem({
         path: object.relativePath,
-        title: String(object.title || object.frontmatter.title || object.id || 'Untitled'),
+        title: String(object.title || object.frontmatter['title'] || object.id || 'Untitled'),
         type: object.type,
       })
     }
-  }, [object?.relativePath, object?.title, object?.frontmatter?.title, object?.id, object?.type, addItem])
+  }, [object?.relativePath, object?.title, object?.frontmatter, object?.id, object?.type, addItem])
 
-  if (loading) {
+  if (loading || objectLoading) {
     return <div className="text-gray-500 dark:text-gray-400">Loading...</div>
   }
 
-  if (error || !data || !path) {
-    return <div className="text-red-600 dark:text-red-400">Error loading object</div>
+  if (error || objectError || !data || !path) {
+    return <div className="text-red-600 dark:text-red-400">Error loading object: {objectError || error?.message || 'Unknown error'}</div>
   }
 
   if (!object) {
@@ -58,6 +74,8 @@ export function ObjectDetail() {
   const issues = getObjectIssues(data.vault, object.filePath)
   const state = (location.state && typeof location.state === 'object') ? location.state as { from?: string; label?: string } : null
   const project = object.project || object.relativePath.split(/[\\/]/)[0]
+  const objectRoute = `/object/${encodeURIComponent(object.relativePath)}`
+  const objectLabel = String(object.title || object.frontmatter['title'] || object.id || 'Untitled')
   const backTo = state?.from || `/project/${encodeURIComponent(project)}`
   const backLabel = state?.label || project
 
@@ -67,10 +85,12 @@ export function ObjectDetail() {
   // Copy citation for bibtex entries
   const copyCitation = () => {
     const fm = object.frontmatter
-    const authors = Array.isArray(fm.authors) ? fm.authors.join(', ') : fm.authors || fm.author || ''
-    const title = fm.title || object.title || ''
-    const year = fm.year || ''
-    const venue = fm.venue || fm.journal || fm.booktitle || ''
+    const authors = Array.isArray(fm['authors'])
+      ? fm['authors'].join(', ')
+      : String(fm['authors'] || fm['author'] || '')
+    const title = String(fm['title'] || object.title || '')
+    const year = String(fm['year'] || '')
+    const venue = String(fm['venue'] || fm['journal'] || fm['booktitle'] || '')
     const citation = `${authors}. "${title}." ${venue}${venue && year ? ', ' : ''}${year}.`
     navigator.clipboard.writeText(citation)
     setCopied(true)
@@ -107,7 +127,7 @@ export function ObjectDetail() {
 
       <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
-          {String(object.title || object.frontmatter.title || object.id || 'Untitled')}
+          {String(object.title || object.frontmatter['title'] || object.id || 'Untitled')}
         </h1>
 
         <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500 dark:text-gray-400 mb-6">
@@ -235,6 +255,7 @@ export function ObjectDetail() {
                           {link.resolved ? (
                             <Link
                               to={`/object/${encodeURIComponent(link.resolved.path)}`}
+                              state={{ from: objectRoute, label: objectLabel }}
                               className="text-indigo-600 dark:text-indigo-400 hover:underline"
                             >
                               {link.displayText || link.resolved.title || link.targetId}
@@ -280,6 +301,7 @@ export function ObjectDetail() {
                           </span>
                           <Link
                             to={`/object/${encodeURIComponent(backlink.sourcePath)}`}
+                            state={{ from: objectRoute, label: objectLabel }}
                             className="text-indigo-600 dark:text-indigo-400 hover:underline"
                           >
                             {backlink.sourceTitle || backlink.sourceId}
