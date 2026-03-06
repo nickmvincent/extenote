@@ -42,7 +42,7 @@ build:
 deploy:
   platform: github-pages
   outputDir: dist
-  repo: https://github.com/nickmvincent/data_napkin_math.git
+  repo: https://github.com/nickmvincent/data-napkin.git
   domain: exploringai.org
 
 # ─── Discussion Configuration ─────────────────────────────────────────────────
