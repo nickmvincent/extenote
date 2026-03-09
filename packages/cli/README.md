@@ -44,6 +44,7 @@
   - `sync <project> --merge-strategy <strategy>` — conflict resolution
   - `sync <project> --sync-deletes` — delete remote cards for deleted local files
   - `sync <project> --relink-collection` — link existing cards to collection
+  - `sync [project] --json` — machine-readable output for list/validate/sync workflows
 
 ## Usage
 

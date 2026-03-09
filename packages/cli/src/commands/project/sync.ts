@@ -30,9 +30,11 @@ export function registerSyncCommand(program: Command) {
     .option("--list", "List projects with Semble configuration")
     .option("--list-collections", "List Semble collections")
     .option("--validate", "Validate Semble configuration without syncing")
+    .option("--json", "Output machine-readable JSON")
     .action(withAction(async (projectArg, options, command) => {
       const { cwd } = cliContext(command);
       const vault = await loadVault({ cwd });
+      const jsonMode = Boolean(options.json);
 
       const sembleProjects = (vault.config.projectProfiles ?? [])
         .filter((p): p is ProjectProfile & { semble: SembleConfig } =>
@@ -40,6 +42,17 @@ export function registerSyncCommand(program: Command) {
         );
 
       if (options.list) {
+        const output = sembleProjects.map((p) => ({
+          project: p.name,
+          identifier: p.semble.identifier,
+          publicOnly: Boolean(p.semble.publicOnly),
+        }));
+
+        if (jsonMode) {
+          console.log(JSON.stringify(output, null, 2));
+          return;
+        }
+
         if (!sembleProjects.length) {
           console.log(pc.yellow("No projects with Semble configuration found"));
           console.log(pc.dim("Add 'semble' config to your project YAML to enable sync"));
@@ -54,6 +67,19 @@ export function registerSyncCommand(program: Command) {
       }
 
       if (options.validate) {
+        const validations = sembleProjects.map((p) => ({
+          project: p.name,
+          ...validateSembleConfig(p.semble),
+        }));
+
+        if (jsonMode) {
+          console.log(JSON.stringify({
+            valid: validations.every((v) => v.valid),
+            projects: validations,
+          }, null, 2));
+          return;
+        }
+
         if (!sembleProjects.length) {
           console.log(pc.yellow("No projects with Semble configuration found"));
           return;
@@ -70,13 +96,24 @@ export function registerSyncCommand(program: Command) {
       }
 
       if (options.listCollections) {
+        if (jsonMode && !sembleProjects.length) {
+          console.log(JSON.stringify([], null, 2));
+          return;
+        }
+
         if (!sembleProjects.length) {
           console.log(pc.yellow("No projects with Semble configuration found"));
           return;
         }
         const config = sembleProjects[0].semble;
-        console.log(pc.dim(`Fetching collections for ${config.identifier}...`));
         const collections = await listCollections(config);
+
+        if (jsonMode) {
+          console.log(JSON.stringify(collections, null, 2));
+          return;
+        }
+
+        console.log(pc.dim(`Fetching collections for ${config.identifier}...`));
         if (!collections.length) {
           console.log(pc.yellow("No collections found"));
           return;
@@ -89,6 +126,11 @@ export function registerSyncCommand(program: Command) {
             console.log(pc.dim(`    ${col.description}`));
           }
         }
+        return;
+      }
+
+      if (jsonMode && !sembleProjects.length) {
+        console.log(JSON.stringify([], null, 2));
         return;
       }
 
@@ -118,12 +160,27 @@ semble:
         throw new Error(`Multiple Semble projects found. Specify one: ${sembleProjects.map((p) => p.name).join(", ")}`);
       }
 
+      const jsonResults: Array<{
+        project: string;
+        validation?: { valid: boolean; errors: string[] };
+        result?: Awaited<ReturnType<typeof syncWithSemble>>;
+      }> = [];
+
       for (const project of projectsToSync) {
-        console.log(pc.bold(`Syncing ${project.name}...`));
+        if (!jsonMode) {
+          console.log(pc.bold(`Syncing ${project.name}...`));
+        }
 
         const validation = validateSembleConfig(project.semble);
         if (!validation.valid) {
-          console.log(pc.red(`✖ Invalid config: ${validation.errors.join(", ")}`));
+          if (jsonMode) {
+            jsonResults.push({
+              project: project.name,
+              validation,
+            });
+          } else {
+            console.log(pc.red(`✖ Invalid config: ${validation.errors.join(", ")}`));
+          }
           continue;
         }
 
@@ -142,7 +199,9 @@ semble:
           for (const o of objects) {
             projectCounts.set(o.project, (projectCounts.get(o.project) ?? 0) + 1);
           }
-          console.log(pc.dim(`Objects by project: ${[...projectCounts.entries()].map(([k, v]) => `${k}:${v}`).join(", ")}`));
+          if (!jsonMode) {
+            console.log(pc.dim(`Objects by project: ${[...projectCounts.entries()].map(([k, v]) => `${k}:${v}`).join(", ")}`));
+          }
         }
 
         if (options.source) {
@@ -161,7 +220,9 @@ semble:
         if (options.limit && options.limit > 0) {
           const originalCount = objects.length;
           objects = objects.slice(0, options.limit);
-          console.log(pc.dim(`Limited to ${objects.length} of ${originalCount} objects`));
+          if (!jsonMode) {
+            console.log(pc.dim(`Limited to ${objects.length} of ${originalCount} objects`));
+          }
         }
 
         const result = await syncWithSemble({
@@ -178,9 +239,18 @@ semble:
             mergeStrategy: options.mergeStrategy,
             syncDeletes: options.syncDeletes,
             relinkCollection: options.relinkCollection,
-            onProgress: (message) => console.log(pc.dim(message))
+            onProgress: jsonMode ? undefined : (message) => console.log(pc.dim(message))
           }
         });
+
+        if (jsonMode) {
+          jsonResults.push({
+            project: project.name,
+            validation,
+            result,
+          });
+          continue;
+        }
 
         console.log("");
         if (result.pushed > 0) {
@@ -213,6 +283,10 @@ semble:
         if (result.pushed === 0 && result.updated === 0 && result.deleted === 0 && result.pulled === 0 && result.errors.length === 0) {
           console.log(pc.dim("Nothing to sync"));
         }
+      }
+
+      if (jsonMode) {
+        console.log(JSON.stringify(jsonResults, null, 2));
       }
     }));
 }

@@ -8,12 +8,12 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "bun run --cwd packages/refcheck build && bun run --cwd packages/frontmatter-lint build && bun run --cwd packages/core build && bun run --cwd packages/cli build && bun run --cwd packages/tui build",
+    "build": "bun run --cwd packages/refcheck build && bun run --cwd packages/frontmatter-lint build && bun run --cwd packages/semble-sync build && bun run --cwd packages/core build && bun run --cwd packages/cli build && bun run --cwd packages/tui build",
     "test": "bun run test:fast",
-    "test:fast": "bun run --cwd packages/refcheck test && bun run --cwd packages/frontmatter-lint test && bun run --cwd packages/core test && bun run --cwd packages/cli test && bun run --cwd packages/tui test",
+    "test:fast": "bun run --cwd packages/refcheck test && bun run --cwd packages/frontmatter-lint test && bun run --cwd packages/semble-sync test && bun run --cwd packages/core test && bun run --cwd packages/cli test && bun run --cwd packages/tui test",
     "test:full": "bun run test:fast && bun run --cwd packages/web test && bun run --cwd extensions/clipper test",
     "test:core": "bun run --cwd packages/core test",
-    "lint": "bun run --cwd packages/refcheck build && bun run --cwd packages/frontmatter-lint build && bun run --cwd packages/refcheck lint && bun run --cwd packages/frontmatter-lint lint && bun run --cwd packages/core lint && bun run --cwd packages/cli lint",
+    "lint": "bun run --cwd packages/refcheck build && bun run --cwd packages/frontmatter-lint build && bun run --cwd packages/semble-sync build && bun run --cwd packages/refcheck lint && bun run --cwd packages/frontmatter-lint lint && bun run --cwd packages/semble-sync lint && bun run --cwd packages/core lint && bun run --cwd packages/cli lint",
     "clean": "rm -rf packages/*/dist extensions/clipper/dist extensions/clipper/dist-chrome extensions/clipper/*.zip packages/web/tests/screenshots",
     "cli": "node packages/cli/dist/index.js",
     "frontmatter-lint": "node packages/frontmatter-lint/dist/cli.js",

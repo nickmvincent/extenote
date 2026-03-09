@@ -24,6 +24,7 @@
   "dependencies": {
     "@extenote/frontmatter-lint": "workspace:*",
     "@extenote/refcheck": "workspace:*",
+    "@extenote/semble-sync": "workspace:*",
     "dotenv": "^17.2.3",
     "fast-glob": "^3.3.2",
     "gray-matter": "^4.0.3",

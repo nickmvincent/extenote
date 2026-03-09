@@ -137,6 +137,7 @@ Full documentation is available at **[nickmvincent.github.io/extenote](https://n
 | `@extenote/web` | [packages/web/README.md](./packages/web/README.md) | Web UI |
 | `@extenote/frontmatter-lint` | [packages/frontmatter-lint/README.md](./packages/frontmatter-lint/README.md) | Reusable frontmatter validator/linter |
 | `@extenote/refcheck` | [packages/refcheck/README.md](./packages/refcheck/README.md) | Reference checking (DBLP, OpenAlex) |
+| `@extenote/semble-sync` | [packages/semble-sync/README.md](./packages/semble-sync/README.md) | Standalone two-way sync with Semble |
 | `@extenote/tui` | [packages/tui/README.md](./packages/tui/README.md) | Terminal UI |
 
 ## Configuration
@@ -180,6 +181,7 @@ Extenote unifies multiple content projects (annotated bibliographies, memos, CV 
 ## ATProto / Semble Integration
 
 Extenote can sync content to the ATProto network via [Semble](https://docs.cosmik.network), a research-focused layer built on Bluesky's protocol.
+The sync implementation is packaged as [`@extenote/semble-sync`](./packages/semble-sync/README.md) and re-exported from `@extenote/core` for compatibility.
 
 ### What Works Now
 

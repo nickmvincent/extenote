@@ -71,6 +71,8 @@ const deployResult = await deployProject(project, {
 
 ### Semble (ATProto Sync)
 
+> Migration note: the Semble implementation now lives in `@extenote/semble-sync`. `@extenote/core` re-exports the same API for backward compatibility.
+
 ```typescript
 import { syncWithSemble, validateSembleConfig } from '@extenote/core';
 
@@ -81,6 +83,12 @@ const result = await syncWithSemble({
   cwd: process.cwd(),
   project: 'my-project'
 });
+```
+
+For new standalone integrations, prefer:
+
+```typescript
+import { syncWithSemble, validateSembleConfig } from '@extenote/semble-sync';
 ```
 
 ### Discussions

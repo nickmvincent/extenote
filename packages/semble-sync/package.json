@@ -1,0 +1,29 @@
+{
+  "name": "@extenote/semble-sync",
+  "version": "0.1.0",
+  "description": "Standalone Semble two-way sync for Extenote-style markdown objects",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "bun x tsc -p tsconfig.build.json",
+    "lint": "bun x tsc --noEmit",
+    "test": "bun test"
+  },
+  "dependencies": {
+    "gray-matter": "^4.0.3"
+  },
+  "devDependencies": {
+    "typescript": "^5.5.4"
+  }
+}
